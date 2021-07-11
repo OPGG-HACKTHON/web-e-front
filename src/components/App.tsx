@@ -1,6 +1,6 @@
-import GreetingPage from 'pages/GreetingPage';
-import { Route, Switch } from 'react-router-dom';
-import GlobalStyle from 'styles/GlobalStyle';
+import GreetingPage from "pages/GreetingPage";
+import { Route, Switch } from "react-router-dom";
+import GlobalStyle from "styles/GlobalStyle";
 
 const App = () => {
   return (
