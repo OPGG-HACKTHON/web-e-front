@@ -1,3 +1,5 @@
+/* eslint-disable import/prefer-default-export */
+
 import { History, createBrowserHistory } from 'history';
 import isNullOrUndefined from 'util/isNullOrUndefined';
 
