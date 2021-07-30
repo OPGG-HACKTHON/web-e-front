@@ -1,3 +1,5 @@
+import './font.css';
+
 const color = {
   yellow: '#FFD25F',
   blackScale: {
@@ -17,26 +19,32 @@ const typography = {
   bodySmRegular: `
     font-size: 1.2rem;
     font-weight: normal;
+    font-family:NotoSansKR-Regular;
   `,
   bodySmBold: `
     font-size: 1.2rem;
     font-weight: bold;
+    font-family:NotoSansKR-Bold;
   `,
   bodyRg: `
     font-size: 1.4rem;
     font-weight: normal;
+    font-family:NotoSansKR-Regular;
   `,
   bodyRgBold: `
     font-size: 1.4rem;
     font-weight: bold;
+    font-family:NotoSansKR-Bold;
   `,
   headRg: `
     font-size: 1.8rem;
     font-weight: normal;
+    font-family:NotoSansKR-Regular;
   `,
   headRgBold: `
     font-size: 1.8rem;
     font-weight: bold;
+    font-family:NotoSansKR-Bold;
   `,
 };
 
