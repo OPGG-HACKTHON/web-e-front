@@ -13,10 +13,38 @@ const color = {
   },
 };
 
+const typography = {
+  bodySmRegular: `
+    font-size: 1.2rem;
+    font-weight: normal;
+  `,
+  bodySmBold: `
+    font-size: 1.2rem;
+    font-weight: bold;
+  `,
+  bodyRg: `
+    font-size: 1.4rem;
+    font-weight: normal;
+  `,
+  bodyRgBold: `
+    font-size: 1.4rem;
+    font-weight: bold;
+  `,
+  headRg: `
+    font-size: 1.8rem;
+    font-weight: normal;
+  `,
+  headRgBold: `
+    font-size: 1.8rem;
+    font-weight: bold;
+  `,
+};
+
 export type Theme = typeof theme;
 
 const theme = {
   color,
+  typography,
 };
 
 export default theme;
