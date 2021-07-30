@@ -12,6 +12,7 @@ const GlobalStyle = createGlobalStyle`
   #root {
     width: 100%;
     height: 100%;
+    font-size: 62.5%;
   }
 `;
 
