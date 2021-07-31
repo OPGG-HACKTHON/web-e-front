@@ -1,9 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useContext } from 'react';
+import styled, { ThemeContext } from 'styled-components';
 import WATPL from 'assets/svg/왓플-WATPL.svg';
 import Search from 'assets/svg/Search.svg';
+import Button from 'common/Button';
+import { typography } from 'styles/theme';
 
 const Nav = () => {
+  const themeStyle = useContext(ThemeContext);
+
   return (
     <NavWrapper>
       <NavInnerWrapper>
@@ -14,10 +18,46 @@ const Nav = () => {
           </SearchIconWrapper>
           <SearchInput placeholder="사용자 이름 또는 해시태그 검색" />
         </SearchWrapper>
+        <ButtonWrapper>
+          <Button
+            text="로그인"
+            onClick={() => console.log('LOGIN BUTTON')}
+            fontColor={themeStyle.color.yellow}
+            bkgColor={themeStyle.color.white}
+            padding="0.8rem 0.7rem"
+            width={7}
+            height={3.6}
+            borderRadius={0.5}
+            fontStyle={typography.bodyRgBold}
+            hoverBkgColor={themeStyle.color.yellow}
+            hoverFontColor={themeStyle.color.white}
+          />
+          <Button
+            text="회원가입"
+            onClick={() => console.log('REGISTER BUTTON')}
+            fontColor={themeStyle.color.white}
+            bkgColor={themeStyle.color.yellow}
+            padding="0.8rem 0.7rem"
+            width={7}
+            height={3.6}
+            borderRadius={0.5}
+            fontStyle={typography.bodyRgBold}
+          />
+        </ButtonWrapper>
       </NavInnerWrapper>
     </NavWrapper>
   );
 };
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  max-width: 160px;
+
+  & > * + * {
+    margin-left: 20px;
+  }
+`;
 
 const NavWrapper = styled.nav`
   width: 100%;

@@ -15,7 +15,7 @@ const color = {
   },
 };
 
-const typography = {
+export const typography = {
   bodySmRegular: `
     font-size: 1.2rem;
     font-weight: normal;

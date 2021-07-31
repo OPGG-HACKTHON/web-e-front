@@ -22,7 +22,8 @@ const PageTemplateWrapper = styled.div`
 
 const PageTemplateChildren = styled.div`
   width: 100%;
-  max-width: 1440px;
+  max-width: 940px;
+  margin: auto;
 `;
 
 export default PageTemplate;
