@@ -1,10 +1,26 @@
-import React from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
-import { ReactComponent as LOL_LOGO } from 'assets/svg/image 5.svg';
-import PUBG_LOGO from 'assets/svg/image 3.svg';
 import OVERWATCH_LOGO from 'assets/svg/image 2.svg';
+import useNav from 'hooks/useNav';
+import { useRecoilValue } from 'recoil';
+import { leftNavItemState } from 'atom/pageAtom';
+import { convertToObject } from 'typescript';
+import { color } from 'styles/theme';
+import { ReactComponent as LOL_LOGO } from 'assets/svg/lol(gray).svg';
+import { ReactComponent as PUBG_LOGO } from 'assets/svg/pubg(gray).svg';
 
 const LeftNav = () => {
+  const { handleSelectNavItem } = useNav();
+  const selectNavName = useRecoilValue(leftNavItemState);
+
+  const isSelectedGameArg = useCallback(
+    (arg: string) => {
+      return arg === selectNavName;
+    },
+    [selectNavName]
+  );
+
+  console.log(selectNavName);
   // TODO: 일단 컴포넌트 다 만들고 생각해야겠당 잠와..
   return (
     <LeftNavWrapper>
@@ -13,23 +29,48 @@ const LeftNav = () => {
         <UserName>로그인을 해주세요.</UserName>
       </UserWrapper>
       <GameListWrapper>
-        <GameList>
+        <GameList
+          onClick={() => handleSelectNavItem('lol')}
+          isSelected={isSelectedGameArg('lol')}
+        >
           <IconWrapper>
-            <LOL_LOGO fill="red" />
+            <LOL_LOGO
+              title="lol"
+              fill={
+                selectNavName === 'lol' ? color.brown : color.grayScale[100]
+              }
+            />
           </IconWrapper>
-          <GameName>리그오브레전드</GameName>
+          <GameName isSelected={isSelectedGameArg('lol')}>
+            리그오브레전드
+          </GameName>
         </GameList>
-        <GameList>
+        <GameList
+          onClick={() => handleSelectNavItem('pubg')}
+          isSelected={isSelectedGameArg('pubg')}
+        >
           <IconWrapper>
-            <GameIcon src={PUBG_LOGO} />
+            {/* <PUBG_LOGO
+              title="gi"
+              fill={
+                selectNavName === 'pubg' ? color.brown : color.grayScale[100]
+              }
+            /> */}
           </IconWrapper>
-          <GameName>배틀그라운드</GameName>
+          <GameName isSelected={isSelectedGameArg('pubg')}>
+            배틀그라운드
+          </GameName>
         </GameList>
-        <GameList>
+        <GameList
+          onClick={() => handleSelectNavItem('overwatch')}
+          isSelected={isSelectedGameArg('overwatch')}
+        >
           <IconWrapper>
             <GameIcon src={OVERWATCH_LOGO} />
           </IconWrapper>
-          <GameName>오버워치</GameName>
+          <GameName isSelected={isSelectedGameArg('overwatch')}>
+            오버워치
+          </GameName>
         </GameList>
       </GameListWrapper>
       <HashTagWrapper>
@@ -89,19 +130,18 @@ const GameListWrapper = styled.div`
   margin-top: 14px;
 `;
 
-const GameList = styled.div`
+const GameList = styled.div<{ isSelected: boolean }>`
   display: flex;
   align-items: center;
   height: 50px;
   padding-left: 10px;
   transition: all 0.2s ease;
   cursor: pointer;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.color.yellow};
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-  }
+  background-color: ${({ theme, isSelected }) =>
+    isSelected ? theme.color.yellow : theme.color.white};
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  color: red;
 `;
 
 const IconWrapper = styled.div`
@@ -114,9 +154,11 @@ const GameIcon = styled.img`
   object-fit: cover;
 `;
 
-const GameName = styled.div`
-  ${({ theme }) => theme.typography.bodyRg};
-  color: ${({ theme }) => theme.color.grayScale[500]};
+const GameName = styled.div<{ isSelected: boolean }>`
+  ${({ theme, isSelected }) =>
+    isSelected ? theme.typography.bodyRgBold : theme.typography.bodyRg};
+  color: ${({ theme, isSelected }) =>
+    isSelected ? theme.color.blackScale[50] : theme.color.grayScale[500]};
 `;
 
 const HashTagWrapper = styled.div`
