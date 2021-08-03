@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
+import LeftNav from './LeftNav';
 import Nav from './Nav/Nav';
 
 type Props = {
@@ -10,7 +11,10 @@ const PageTemplate = ({ children }: Props) => {
   return (
     <PageTemplateWrapper>
       <Nav />
-      <PageTemplateChildren>{children}</PageTemplateChildren>
+      <PageTemplateChildren>
+        <LeftNav />
+        {children}
+      </PageTemplateChildren>
     </PageTemplateWrapper>
   );
 };
@@ -24,6 +28,8 @@ const PageTemplateChildren = styled.div`
   width: 100%;
   max-width: 940px;
   margin: auto;
+  display: flex;
+  justify-content: space-between;
 `;
 
 export default PageTemplate;
