@@ -5,9 +5,7 @@ import Main from 'components/Main';
 const Gretting = () => {
   return (
     <PageTemplate>
-      <>
-        <Main />
-      </>
+      <Main />
     </PageTemplate>
   );
 };
