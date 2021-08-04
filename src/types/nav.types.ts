@@ -1,7 +1,5 @@
 export type svgElementProps = {
   color: string;
-  width: number;
-  height: number;
 };
 
 export type svgElementWrapperProps = {
