@@ -8,6 +8,9 @@ import { convertToObject } from 'typescript';
 import { color } from 'styles/theme';
 import { ReactComponent as LOL_LOGO } from 'assets/svg/lol(gray).svg';
 import { ReactComponent as PUBG_LOGO } from 'assets/svg/pubg(gray).svg';
+import LolSvg from '../SvgElement/LolSvg';
+import PubgSvg from '../SvgElement/PubgSvg';
+import OverWatchSvg from '../SvgElement/OverWatchSvg';
 
 const LeftNav = () => {
   const { handleSelectNavItem } = useNav();
@@ -34,9 +37,10 @@ const LeftNav = () => {
           isSelected={isSelectedGameArg('lol')}
         >
           <IconWrapper>
-            <LOL_LOGO
-              title="lol"
-              fill={
+            <LolSvg
+              width={32}
+              height={34.16}
+              color={
                 selectNavName === 'lol' ? color.brown : color.grayScale[100]
               }
             />
@@ -50,12 +54,13 @@ const LeftNav = () => {
           isSelected={isSelectedGameArg('pubg')}
         >
           <IconWrapper>
-            {/* <PUBG_LOGO
-              title="gi"
-              fill={
+            <PubgSvg
+              width={43}
+              height={27}
+              color={
                 selectNavName === 'pubg' ? color.brown : color.grayScale[100]
               }
-            /> */}
+            />
           </IconWrapper>
           <GameName isSelected={isSelectedGameArg('pubg')}>
             배틀그라운드
@@ -66,7 +71,15 @@ const LeftNav = () => {
           isSelected={isSelectedGameArg('overwatch')}
         >
           <IconWrapper>
-            <GameIcon src={OVERWATCH_LOGO} />
+            <OverWatchSvg
+              width={32}
+              height={32}
+              color={
+                selectNavName === 'overwatch'
+                  ? color.brown
+                  : color.grayScale[100]
+              }
+            />
           </IconWrapper>
           <GameName isSelected={isSelectedGameArg('overwatch')}>
             오버워치
