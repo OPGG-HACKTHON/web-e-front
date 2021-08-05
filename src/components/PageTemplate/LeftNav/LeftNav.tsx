@@ -4,6 +4,7 @@ import useNav from 'hooks/useNav';
 import { useRecoilValue } from 'recoil';
 import { leftNavItemState } from 'atom/pageAtom';
 import { color } from 'styles/theme';
+import { EGameList } from 'enum/game.enum';
 import LolSvg from '../SvgElement/LolSvg';
 import PubgSvg from '../SvgElement/PubgSvg';
 import OverWatchSvg from '../SvgElement/OverWatchSvg';
@@ -13,7 +14,7 @@ const LeftNav = () => {
   const selectNavName = useRecoilValue(leftNavItemState);
 
   const isSelectedGameArg = useCallback(
-    (arg: string) => {
+    (arg: EGameList) => {
       return arg === selectNavName;
     },
     [selectNavName]
@@ -29,55 +30,59 @@ const LeftNav = () => {
       </UserWrapper>
       <GameListWrapper>
         <GameList
-          onClick={() => handleSelectNavItem('lol')}
-          isSelected={isSelectedGameArg('lol')}
+          onClick={() => handleSelectNavItem(EGameList.LOL)}
+          isSelected={isSelectedGameArg(EGameList.LOL)}
         >
           <IconWrapper>
             <LolSvg
               width={32}
               height={34.16}
               color={
-                selectNavName === 'lol' ? color.brown : color.grayScale[100]
+                selectNavName === EGameList.LOL
+                  ? color.brown
+                  : color.grayScale[100]
               }
             />
           </IconWrapper>
-          <GameName isSelected={isSelectedGameArg('lol')}>
+          <GameName isSelected={isSelectedGameArg(EGameList.LOL)}>
             리그오브레전드
           </GameName>
         </GameList>
         <GameList
-          onClick={() => handleSelectNavItem('pubg')}
-          isSelected={isSelectedGameArg('pubg')}
+          onClick={() => handleSelectNavItem(EGameList.PUBG)}
+          isSelected={isSelectedGameArg(EGameList.PUBG)}
         >
           <IconWrapper>
             <PubgSvg
               width={43}
               height={27}
               color={
-                selectNavName === 'pubg' ? color.brown : color.grayScale[100]
+                selectNavName === EGameList.PUBG
+                  ? color.brown
+                  : color.grayScale[100]
               }
             />
           </IconWrapper>
-          <GameName isSelected={isSelectedGameArg('pubg')}>
+          <GameName isSelected={isSelectedGameArg(EGameList.PUBG)}>
             배틀그라운드
           </GameName>
         </GameList>
         <GameList
-          onClick={() => handleSelectNavItem('overwatch')}
-          isSelected={isSelectedGameArg('overwatch')}
+          onClick={() => handleSelectNavItem(EGameList.OVERWATCH)}
+          isSelected={isSelectedGameArg(EGameList.OVERWATCH)}
         >
           <IconWrapper>
             <OverWatchSvg
               width={32}
               height={32}
               color={
-                selectNavName === 'overwatch'
+                selectNavName === EGameList.OVERWATCH
                   ? color.brown
                   : color.grayScale[100]
               }
             />
           </IconWrapper>
-          <GameName isSelected={isSelectedGameArg('overwatch')}>
+          <GameName isSelected={isSelectedGameArg(EGameList.OVERWATCH)}>
             오버워치
           </GameName>
         </GameList>
@@ -164,6 +169,7 @@ const GameName = styled.div<{ isSelected: boolean }>`
     isSelected ? theme.typography.bodyRgBold : theme.typography.bodyRg};
   color: ${({ theme, isSelected }) =>
     isSelected ? theme.color.blackScale[50] : theme.color.grayScale[500]};
+  margin-left: 3px;
 `;
 
 const HashTagWrapper = styled.div`
