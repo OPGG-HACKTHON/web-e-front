@@ -40,7 +40,7 @@ const VideoItem = styled.div`
     align-items: center;
     width: 100%;
     height: 100%;
-    z-index: 10000;
+    /* z-index: 10000; */
     flex-flow: row;
     top: -6em;
     justify-content: flex-end;
