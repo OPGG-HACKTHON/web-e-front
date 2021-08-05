@@ -1,4 +1,4 @@
-export type svgElementProps = {
+export type svgElementProps = svgElementWrapperProps & {
   color: string;
 };
 
