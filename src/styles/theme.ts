@@ -2,7 +2,8 @@ import './font.css';
 
 const calcRem = (size: any) => `${size / 16}rem`;
 
-const color = {
+export const color = {
+  brown: '#1D1400',
   yellow: '#FFD25F',
   blackScale: {
     50: '#000000',
@@ -12,6 +13,7 @@ const color = {
   white: '#FFFFFF',
   grayScale: {
     50: '#F2F2F2',
+    100: '#B2B2B2',
     250: '#E5E5E5',
     500: '#C4C4C4',
   },
