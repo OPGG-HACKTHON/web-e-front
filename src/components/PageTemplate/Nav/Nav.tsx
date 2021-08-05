@@ -63,6 +63,7 @@ const NavWrapper = styled.nav`
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-bottom: 34px;
 `;
 
 const NavInnerWrapper = styled.div`
