@@ -1,5 +1,6 @@
 import './font.css';
 
+
 const calcRem = (size: any) => `${size / 16}rem`;
 
 export const color = {
