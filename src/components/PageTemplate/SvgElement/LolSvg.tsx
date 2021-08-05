@@ -1,13 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { svgElementProps, svgElementWrapperProps } from 'types/nav.types';
 
-type Props = {
-  color: string;
-  width: number;
-  height: number;
-};
-
-const LolSvg = ({ color, width, height }: Props) => {
+const LolSvg = ({ color, width, height }: svgElementProps) => {
   return (
     <LolSvgWrapper width={width} height={height}>
       <svg
@@ -44,7 +39,7 @@ const LolSvg = ({ color, width, height }: Props) => {
   );
 };
 
-const LolSvgWrapper = styled.div<{ width: number; height: number }>`
+const LolSvgWrapper = styled.div<svgElementWrapperProps>`
   width: ${({ width }) => `${width}px`};
   height: ${({ height }) => `${height}px`};
 `;

@@ -1,13 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { svgElementProps, svgElementWrapperProps } from 'types/nav.types';
 
-type Props = {
-  color: string;
-  width: number;
-  height: number;
-};
-
-const PubgSvg = ({ color, width, height }: Props) => {
+const PubgSvg = ({ color, width, height }: svgElementProps) => {
   return (
     <PubgSvgWrapper width={width} height={height}>
       <svg
@@ -44,7 +39,7 @@ const PubgSvg = ({ color, width, height }: Props) => {
   );
 };
 
-const PubgSvgWrapper = styled.div<{ width: number; height: number }>`
+const PubgSvgWrapper = styled.div<svgElementWrapperProps>`
   width: ${({ width }) => `${width}px`};
   height: ${({ height }) => `${height}px`};
 `;

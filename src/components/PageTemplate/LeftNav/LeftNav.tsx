@@ -1,13 +1,9 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import OVERWATCH_LOGO from 'assets/svg/image 2.svg';
 import useNav from 'hooks/useNav';
 import { useRecoilValue } from 'recoil';
 import { leftNavItemState } from 'atom/pageAtom';
-import { convertToObject } from 'typescript';
 import { color } from 'styles/theme';
-import { ReactComponent as LOL_LOGO } from 'assets/svg/lol(gray).svg';
-import { ReactComponent as PUBG_LOGO } from 'assets/svg/pubg(gray).svg';
 import LolSvg from '../SvgElement/LolSvg';
 import PubgSvg from '../SvgElement/PubgSvg';
 import OverWatchSvg from '../SvgElement/OverWatchSvg';
@@ -161,10 +157,6 @@ const IconWrapper = styled.div`
   width: 50px;
   display: flex;
   justify-content: center;
-`;
-
-const GameIcon = styled.img`
-  object-fit: cover;
 `;
 
 const GameName = styled.div<{ isSelected: boolean }>`

@@ -1,13 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { svgElementProps, svgElementWrapperProps } from 'types/nav.types';
 
-type Props = {
-  color: string;
-  width: number;
-  height: number;
-};
-
-const OverWatchSvg = ({ color, width, height }: Props) => {
+const OverWatchSvg = ({ color, width, height }: svgElementProps) => {
   return (
     <OverWatchSvgWrapper width={width} height={height}>
       <svg
@@ -34,7 +29,7 @@ const OverWatchSvg = ({ color, width, height }: Props) => {
 
 export default OverWatchSvg;
 
-const OverWatchSvgWrapper = styled.div<{ width: number; height: number }>`
+const OverWatchSvgWrapper = styled.div<svgElementWrapperProps>`
   width: ${({ width }) => `${width}px`};
   height: ${({ height }) => `${height}px`};
 `;
