@@ -1,5 +1,7 @@
 // eslint-disable-next-line import/prefer-default-export
 export const datas = {
+  category: 'lol',
+  popularTags: ['매드무비', '자유', '스킬콤보', '챌린져'],
   videos: [
     {
       id: 0,
