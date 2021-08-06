@@ -24,88 +24,99 @@ const LeftNav = () => {
   // TODO: 일단 컴포넌트 다 만들고 생각해야겠당 잠와..
   return (
     <LeftNavWrapper>
-      <UserWrapper>
-        <UserProfileImg />
-        <UserName>로그인을 해주세요.</UserName>
-      </UserWrapper>
-      <GameListWrapper>
-        <GameList
-          onClick={() => handleSelectNavItem(EGameList.LOL)}
-          isSelected={isSelectedGameArg(EGameList.LOL)}
-        >
-          <IconWrapper>
-            <LolSvg
-              width={32}
-              height={34.16}
-              color={
-                selectNavName === EGameList.LOL
-                  ? color.brown
-                  : color.grayScale[100]
-              }
-            />
-          </IconWrapper>
-          <GameName isSelected={isSelectedGameArg(EGameList.LOL)}>
-            리그오브레전드
-          </GameName>
-        </GameList>
-        <GameList
-          onClick={() => handleSelectNavItem(EGameList.PUBG)}
-          isSelected={isSelectedGameArg(EGameList.PUBG)}
-        >
-          <IconWrapper>
-            <PubgSvg
-              width={43}
-              height={27}
-              color={
-                selectNavName === EGameList.PUBG
-                  ? color.brown
-                  : color.grayScale[100]
-              }
-            />
-          </IconWrapper>
-          <GameName isSelected={isSelectedGameArg(EGameList.PUBG)}>
-            배틀그라운드
-          </GameName>
-        </GameList>
-        <GameList
-          onClick={() => handleSelectNavItem(EGameList.OVERWATCH)}
-          isSelected={isSelectedGameArg(EGameList.OVERWATCH)}
-        >
-          <IconWrapper>
-            <OverWatchSvg
-              width={32}
-              height={32}
-              color={
-                selectNavName === EGameList.OVERWATCH
-                  ? color.brown
-                  : color.grayScale[100]
-              }
-            />
-          </IconWrapper>
-          <GameName isSelected={isSelectedGameArg(EGameList.OVERWATCH)}>
-            오버워치
-          </GameName>
-        </GameList>
-      </GameListWrapper>
-      <HashTagWrapper>
-        <HashTagTitle>인기 해시태그</HashTagTitle>
-        <HashTagItemWrapper>
-          <HashTagItem>
-            <HashTagName>#Tag</HashTagName>
-            <CountPosts>게시물 1,102개</CountPosts>
-          </HashTagItem>
-        </HashTagItemWrapper>
-      </HashTagWrapper>
-      <LastWrapper />
+      <StickyWrapper>
+        <UserWrapper>
+          <UserProfileImg />
+          <UserName>로그인을 해주세요.</UserName>
+        </UserWrapper>
+        <GameListWrapper>
+          <GameList
+            onClick={() => handleSelectNavItem(EGameList.LOL)}
+            isSelected={isSelectedGameArg(EGameList.LOL)}
+          >
+            <IconWrapper>
+              <LolSvg
+                width={32}
+                height={34.16}
+                color={
+                  selectNavName === EGameList.LOL
+                    ? color.brown
+                    : color.grayScale[100]
+                }
+              />
+            </IconWrapper>
+            <GameName isSelected={isSelectedGameArg(EGameList.LOL)}>
+              리그오브레전드
+            </GameName>
+          </GameList>
+          <GameList
+            onClick={() => handleSelectNavItem(EGameList.PUBG)}
+            isSelected={isSelectedGameArg(EGameList.PUBG)}
+          >
+            <IconWrapper>
+              <PubgSvg
+                width={43}
+                height={27}
+                color={
+                  selectNavName === EGameList.PUBG
+                    ? color.brown
+                    : color.grayScale[100]
+                }
+              />
+            </IconWrapper>
+            <GameName isSelected={isSelectedGameArg(EGameList.PUBG)}>
+              배틀그라운드
+            </GameName>
+          </GameList>
+          <GameList
+            onClick={() => handleSelectNavItem(EGameList.OVERWATCH)}
+            isSelected={isSelectedGameArg(EGameList.OVERWATCH)}
+          >
+            <IconWrapper>
+              <OverWatchSvg
+                width={32}
+                height={32}
+                color={
+                  selectNavName === EGameList.OVERWATCH
+                    ? color.brown
+                    : color.grayScale[100]
+                }
+              />
+            </IconWrapper>
+            <GameName isSelected={isSelectedGameArg(EGameList.OVERWATCH)}>
+              오버워치
+            </GameName>
+          </GameList>
+        </GameListWrapper>
+        <HashTagWrapper>
+          <HashTagTitle>인기 해시태그</HashTagTitle>
+          <HashTagItemWrapper>
+            <HashTagItem>
+              <HashTagName>#Tag</HashTagName>
+              <CountPosts>게시물 1,102개</CountPosts>
+            </HashTagItem>
+          </HashTagItemWrapper>
+        </HashTagWrapper>
+        <LastWrapper />
+      </StickyWrapper>
     </LeftNavWrapper>
   );
 };
 
 export default LeftNav;
 
-const LeftNavWrapper = styled.section`
+const LeftNavWrapper = styled.div`
   width: 100%;
   max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+`;
+
+const StickyWrapper = styled.div`
+  width: 100%;
+  position: sticky;
+  top: 55px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
