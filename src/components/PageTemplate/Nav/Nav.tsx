@@ -72,6 +72,7 @@ const NavInnerWrapper = styled.div`
   height: 60px;
   display: flex;
   align-items: center;
+  border-bottom: 0.5px solid ${({ theme }) => theme.color.grayScale[500]};
   justify-content: space-between;
 `;
 
