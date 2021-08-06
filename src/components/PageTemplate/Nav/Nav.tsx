@@ -67,7 +67,7 @@ const NavWrapper = styled.nav`
 
 const NavInnerWrapper = styled.div`
   width: 100%;
-  max-width: 940px;
+  max-width: 930px;
   height: 60px;
   display: flex;
   align-items: center;
