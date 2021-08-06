@@ -1,12 +1,8 @@
-import PageTemplate from 'components/PageTemplate';
 import React from 'react';
+import Main from 'components/Main';
 
 const Gretting = () => {
-  return (
-    <PageTemplate>
-      <div>children Component</div>
-    </PageTemplate>
-  );
+  return <Main />;
 };
 
 export default Gretting;
