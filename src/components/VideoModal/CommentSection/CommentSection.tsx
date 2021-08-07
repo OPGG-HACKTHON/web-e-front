@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
+import { typography } from 'styles/theme';
 
 const dummyComments = [
   {
@@ -95,11 +96,18 @@ const LikeText = styled.div<{ gray: string }>`
 `;
 
 const CommentScrollSection = styled.div`
-  height: 280px;
+  height: 360px;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+
+  scrollbar-width: none; /** firefox **/
+  -ms-overflow-style: none; /** IE */
+  /** chrome, safari, opera */
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const CommentWrapper = styled.div`
@@ -117,18 +125,18 @@ const ProfileImage = styled.div`
 
 const CommentTextWrapper = styled.div`
   width: 275px;
-  padding: 0.6rem 0;
+  padding: 0.3rem 0;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
 `;
 
 const CommentAuthor = styled.div`
-  font-weight: 600;
-  font-size: 1rem;
+  ${typography.bodyRgBold};
 `;
 
-const CommentContent = styled.div``;
+const CommentContent = styled.div`
+  ${typography.bodyRg};
+`;
 
 const CommentLikeToggle = styled.div`
   cursor: pointer;
@@ -148,13 +156,13 @@ const CommentInputWrapper = styled.div<{ gray: string }>`
 `;
 
 const InputField = styled.input`
-  border: none;
-  height: 40px;
   width: 240px;
+  padding: 1rem;
+  border: none;
 `;
 
 const SubmitButton = styled.div`
-  font-size: 1.2rem;
+  ${typography.bodyRg};
 `;
 
 export default CommentSection;

@@ -24,9 +24,10 @@ const VideoModal = ({ videoSrc }: Props) => {
 
 const ModalContentWrapper = styled.div`
   position: fixed;
-  height: 600px;
+  height: 682px;
   width: 770px;
   border-radius: 5px;
+  border: 1px solid ${({ theme }) => theme.color.grayScale[250]};
   background: #fff;
   display: flex;
 `;
