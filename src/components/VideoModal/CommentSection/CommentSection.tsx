@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import { typography } from 'styles/theme';
-
+import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 const dummyComments = [
   {
     id: 0,
