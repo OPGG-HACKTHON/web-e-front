@@ -7,33 +7,17 @@ import CommentSection from './CommentSection';
 
 const VideoModal = () => {
   return (
-    <>
-      <ModalBackGround>
-        <ModalContentWrapper>
-          <ModalLeftContent>
-            <VideoSection />
-          </ModalLeftContent>
-          <ModalRightContent>
-            <UploaderSection />
-            <CommentSection />
-          </ModalRightContent>
-        </ModalContentWrapper>
-      </ModalBackGround>
-    </>
+    <ModalContentWrapper>
+      <ModalLeftContent>
+        <VideoSection />
+      </ModalLeftContent>
+      <ModalRightContent>
+        <UploaderSection />
+        <CommentSection />
+      </ModalRightContent>
+    </ModalContentWrapper>
   );
 };
-
-const ModalBackGround = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.4);
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 
 const ModalContentWrapper = styled.div`
   position: fixed;

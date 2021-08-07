@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import styled, { ThemeContext } from 'styled-components';
+import React from 'react';
+import styled from 'styled-components';
 
 type Props = {
   isOverlayOn?: boolean;
@@ -31,9 +31,8 @@ const Modal = ({
   onClickOverlay,
   onClickClose,
 }: Props) => {
-  const themeStyle = useContext(ThemeContext);
   return (
-    <Overlay gray={themeStyle.color.grayScale[500]}>
+    <Overlay>
       <ModalStyle
         width={width}
         height={height}
@@ -48,14 +47,14 @@ const Modal = ({
 
 export default Modal;
 
-const Overlay = styled.div<{ gray: string }>`
+const Overlay = styled.div`
   display: flex;
   position: fixed;
   left: 0;
   top: 0;
   width: 100vw;
   height: 100vh;
-  background-color: ${(props) => props.gray};
+  background-color: rgba(0, 0, 0, 0.5);
   justify-content: center;
   align-items: center;
 `;
