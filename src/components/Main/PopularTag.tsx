@@ -31,8 +31,8 @@ const TagWrapper = styled.div`
   width: 100%;
   display: flex;
   button {
-    margin: 0 ${({ theme }) => theme.margins.base} 0
-      ${({ theme }) => theme.margins.base};
+    margin: 0 ${({ theme }) => theme.margins.xs} 0
+      ${({ theme }) => theme.margins.xs};
     vertical-align: middle;
     text-align: center;
     line-height: 100%;
