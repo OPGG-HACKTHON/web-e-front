@@ -1,8 +1,11 @@
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
-import sampleVideoUrl from 'assets/video/shorts_1min.mp4';
 
-const VideoSection = () => {
+type Props = {
+  videoSrc: string;
+};
+
+const VideoSection = ({ videoSrc }: Props) => {
   return (
     <VideoWrapper>
       <video
@@ -18,7 +21,7 @@ const VideoSection = () => {
           zIndex: 0,
         }}
       >
-        <source src={sampleVideoUrl} type="video/mp4" />
+        <source src={videoSrc} type="video/mp4" />
         <track kind="captions" />
       </video>
       <VideoController>

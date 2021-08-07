@@ -11,11 +11,12 @@ const Main = () => {
   const lVideos = videos.filter((video) => video.rank % 2 === 0);
   const rVideos = videos.filter((video) => video.rank % 2 !== 0);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [videoModalSrc, setVideoModalSrc] = useState('');
 
   const openModal = (e: React.MouseEvent<HTMLElement>) => {
-    const targetElement = e.target as HTMLElement;
-    if (targetElement.tagName === 'VIDEO') {
+    if ((e.target as HTMLElement).tagName === 'VIDEO') {
       setModalOpen(true);
+      setVideoModalSrc((e.target as HTMLMediaElement).currentSrc);
     }
   };
 
@@ -29,7 +30,7 @@ const Main = () => {
       <ModalContainer
         isPopup={isModalOpen}
         onClickOverlay={closeModal}
-        contentComponent={<VideoModal />}
+        contentComponent={<VideoModal videoSrc={videoModalSrc} />}
       />
       <VideoWrapper onClick={openModal}>
         <div>
