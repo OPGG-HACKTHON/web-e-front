@@ -4,7 +4,7 @@ import styled from 'styled-components';
 type Props = {
   isPopup?: boolean;
   contentComponent?: React.ReactNode;
-  onClickOverlay?: () => void;
+  onClickOverlay?: (e: React.MouseEvent<HTMLElement>) => void;
 };
 
 const ModalContainer = ({
@@ -14,7 +14,7 @@ const ModalContainer = ({
 }: Props) => {
   const onClickOnlyOverlay = (e: React.MouseEvent<HTMLElement>) => {
     if (e.target !== e.currentTarget) return;
-    if (onClickOverlay) onClickOverlay();
+    if (onClickOverlay) onClickOverlay(e);
   };
 
   return isPopup ? (
