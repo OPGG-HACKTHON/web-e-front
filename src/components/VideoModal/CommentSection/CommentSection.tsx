@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import { typography } from 'styles/theme';
 import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
+
 const dummyComments = [
   {
     id: 0,
@@ -52,7 +53,7 @@ const CommentSection = () => {
   return (
     <ContentWrapper>
       <LikeWrapper>
-        <HeartIcon />
+        <FavoriteRoundedIcon />
         <LikeText gray={themeStyle.color.grayScale[500]}>좋아요 1,001</LikeText>
       </LikeWrapper>
       <CommentScrollSection>
