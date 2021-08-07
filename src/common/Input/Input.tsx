@@ -16,6 +16,7 @@ type Props = {
   fontSize: string;
   paddingStyle: string;
   fontColor?: string;
+  name: string;
 };
 
 interface IInputStyleProps {
@@ -46,6 +47,7 @@ const Input = ({
   paddingStyle,
   placeHolderFontSize = '1rem',
   fontColor = '#000',
+  name,
 }: Props) => {
   return (
     <InputItem
@@ -63,6 +65,7 @@ const Input = ({
       paddingStyle={paddingStyle}
       placeHolderFontSize={placeHolderFontSize}
       fontColor={fontColor}
+      name={name}
     />
   );
 };
