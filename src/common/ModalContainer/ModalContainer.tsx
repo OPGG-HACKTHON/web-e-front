@@ -4,18 +4,21 @@ import styled from 'styled-components';
 type Props = {
   isPopup?: boolean;
   contentComponent?: React.ReactNode;
-  onClickOverlay?: (e: React.MouseEvent<HTMLElement>) => void;
-  onClickClose?: (e: React.MouseEvent<HTMLElement>) => void;
+  onClickOverlay?: () => void;
 };
 
 const ModalContainer = ({
   isPopup = false,
   contentComponent,
   onClickOverlay,
-  onClickClose,
 }: Props) => {
+  const onClickOnlyOverlay = (e: React.MouseEvent<HTMLElement>) => {
+    if (e.target !== e.currentTarget) return;
+    if (onClickOverlay) onClickOverlay();
+  };
+
   return isPopup ? (
-    <Overlay onClick={onClickOverlay}>{contentComponent}</Overlay>
+    <Overlay onClick={onClickOnlyOverlay}>{contentComponent}</Overlay>
   ) : (
     <></>
   );
@@ -33,15 +36,13 @@ const Overlay = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   justify-content: center;
   align-items: center;
+  z-index: 1000000;
 `;
 
 ModalContainer.defaultProps = {
   isPopup: false,
   onClickOverlay: () => {
-    console.log('modal overlay clicked');
-  },
-  onClickClose: () => {
-    console.log('modal close clicked');
+    console.log('Overlay clicked. Please init overlay click event handler');
   },
   contentComponent: '',
 };
