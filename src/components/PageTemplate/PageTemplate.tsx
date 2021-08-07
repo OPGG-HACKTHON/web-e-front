@@ -26,7 +26,7 @@ const PageTemplateWrapper = styled.div`
 
 const PageTemplateChildren = styled.div`
   width: 100%;
-  max-width: 940px;
+  max-width: 930px;
   margin: auto;
   display: flex;
   justify-content: space-between;

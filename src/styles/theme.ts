@@ -1,6 +1,6 @@
 import './font.css';
 
-const calcRem = (size: any) => `${size / 16}rem`;
+const calcRem = (size: any) => `${size}rem`;
 
 export const color = {
   brown: '#1D1400',
@@ -53,32 +53,47 @@ export const typography = {
 };
 
 const paddings = {
-  small: calcRem(8),
-  base: calcRem(10),
-  lg: calcRem(12),
-  xl: calcRem(14),
-  xxl: calcRem(16),
-  xxxl: calcRem(18),
+  xxs: calcRem(0.4),
+  // 10px
+  xs: calcRem(1),
+  small: calcRem(1.5),
+  base: calcRem(2),
+  lg: calcRem(3),
+  xl: calcRem(4),
+  xxl: calcRem(5),
 };
 
 const margins = {
-  small: calcRem(8),
-  base: calcRem(10),
-  lg: calcRem(12),
-  xl: calcRem(14),
-  xxl: calcRem(16),
-  xxxl: calcRem(18),
+  xxs: calcRem(0.4),
+  // 10px
+  xs: calcRem(1),
+  small: calcRem(1.5),
+  base: calcRem(2),
+  lg: calcRem(3),
+  xl: calcRem(4),
+  xxl: calcRem(5),
 };
 
 const interval = {
-  base: calcRem(50),
-  lg: calcRem(100),
-  xl: calcRem(150),
-  xxl: calcRem(200),
+  xxs: calcRem(0.4),
+  // 10px
+  xs: calcRem(1),
+  small: calcRem(1.5),
+  base: calcRem(2),
+  lg: calcRem(3),
+  xl: calcRem(4),
+  xxl: calcRem(5),
 };
 
 const verticalInterval = {
-  base: `${calcRem(10)} 0 ${calcRem(10)} 0`,
+  xxs: `${calcRem(0.4)} 0 ${calcRem(0.4)} 0`,
+  // 10px
+  xs: `${calcRem(1)} 0 ${calcRem(1)} 0`,
+  small: `${calcRem(1.5)} 0 ${calcRem(1.5)} 0`,
+  base: `${calcRem(2)} 0 ${calcRem(2)} 0`,
+  lg: `${calcRem(3)} 0 ${calcRem(3)} 0`,
+  xl: `${calcRem(4)} 0 ${calcRem(4)} 0`,
+  xxl: `${calcRem(5)} 0 ${calcRem(5)} 0`,
 };
 
 const deviceSizes = {
