@@ -53,7 +53,13 @@ const CommentSection = () => {
   return (
     <ContentWrapper>
       <LikeWrapper>
-        <FavoriteRoundedIcon />
+        <FavoriteRoundedIcon
+          style={{
+            width: 30,
+            height: 30,
+            fill: themeStyle.color.grayScale[500],
+          }}
+        />
         <LikeText gray={themeStyle.color.grayScale[500]}>좋아요 1,001</LikeText>
       </LikeWrapper>
       <CommentScrollSection>
@@ -64,11 +70,17 @@ const CommentSection = () => {
               <CommentAuthor>{data.name}</CommentAuthor>
               <CommentContent>{data.comment}</CommentContent>
             </CommentTextWrapper>
-            <CommentLikeToggle />
+            <FavoriteRoundedIcon
+              style={{
+                width: 24,
+                height: 24,
+                fill: themeStyle.color.grayScale[500],
+              }}
+            />
           </CommentWrapper>
         ))}
       </CommentScrollSection>
-      <CommentInputWrapper gray={themeStyle.color.grayScale[500]}>
+      <CommentInputWrapper gray={themeStyle.color.grayScale[250]}>
         <InputField placeholder="댓글 달기 ..." />
         <SubmitButton>게시</SubmitButton>
       </CommentInputWrapper>
@@ -83,12 +95,6 @@ const LikeWrapper = styled.div`
   height: 50px;
   align-items: center;
   gap: 1rem;
-`;
-
-const HeartIcon = styled.div`
-  height: 30px;
-  width: 30px;
-  background-color: gray;
 `;
 
 const LikeText = styled.div<{ gray: string }>`
@@ -137,13 +143,6 @@ const CommentAuthor = styled.div`
 
 const CommentContent = styled.div`
   ${typography.bodyRg};
-`;
-
-const CommentLikeToggle = styled.div`
-  cursor: pointer;
-  height: 20px;
-  width: 20px;
-  background-color: gray;
 `;
 
 const CommentInputWrapper = styled.div<{ gray: string }>`

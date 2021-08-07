@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
+import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
+import VolumeUpRoundedIcon from '@material-ui/icons/VolumeUpRounded';
 
 type Props = {
   videoSrc: string;
@@ -25,8 +27,10 @@ const VideoSection = ({ videoSrc }: Props) => {
         <track kind="captions" />
       </video>
       <VideoController>
-        <PlayButton />
-        <VolumeButton />
+        <PlayArrowRoundedIcon
+          style={{ width: 30, height: 30, color: '#fff' }}
+        />
+        <VolumeUpRoundedIcon style={{ width: 30, height: 30, color: '#fff' }} />
       </VideoController>
     </VideoWrapper>
   );
@@ -47,20 +51,6 @@ const VideoController = styled.div`
   width: 100%;
   padding: 0 20px;
   justify-content: space-between;
-`;
-
-const PlayButton = styled.div`
-  height: 24px;
-  width: 24px;
-  background: #fff;
-  cursor: pointer;
-`;
-
-const VolumeButton = styled.div`
-  height: 24px;
-  width: 24px;
-  background: #fff;
-  cursor: pointer;
 `;
 
 export default VideoSection;
