@@ -27,7 +27,6 @@ const ModalContentWrapper = styled.div`
   height: 682px;
   width: 770px;
   border-radius: 5px;
-  border: 1px solid ${({ theme }) => theme.color.grayScale[250]};
   background: #fff;
   display: flex;
 `;
