@@ -1,8 +1,13 @@
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
-import sampleVideoUrl from 'assets/video/shorts_1min.mp4';
+import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
+import VolumeUpRoundedIcon from '@material-ui/icons/VolumeUpRounded';
 
-const VideoSection = () => {
+type Props = {
+  videoSrc: string;
+};
+
+const VideoSection = ({ videoSrc }: Props) => {
   return (
     <VideoWrapper>
       <video
@@ -18,12 +23,14 @@ const VideoSection = () => {
           zIndex: 0,
         }}
       >
-        <source src={sampleVideoUrl} type="video/mp4" />
+        <source src={videoSrc} type="video/mp4" />
         <track kind="captions" />
       </video>
       <VideoController>
-        <PlayButton />
-        <VolumeButton />
+        <PlayArrowRoundedIcon
+          style={{ width: 30, height: 30, color: '#fff' }}
+        />
+        <VolumeUpRoundedIcon style={{ width: 30, height: 30, color: '#fff' }} />
       </VideoController>
     </VideoWrapper>
   );
@@ -44,20 +51,6 @@ const VideoController = styled.div`
   width: 100%;
   padding: 0 20px;
   justify-content: space-between;
-`;
-
-const PlayButton = styled.div`
-  height: 24px;
-  width: 24px;
-  background: #fff;
-  cursor: pointer;
-`;
-
-const VolumeButton = styled.div`
-  height: 24px;
-  width: 24px;
-  background: #fff;
-  cursor: pointer;
 `;
 
 export default VideoSection;

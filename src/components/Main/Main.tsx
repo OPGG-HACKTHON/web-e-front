@@ -11,19 +11,28 @@ const Main = () => {
   const lVideos = videos.filter((video) => video.rank % 2 === 0);
   const rVideos = videos.filter((video) => video.rank % 2 !== 0);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [videoModalSrc, setVideoModalSrc] = useState('');
 
-  const toggleModal = () => {
-    setModalOpen((prev) => !prev);
+  const openModal = (e: React.MouseEvent<HTMLElement>) => {
+    if ((e.target as HTMLElement).tagName === 'VIDEO') {
+      setModalOpen(true);
+      setVideoModalSrc((e.target as HTMLMediaElement).currentSrc);
+    }
   };
+
+  const closeModal = (e: React.MouseEvent<HTMLElement>) => {
+    setModalOpen(false);
+  };
+
   return (
     <div style={{ width: '65%', margin: 'auto' }}>
       <VideoSelectBar popularTags={datas.popularTags} />
       <ModalContainer
         isPopup={isModalOpen}
-        onClickOverlay={toggleModal}
-        contentComponent={<VideoModal />}
+        onClickOverlay={closeModal}
+        contentComponent={<VideoModal videoSrc={videoModalSrc} />}
       />
-      <VideoWrapper onClick={toggleModal}>
+      <VideoWrapper onClick={openModal}>
         <div>
           {lVideos.map((data) => (
             <LazyItem

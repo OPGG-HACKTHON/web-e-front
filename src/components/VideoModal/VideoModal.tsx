@@ -1,15 +1,18 @@
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
-
 import VideoSection from './VideoSection';
 import UploaderSection from './UploaderSection';
 import CommentSection from './CommentSection';
 
-const VideoModal = () => {
+type Props = {
+  videoSrc: string;
+};
+
+const VideoModal = ({ videoSrc }: Props) => {
   return (
     <ModalContentWrapper>
       <ModalLeftContent>
-        <VideoSection />
+        <VideoSection videoSrc={videoSrc} />
       </ModalLeftContent>
       <ModalRightContent>
         <UploaderSection />
@@ -21,9 +24,10 @@ const VideoModal = () => {
 
 const ModalContentWrapper = styled.div`
   position: fixed;
-  height: 600px;
+  height: 682px;
   width: 770px;
   border-radius: 5px;
+  border: 1px solid ${({ theme }) => theme.color.grayScale[250]};
   background: #fff;
   display: flex;
 `;
