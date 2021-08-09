@@ -1,12 +1,16 @@
 import { useCallback, useState } from 'react';
 import { login, register } from 'api/auth/auth';
 import { loginDto, registerDto } from 'api/auth/auth.dto';
+import { setToken } from 'lib/token';
 
 const useAuth = () => {
   const [loginObj, setLoginObj] = useState<loginDto>({
     userId: '',
     userPassword: '',
   });
+
+  const [isLoginModal, setIsLoginModal] = useState(false);
+  const [isRegisterModal, setIsRegisterModal] = useState(false);
 
   const [registerObj, setRegisterObj] = useState<registerDto>({
     userId: '',
@@ -17,8 +21,12 @@ const useAuth = () => {
 
   const handleLogin = useCallback(async () => {
     try {
-      const data = await login(loginObj);
-      console.log(data);
+      const res = await login(loginObj);
+      const { data, status } = res;
+      if (status === 201) {
+        setToken('access_token', data.access_token);
+        setIsLoginModal(false);
+      }
       return data;
     } catch (err) {
       return err;
@@ -35,6 +43,10 @@ const useAuth = () => {
     }
   }, [registerObj]);
 
+  const handleLoginModal = useCallback(() => {
+    setIsLoginModal((prev) => !prev);
+  }, []);
+
   return {
     loginObj,
     setLoginObj,
@@ -42,6 +54,9 @@ const useAuth = () => {
     setRegisterObj,
     handleLogin,
     handleRegister,
+    isLoginModal,
+    handleLoginModal,
+    setIsLoginModal,
   };
 };
 
