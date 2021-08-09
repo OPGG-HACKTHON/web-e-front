@@ -3,5 +3,5 @@ export const setToken = (tokenKey: string, token: string) => {
 };
 
 export const getToken = (): string => {
-  return sessionStorage.getItem('access-token') as string;
+  return sessionStorage.getItem('access_token') as string;
 };
