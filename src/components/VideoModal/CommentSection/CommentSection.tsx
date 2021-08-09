@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
+import { typography } from 'styles/theme';
+import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 
 const dummyComments = [
   {
@@ -51,7 +53,13 @@ const CommentSection = () => {
   return (
     <ContentWrapper>
       <LikeWrapper>
-        <HeartIcon />
+        <FavoriteRoundedIcon
+          style={{
+            width: 30,
+            height: 30,
+            fill: themeStyle.color.grayScale[500],
+          }}
+        />
         <LikeText gray={themeStyle.color.grayScale[500]}>좋아요 1,001</LikeText>
       </LikeWrapper>
       <CommentScrollSection>
@@ -62,11 +70,17 @@ const CommentSection = () => {
               <CommentAuthor>{data.name}</CommentAuthor>
               <CommentContent>{data.comment}</CommentContent>
             </CommentTextWrapper>
-            <CommentLikeToggle />
+            <FavoriteRoundedIcon
+              style={{
+                width: 24,
+                height: 24,
+                fill: themeStyle.color.grayScale[500],
+              }}
+            />
           </CommentWrapper>
         ))}
       </CommentScrollSection>
-      <CommentInputWrapper gray={themeStyle.color.grayScale[500]}>
+      <CommentInputWrapper gray={themeStyle.color.grayScale[250]}>
         <InputField placeholder="댓글 달기 ..." />
         <SubmitButton>게시</SubmitButton>
       </CommentInputWrapper>
@@ -83,23 +97,24 @@ const LikeWrapper = styled.div`
   gap: 1rem;
 `;
 
-const HeartIcon = styled.div`
-  height: 30px;
-  width: 30px;
-  background-color: gray;
-`;
-
 const LikeText = styled.div<{ gray: string }>`
   color: ${(props) => props.gray};
   font-size: 1.4rem;
 `;
 
 const CommentScrollSection = styled.div`
-  height: 280px;
+  height: 360px;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+
+  scrollbar-width: none; /** firefox **/
+  -ms-overflow-style: none; /** IE */
+  /** chrome, safari, opera */
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const CommentWrapper = styled.div`
@@ -117,24 +132,17 @@ const ProfileImage = styled.div`
 
 const CommentTextWrapper = styled.div`
   width: 275px;
-  padding: 0.6rem 0;
+  padding: 0.3rem 0;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
 `;
 
 const CommentAuthor = styled.div`
-  font-weight: 600;
-  font-size: 1rem;
+  ${typography.bodyRgBold};
 `;
 
-const CommentContent = styled.div``;
-
-const CommentLikeToggle = styled.div`
-  cursor: pointer;
-  height: 20px;
-  width: 20px;
-  background-color: gray;
+const CommentContent = styled.div`
+  ${typography.bodyRg};
 `;
 
 const CommentInputWrapper = styled.div<{ gray: string }>`
@@ -148,13 +156,13 @@ const CommentInputWrapper = styled.div<{ gray: string }>`
 `;
 
 const InputField = styled.input`
-  border: none;
-  height: 40px;
   width: 240px;
+  padding: 1rem;
+  border: none;
 `;
 
 const SubmitButton = styled.div`
-  font-size: 1.2rem;
+  ${typography.bodyRg};
 `;
 
 export default CommentSection;
