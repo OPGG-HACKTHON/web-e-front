@@ -1,10 +1,14 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import useNav from 'hooks/useNav';
+import useProfile from 'hooks/useProfile/useProfile';
 import { useRecoilValue } from 'recoil';
 import { leftNavItemState } from 'atom/pageAtom';
 import { color } from 'styles/theme';
 import { EGameList } from 'enum/game.enum';
+import { getToken } from 'lib/token';
+import { myProfileAtom } from 'atom/profileAtom';
+
 import LolSvg from '../SvgElement/LolSvg';
 import PubgSvg from '../SvgElement/PubgSvg';
 import OverWatchSvg from '../SvgElement/OverWatchSvg';
@@ -12,22 +16,30 @@ import OverWatchSvg from '../SvgElement/OverWatchSvg';
 const LeftNav = () => {
   const { handleSelectNavItem } = useNav();
   const selectNavName = useRecoilValue(leftNavItemState);
-
+  const myProfile = useRecoilValue(myProfileAtom);
   const isSelectedGameArg = useCallback(
     (arg: EGameList) => {
       return arg === selectNavName;
     },
     [selectNavName]
   );
+  const { handleMyProfile } = useProfile();
 
-  console.log(selectNavName);
+  useEffect(() => {
+    handleMyProfile(getToken());
+  }, [handleMyProfile]);
+
+  console.log(myProfile);
+
   // TODO: 일단 컴포넌트 다 만들고 생각해야겠당 잠와..
   return (
     <LeftNavWrapper>
       <StickyWrapper>
         <UserWrapper>
           <UserProfileImg />
-          <UserName>로그인을 해주세요.</UserName>
+          <UserName>
+            {myProfile?.id === '' ? '로그인을 해주세요.' : myProfile?.id}
+          </UserName>
         </UserWrapper>
         <GameListWrapper>
           <GameList

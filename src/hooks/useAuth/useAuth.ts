@@ -1,13 +1,15 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { login, register } from 'api/auth/auth';
+import useProfile from 'hooks/useProfile/useProfile';
 import { loginDto, registerDto } from 'api/auth/auth.dto';
-import { setToken } from 'lib/token';
+import { getToken, setToken } from 'lib/token';
 
 const useAuth = () => {
   const [loginObj, setLoginObj] = useState<loginDto>({
     userId: '',
     userPassword: '',
   });
+  const { handleMyProfile } = useProfile();
 
   const [isLoginModal, setIsLoginModal] = useState(false);
   const [isRegisterModal, setIsRegisterModal] = useState(false);
@@ -27,11 +29,12 @@ const useAuth = () => {
         setToken('access_token', data.access_token);
         setIsLoginModal(false);
       }
+      await handleMyProfile(data.access_token);
       return data;
     } catch (err) {
       return err;
     }
-  }, [loginObj]);
+  }, [handleMyProfile, loginObj]);
 
   const handleRegister = useCallback(async () => {
     try {

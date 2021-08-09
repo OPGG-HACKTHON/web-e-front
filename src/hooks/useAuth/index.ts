@@ -1,1 +1,1 @@
-export { default } from './useAtuh';
+export { default } from './useAuth';
