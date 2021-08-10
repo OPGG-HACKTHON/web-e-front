@@ -1,15 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
 // import VidoeContent from 'styles/mainStyles/videoComponents/VideoContent';
+import Like from 'assets/svg/like_w.svg';
+import Comment from 'assets/svg/comment_w.svg';
 import { Iprops } from './LazyItem';
 
-const LazyVideo = ({ src }: Iprops) => {
+const LazyVideo = ({ src, likes, comments }: Iprops) => {
   return (
     <>
       <VidoeBtn onClick={() => console.log('btn')}>
         <video autoPlay muted loop width="100%" height="100%">
           <source src={src} type="video/mp4" />
         </video>
+        <div className="like_and_comment_div">
+          <span className="like_icon">
+            <img src={Like} alt={Like} />
+          </span>
+          <div>{likes}</div>
+          <span className="comment_icon">
+            <img src={Comment} alt={Comment} />
+          </span>
+          <div>{comments}</div>
+        </div>
       </VidoeBtn>
     </>
   );

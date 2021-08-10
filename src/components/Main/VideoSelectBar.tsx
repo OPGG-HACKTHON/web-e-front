@@ -4,11 +4,11 @@ import Selector from './Selector';
 import PopularTag from './PopularTag';
 // import { ThemeContext } from 'styled-components';
 
-const VideoSelectBar = ({ popularTags }: any) => {
+const VideoSelectBar = () => {
   return (
     <SelectBarWrapper>
       <Selector />
-      <PopularTag popularTags={popularTags} />
+      <PopularTag />
     </SelectBarWrapper>
   );
 };

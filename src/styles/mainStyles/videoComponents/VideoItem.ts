@@ -17,10 +17,13 @@ const VideoItem = styled.div`
       width: 5rem;
     }
     .follow_btn_div {
-      width: 63%;
+      width: 60%;
       position: relative;
       display: flex;
       justify-content: flex-end;
+      button {
+        line-height: 100%;
+      }
     }
     .poster_name {
       cursor: pointer;
@@ -34,26 +37,33 @@ const VideoItem = styled.div`
   video::-webkit-media-controls {
     display: none;
   }
+  video {
+    border-radius: 5px;
+  }
   .like_and_comment_div {
-    position: relative;
+    position: absolute;
     display: flex;
     align-items: center;
     width: 100%;
-    height: 100%;
-    /* z-index: 10000; */
     flex-flow: row;
-    top: -6em;
+    bottom: 0.3rem;
     justify-content: flex-end;
     div {
       color: white;
-      margin: ${({ theme }) => theme.margins.small};
+      margin: ${({ theme }) => theme.margins.xs};
     }
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+    border-radius: 0px 0px 5px 5px;
   }
   .describe_span {
     ${({ theme }) => theme.typography.bodySmRegular};
   }
   margin: ${({ theme }) => theme.margins.small};
-  padding: ${({ theme }) => theme.verticalInterval.base};
+  /* padding: ${({ theme }) => theme.verticalInterval.base}; */
 `;
 
 export default VideoItem;

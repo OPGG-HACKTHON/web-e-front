@@ -1,14 +1,22 @@
+import { selectorState } from 'atom/selectorAtom';
 import React, { useContext, useMemo } from 'react';
 import Select from 'react-select';
+import { useRecoilState } from 'recoil';
 import { ThemeContext } from 'styled-components';
 
 const Selector = () => {
+  const [selectedValue, setSelectedValue] = useRecoilState(selectorState);
+  const onChange = (value: any) => {
+    setSelectedValue(value.value);
+    console.log(selectedValue);
+  };
   const themeStyle = useContext(ThemeContext);
 
   const options = useMemo(
     () => [
       { value: 'popular', label: '인기순' },
       { value: 'new', label: '최신순' },
+      { value: 'like', label: '좋아요순' },
     ],
     []
   );
@@ -22,7 +30,7 @@ const Selector = () => {
       // 옵션창 menu의 자식(전체창)
       menuList: (provided: any) => ({
         ...provided,
-        maxHeight: '68px',
+        maxHeight: '80px',
       }),
       // 선택창과 옆 화살표사이 수직선
       indicatorSeparator: (provided: any) => ({
@@ -83,7 +91,14 @@ const Selector = () => {
   );
 
   return (
-    <Select options={options} defaultValue={options[1]} styles={customStyles} />
+    <Select
+      options={options}
+      defaultValue={options[0]}
+      styles={customStyles}
+      onChange={(value) => {
+        onChange(value);
+      }}
+    />
   );
 };
 
