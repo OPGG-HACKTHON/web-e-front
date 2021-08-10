@@ -9,9 +9,9 @@ const useProfile = () => {
   // eslint-disable-next-line consistent-return
   const setMyProfile = useSetRecoilState(myProfileAtom);
   const handleMyProfile = useCallback(
-    async (token: string) => {
+    async (token?: string) => {
       try {
-        const { data } = await myProfileInfo(token);
+        const { data } = await myProfileInfo(token || getToken());
         setMyProfile(data);
         return data;
       } catch (err) {
