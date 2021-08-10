@@ -2,14 +2,18 @@ import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import Button from 'common/Button';
 import { typography } from 'styles/theme';
+import { useRecoilValue } from 'recoil';
+import { popTagsState } from 'atom/videoListAtom';
 
-const PopularTag = ({ popularTags }: any) => {
+const PopularTag = () => {
   const themeStyle = useContext(ThemeContext);
+  const popularTags = useRecoilValue(popTagsState);
 
   return (
     <TagWrapper>
-      {popularTags.map((tag: any) => (
+      {popularTags.map((tag) => (
         <Button
+          key={popularTags.indexOf(`${tag}`)}
           text={`#${tag}`}
           onClick={() => console.log(`${tag}`)}
           fontColor={themeStyle.color.blackScale[50]}

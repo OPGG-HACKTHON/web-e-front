@@ -73,7 +73,12 @@ const LazyItem = ({
           <div className="desc_div">
             <span className="describe_span">{describe}</span>
             {splitedHashtags.map((tag: string) => (
-              <Hashtag onClick={() => console.log('팔로우')}>{tag}</Hashtag>
+              <Hashtag
+                onClick={() => console.log('팔로우')}
+                key={splitedHashtags.indexOf(`${tag}`)}
+              >
+                {tag}
+              </Hashtag>
             ))}
           </div>
         </InfoWrapper>
