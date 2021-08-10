@@ -82,6 +82,7 @@ const LazyItem = ({
             ))}
           </div>
         </InfoWrapper>
+        <Line />
       </Suspense>
     </VideoItem>
   );
@@ -98,4 +99,10 @@ const PosterImgBtn = styled.div``;
 const PosterNameBtn = styled.div``;
 const InfoWrapper = styled.div`
   margin-top: ${({ theme }) => theme.margins.xs};
+`;
+
+const Line = styled.hr`
+  margin-top: ${({ theme }) => theme.margins.xs};
+  border-bottom: 1px solid ${({ theme }) => theme.color.grayScale[250]};
+  opacity: 0.4;
 `;
