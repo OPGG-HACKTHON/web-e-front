@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
+import { typography } from 'styles/theme';
 
 const UploaderSection = () => {
   const themeStyle = useContext(ThemeContext);
@@ -55,6 +56,7 @@ const ProfileName = styled.div`
 
 const ProfileFollow = styled.div<{ gray: string }>`
   color: ${(props) => props.gray};
+  ${typography.bodySmRegular};
 `;
 
 const FollowButton = styled.div<{ mainColor: string }>`
