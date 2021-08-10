@@ -6,7 +6,7 @@ import { darken } from 'polished';
 
 type Props = {
   text: string;
-  onClick: () => void;
+  onClick?: () => void;
   fontColor: string;
   bkgColor: string;
   hoverBkgColor?: string;
@@ -35,7 +35,7 @@ interface IButtonStyleProps {
 
 const Button = ({
   text,
-  onClick,
+  onClick = () => '',
   fontColor,
   bkgColor,
   hoverBkgColor = '',
@@ -106,4 +106,5 @@ Button.defaultProps = {
   fontStyle: '',
   border: 'none',
   hoverFontColor: '',
+  onClick: () => '',
 };

@@ -4,7 +4,7 @@ import { atom } from 'recoil';
 const initData = {
   email: '',
   feed: '',
-  id: '',
+  id: null,
   intro: null,
   lolTier: 'UNRANKED',
   photo: null,
