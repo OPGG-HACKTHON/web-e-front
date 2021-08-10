@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import { CloseIcon } from '@class101/ui';
+import { CloseIcon, AlertIcon } from '@class101/ui';
 import { loginDto } from 'api/auth/auth.dto';
 import Button from 'common/Button';
 import Input from 'common/Input';
@@ -13,9 +13,10 @@ type Props = {
   value: loginDto;
   setValue: Dispatch<SetStateAction<loginDto>>;
   login: () => void;
+  status: number;
 };
 
-const Login = ({ closeModal, value, setValue, login }: Props) => {
+const Login = ({ closeModal, value, setValue, login, status }: Props) => {
   const [inputLogin] = useInput<loginDto>();
 
   const inputCommonStyle = useMemo(() => {
@@ -32,7 +33,7 @@ const Login = ({ closeModal, value, setValue, login }: Props) => {
   }, []);
 
   const loginButtonStyle = useMemo(() => {
-    return value.userId.length <= 0 && value.userPassword.length <= 0
+    return value.userId.length <= 0 || value.userPassword.length <= 0
       ? {
           fontColor: color.grayScale[500],
           bkgColor: color.grayScale[50],
@@ -41,8 +42,9 @@ const Login = ({ closeModal, value, setValue, login }: Props) => {
       : {
           fontColor: color.white,
           bkgColor: color.yellow,
+          onClick: login,
         };
-  }, [value.userId.length, value.userPassword.length]);
+  }, [login, value.userId.length, value.userPassword.length]);
 
   return (
     <LoginWrapper>
@@ -76,10 +78,13 @@ const Login = ({ closeModal, value, setValue, login }: Props) => {
           />
         </InputWrapper>
       </InputElementWrapper>
+      <WarningText>
+        {status === 401 &&
+          '⚠︎ ID가 존재하지 않거나 비밀번호가 일치하지 않습니다. 다시 시도해주세요.'}
+      </WarningText>
       <ButtonWrapper>
         <Button
           text="로그인"
-          onClick={login}
           {...loginButtonStyle}
           width={38}
           height={4}
@@ -88,11 +93,46 @@ const Login = ({ closeModal, value, setValue, login }: Props) => {
           borderRadius={0.5}
         />
       </ButtonWrapper>
+      <RegisterButton>
+        <RegisterOfferText>계정이 없으신가요?</RegisterOfferText>
+        <RegisterJoinText>가입하기</RegisterJoinText>
+      </RegisterButton>
     </LoginWrapper>
   );
 };
 
 export default Login;
+
+const RegisterButton = styled.div`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  background-color: ${({ theme }) => theme.color.yellow};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+`;
+
+const RegisterOfferText = styled.div`
+  ${({ theme }) => theme.typography.bodyRg};
+`;
+
+const RegisterJoinText = styled.div`
+  ${({ theme }) => theme.typography.bodyRgBold};
+  text-decoration: underline;
+  margin-left: 4px;
+`;
+
+const WarningText = styled.div`
+  display: flex;
+  align-items: center;
+  color: ${({ theme }) => theme.color.red};
+  ${({ theme }) => theme.typography.bodySmRegular}
+  padding: 0px 40px;
+`;
 
 const LoginWrapper = styled.div`
   width: 460px;
@@ -148,5 +188,5 @@ const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 49px;
+  margin-top: 30px;
 `;

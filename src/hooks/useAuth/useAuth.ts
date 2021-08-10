@@ -12,6 +12,7 @@ const useAuth = () => {
   const { handleMyProfile } = useProfile();
 
   const [isLoginModal, setIsLoginModal] = useState(false);
+  const [loginErrorStatus, setLoginErrorStatus] = useState<number>(0);
   const [isRegisterModal, setIsRegisterModal] = useState(false);
 
   const [registerObj, setRegisterObj] = useState<registerDto>({
@@ -30,8 +31,12 @@ const useAuth = () => {
         setIsLoginModal(false);
       }
       await handleMyProfile(data.access_token);
+
       return data;
     } catch (err) {
+      const { status } = err.response;
+      setLoginErrorStatus(status);
+
       return err;
     }
   }, [handleMyProfile, loginObj]);
@@ -45,6 +50,11 @@ const useAuth = () => {
       return err;
     }
   }, [registerObj]);
+
+  const handleLogout = useCallback(() => {
+    sessionStorage.removeItem('access_token');
+    window.location.reload();
+  }, []);
 
   const handleLoginModal = useCallback(() => {
     setIsLoginModal((prev) => !prev);
@@ -60,6 +70,8 @@ const useAuth = () => {
     isLoginModal,
     handleLoginModal,
     setIsLoginModal,
+    loginErrorStatus,
+    handleLogout,
   };
 };
 

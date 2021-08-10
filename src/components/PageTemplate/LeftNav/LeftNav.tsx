@@ -2,9 +2,11 @@ import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import useNav from 'hooks/useNav';
 import useProfile from 'hooks/useProfile/useProfile';
+import Button from 'common/Button';
+
 import { useRecoilValue } from 'recoil';
 import { leftNavItemState } from 'atom/pageAtom';
-import { color } from 'styles/theme';
+import { color, typography } from 'styles/theme';
 import { EGameList } from 'enum/game.enum';
 import { getToken } from 'lib/token';
 import { myProfileAtom } from 'atom/profileAtom';
@@ -36,10 +38,22 @@ const LeftNav = () => {
     <LeftNavWrapper>
       <StickyWrapper>
         <UserWrapper>
-          <UserProfileImg />
-          <UserName>
-            {myProfile?.id === '' ? '로그인을 해주세요.' : myProfile?.id}
-          </UserName>
+          <UserInfoSection>
+            <UserProfileImg />
+            <UserName>
+              {myProfile?.id === null ? '로그인을 해주세요.' : myProfile?.id}
+            </UserName>
+          </UserInfoSection>
+          <Button
+            text="업로드"
+            fontColor={color.white}
+            bkgColor={color.yellow}
+            padding=""
+            width={6.9}
+            height={3.6}
+            borderRadius={0.5}
+            fontStyle={typography.bodyRgBold}
+          />
         </UserWrapper>
         <GameListWrapper>
           <GameList
@@ -117,6 +131,16 @@ const LeftNav = () => {
 
 export default LeftNav;
 
+const UserInfoSection = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & > * + * {
+    margin-left: 10px;
+  }
+`;
+
 const LeftNavWrapper = styled.div`
   width: 100%;
   max-width: 300px;
@@ -141,17 +165,14 @@ const UserWrapper = styled.div`
   max-width: 290px;
   padding-bottom: 24px;
   border-bottom: 1px solid ${({ theme }) => theme.color.grayScale[500]};
-
-  & > * + * {
-    margin-left: 10px;
-  }
+  justify-content: space-between;
 `;
 
 const UserProfileImg = styled.div`
   background-color: ${({ theme }) => theme.color.grayScale[50]};
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: 5px;
 `;
 
 const UserName = styled.div`
