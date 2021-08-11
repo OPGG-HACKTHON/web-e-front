@@ -2,15 +2,19 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Back from 'assets/svg/back_icon.svg';
 import Close from 'assets/svg/close_icon.svg';
+import { useSetRecoilState } from 'recoil';
+import { isNext } from 'atom/uploadIsNext';
 import UploadContent from './UploadContent';
 
 const Upload = () => {
-  const [currentPage, setCurrentPage] = useState(false);
-
+  const setIsNext = useSetRecoilState(isNext);
+  const isBack = () => {
+    setIsNext(false);
+  };
   return (
     <UploadWrapper>
       <UploadHeader>
-        <Icon src={Back} alt="alt" />
+        <Icon src={Back} alt="alt" onClick={() => isBack()} />
         <UploadTitle>동영상 업로드</UploadTitle>
         <Icon src={Close} alt="alt" />
       </UploadHeader>
@@ -40,7 +44,7 @@ const Icon = styled.img`
 `;
 
 const UploadTitle = styled.h3`
-  font-size: 2.4rem;
+  font-size: 2.8rem;
   font-weight: bold;
   font-family: NotoSansKR-Bold;
 `;
