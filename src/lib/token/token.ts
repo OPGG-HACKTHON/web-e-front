@@ -1,7 +1,17 @@
-export const setToken = (tokenKey: string, token: string) => {
-  sessionStorage.setItem(tokenKey, token);
-};
+import Cookie from 'lib/cookie';
 
-export const getToken = (): string => {
-  return sessionStorage.getItem('access_token') as string;
-};
+class Token {
+  private static FIRE_DAY = 9 * 60 * 60 * 60 * 1000;
+
+  public static setToken(tokenKey: string, token: string): void {
+    const date = new Date();
+    date.setTime(date.getTime() + this.FIRE_DAY);
+    Cookie.setCookie(tokenKey, token, date);
+  }
+
+  public static getToken(tokenKey: string): string {
+    return Cookie.getCookie(tokenKey) as string;
+  }
+}
+
+export default Token;
