@@ -62,7 +62,9 @@ const VideoItem = styled.div`
   .describe_span {
     ${({ theme }) => theme.typography.bodySmRegular};
   }
-  margin: ${({ theme }) => theme.margins.small};
+  margin: ${({ theme }) => theme.margins.base}
+    ${({ theme }) => theme.margins.small} 0
+    ${({ theme }) => theme.margins.small};
   /* padding: ${({ theme }) => theme.verticalInterval.base}; */
 `;
 
