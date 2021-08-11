@@ -10,7 +10,7 @@ type Props = {
 
 const VideoModal = ({ videoSrc }: Props) => {
   return (
-    <ModalContentWrapper>
+    <>
       <ModalLeftContent>
         <VideoSection videoSrc={videoSrc} />
       </ModalLeftContent>
@@ -18,7 +18,7 @@ const VideoModal = ({ videoSrc }: Props) => {
         <UploaderSection />
         <CommentSection />
       </ModalRightContent>
-    </ModalContentWrapper>
+    </>
   );
 };
 
