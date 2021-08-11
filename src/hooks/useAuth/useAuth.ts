@@ -2,7 +2,8 @@ import { useCallback, useState, useEffect } from 'react';
 import { login, register } from 'api/auth/auth';
 import useProfile from 'hooks/useProfile/useProfile';
 import { loginDto, registerDto } from 'api/auth/auth.dto';
-import { getToken, setToken } from 'lib/token';
+import Token from 'lib/token';
+import customAxios from 'lib/axios';
 
 const useAuth = () => {
   const [loginObj, setLoginObj] = useState<loginDto>({
@@ -26,14 +27,21 @@ const useAuth = () => {
     try {
       const res = await login(loginObj);
       const { data, status } = res;
+
       if (status === 201) {
-        setToken('access_token', data.access_token);
+        Token.setToken('access_token', data.access_token);
+        customAxios.defaults.headers = {
+          Authorization: `Bearer ${data.access_token}`,
+        };
+
         setIsLoginModal(false);
       }
-      await handleMyProfile(data.access_token);
+
+      await handleMyProfile();
 
       return data;
     } catch (err) {
+      console.log(err);
       const { status } = err.response;
       setLoginErrorStatus(status);
 

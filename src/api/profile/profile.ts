@@ -1,11 +1,7 @@
 import customAxios from 'lib/axios';
 
-const myProfileInfo = async (token: string) => {
-  const data = await customAxios.get('/profile', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+const myProfileInfo = async () => {
+  const data = await customAxios.get('/profile');
 
   return data;
 };

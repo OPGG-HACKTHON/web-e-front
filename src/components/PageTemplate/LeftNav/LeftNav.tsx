@@ -8,7 +8,6 @@ import { useRecoilValue } from 'recoil';
 import { leftNavItemState } from 'atom/pageAtom';
 import { color, typography } from 'styles/theme';
 import { EGameList } from 'enum/game.enum';
-import { getToken } from 'lib/token';
 import { myProfileAtom } from 'atom/profileAtom';
 
 import LolSvg from '../SvgElement/LolSvg';
@@ -28,7 +27,7 @@ const LeftNav = () => {
   const { handleMyProfile } = useProfile();
 
   useEffect(() => {
-    handleMyProfile(getToken());
+    handleMyProfile();
   }, [handleMyProfile]);
 
   console.log(myProfile);
