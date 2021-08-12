@@ -17,16 +17,8 @@ const SecondContent = () => {
   const [text, setText] = useState('');
   const [selectedButton, setSelectedButton] = useState(0);
   const [readyToUpload, setReadyToUpload] = useState(false);
-  const getSelectedOneButton = () => {
-    setSelectedButton(1);
-    console.log(selectedButton);
-  };
-  const getSelectedTwoButton = () => {
-    setSelectedButton(2);
-    console.log(selectedButton);
-  };
-  const getSelectedThreeButton = () => {
-    setSelectedButton(3);
+  const getSelectedButton = (value: React.SetStateAction<number>) => {
+    setSelectedButton(value);
     console.log(selectedButton);
   };
   const handleChange = (e: any) => {
@@ -45,7 +37,7 @@ const SecondContent = () => {
               {selectedButton !== 1 ? (
                 <Button
                   text="리그오브레전드"
-                  onClick={() => getSelectedOneButton()}
+                  onClick={() => getSelectedButton(1)}
                   fontColor={themeStyle.color.grayScale[500]}
                   bkgColor={themeStyle.color.grayScale[50]}
                   padding="0.8rem 0.7rem"
@@ -59,7 +51,7 @@ const SecondContent = () => {
               ) : (
                 <Button
                   text="리그오브레전드"
-                  onClick={() => getSelectedOneButton()}
+                  onClick={() => getSelectedButton(1)}
                   fontColor={themeStyle.color.white}
                   bkgColor={themeStyle.color.yellow}
                   padding="0.8rem 0.7rem"
@@ -74,7 +66,7 @@ const SecondContent = () => {
               {selectedButton !== 2 ? (
                 <Button
                   text="배틀그라운드"
-                  onClick={() => getSelectedTwoButton()}
+                  onClick={() => getSelectedButton(2)}
                   fontColor={themeStyle.color.grayScale[500]}
                   bkgColor={themeStyle.color.grayScale[50]}
                   padding="0.8rem 0.7rem"
@@ -88,7 +80,7 @@ const SecondContent = () => {
               ) : (
                 <Button
                   text="배틀그라운드"
-                  onClick={() => getSelectedTwoButton()}
+                  onClick={() => getSelectedButton(2)}
                   fontColor={themeStyle.color.white}
                   bkgColor={themeStyle.color.yellow}
                   padding="0.8rem 0.7rem"
@@ -103,7 +95,7 @@ const SecondContent = () => {
               {selectedButton !== 3 ? (
                 <Button
                   text="오버워치"
-                  onClick={() => getSelectedThreeButton()}
+                  onClick={() => getSelectedButton(3)}
                   fontColor={themeStyle.color.grayScale[500]}
                   bkgColor={themeStyle.color.grayScale[50]}
                   padding="0.8rem 0.7rem"
@@ -117,7 +109,7 @@ const SecondContent = () => {
               ) : (
                 <Button
                   text="오버워치"
-                  onClick={() => getSelectedThreeButton()}
+                  onClick={() => getSelectedButton(3)}
                   fontColor={themeStyle.color.white}
                   bkgColor={themeStyle.color.yellow}
                   padding="0.8rem 0.7rem"
