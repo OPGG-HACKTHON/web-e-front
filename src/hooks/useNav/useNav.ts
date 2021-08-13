@@ -24,11 +24,15 @@ const useNav = () => {
   );
 
   const handleClickProfile = useCallback(() => {
+    setIsClickAlram(false);
+
     setIsClickProfile((prev) => !prev);
     setClickProfilePosition(profileRef.current.getBoundingClientRect());
   }, []);
 
   const handleClickAlram = useCallback(() => {
+    setIsClickProfile(false);
+
     setIsClickAlram((prev) => !prev);
     setClickAlramPosition(alramRef.current.getBoundingClientRect());
   }, []);

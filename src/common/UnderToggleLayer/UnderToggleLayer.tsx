@@ -64,6 +64,8 @@ export const ItemStyle = styled.div`
   transition: all 0.15s ease;
   cursor: pointer;
   border-bottom: 1px solid ${({ theme }) => theme.color.grayScale[500]};
+  text-align: center;
+
   &:nth-child(2) {
     z-index: 10;
 
