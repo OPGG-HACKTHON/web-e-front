@@ -1,20 +1,36 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
-import WATPL from 'assets/svg/왓플-WATPL.svg';
-import Search from 'assets/svg/Search.svg';
+import useNav from 'hooks/useNav';
 import Button from 'common/Button';
-import { typography } from 'styles/theme';
 import useAuth from 'hooks/useAuth';
 import Login from 'components/Auth/Login/Login';
 import ModalContainer from 'common/ModalContainer';
+import UnderToggleLayer from 'common/UnderToggleLayer';
+import { ItemStyle } from 'common/UnderToggleLayer/UnderToggleLayer';
+
+import { color, typography } from 'styles/theme';
 import { useRecoilValue } from 'recoil';
 import { myProfileAtom } from 'atom/profileAtom';
+import WATPL from 'assets/svg/왓플-WATPL.svg';
+import Search from 'assets/svg/Search.svg';
+import UploadSvg from '../SvgElement/UploadSvg';
+import AlramSvg from '../SvgElement/AlarmSvg';
 
 const Nav = () => {
   const themeStyle = useContext(ThemeContext);
   const myProfile = useRecoilValue(myProfileAtom);
   const isLogin = myProfile.id !== null;
-  console.log(isLogin);
+
+  const {
+    handleClickProfile,
+    isClickProfile,
+    profileRef,
+    clickProfilePosition,
+    alramRef,
+    handleClickAlram,
+    isClickAlram,
+    clickAlramPosition,
+  } = useNav();
   const {
     isLoginModal,
     handleLoginModal,
@@ -25,6 +41,7 @@ const Nav = () => {
     handleLogout,
   } = useAuth();
 
+  console.log(clickAlramPosition, clickProfilePosition);
   return (
     <>
       <NavWrapper>
@@ -38,7 +55,26 @@ const Nav = () => {
           </SearchWrapper>
           <ButtonWrapper>
             {isLogin ? (
-              '곧 아이템이 추가'
+              <RightItemWrapper>
+                <UploadSvg
+                  width={20.25}
+                  height={24}
+                  color={color.grayScale[500]}
+                />
+                <AlramWrapper ref={alramRef} onClick={handleClickAlram}>
+                  <AlramSvg
+                    width={20.21}
+                    height={24}
+                    color={color.grayScale[500]}
+                  />
+                </AlramWrapper>
+                <ProfileImg
+                  ref={profileRef}
+                  src=""
+                  alt=""
+                  onClick={handleClickProfile}
+                />
+              </RightItemWrapper>
             ) : (
               <>
                 <Button
@@ -84,14 +120,51 @@ const Nav = () => {
           />
         }
       />
+      <UnderToggleLayer
+        width={84}
+        isClick={isClickProfile}
+        renderPosition={clickProfilePosition}
+      >
+        <ItemStyle>프로필 설정</ItemStyle>
+        <ItemStyle onClick={handleLogout}>로그아웃</ItemStyle>
+      </UnderToggleLayer>
+
+      <UnderToggleLayer
+        width={264}
+        isClick={isClickAlram}
+        renderPosition={clickAlramPosition}
+      >
+        <ItemStyle>00님이 회원님의 플레이를 좋아합니다.</ItemStyle>
+      </UnderToggleLayer>
     </>
   );
 };
+
+const AlramWrapper = styled.div``;
+
+const ProfileImg = styled.img`
+  width: 32px;
+  height: 32px;
+  background-color: ${({ theme }) => theme.color.grayScale[500]};
+`;
+
+const RightItemWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
+  & > * {
+    cursor: pointer;
+  }
+  & > * + * {
+    margin-left: 18px;
+  }
+`;
 
 const ButtonWrapper = styled.div`
   display: flex;
   width: 100%;
   max-width: 160px;
+  justify-content: flex-end;
 
   & > * + * {
     margin-left: 20px;
