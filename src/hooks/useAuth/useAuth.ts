@@ -41,7 +41,6 @@ const useAuth = () => {
 
       return data;
     } catch (err) {
-      console.log(err);
       const { status } = err.response;
       setLoginErrorStatus(status);
 
@@ -60,7 +59,7 @@ const useAuth = () => {
   }, [registerObj]);
 
   const handleLogout = useCallback(() => {
-    sessionStorage.removeItem('access_token');
+    Token.removeToken('access_token');
     window.location.reload();
   }, []);
 
