@@ -67,6 +67,20 @@ const useAuth = () => {
     setIsLoginModal((prev) => !prev);
   }, []);
 
+  const handleRegisterModal = useCallback(() => {
+    setIsRegisterModal((prev) => !prev);
+  }, []);
+
+  const handleGoToLoginModal = useCallback(() => {
+    setIsRegisterModal(false);
+    setIsLoginModal(true);
+  }, []);
+
+  const handleGoToRegisterModal = useCallback(() => {
+    setIsLoginModal(false);
+    setIsRegisterModal(true);
+  }, []);
+
   return {
     loginObj,
     setLoginObj,
@@ -79,6 +93,10 @@ const useAuth = () => {
     setIsLoginModal,
     loginErrorStatus,
     handleLogout,
+    handleRegisterModal,
+    isRegisterModal,
+    handleGoToLoginModal,
+    handleGoToRegisterModal,
   };
 };
 

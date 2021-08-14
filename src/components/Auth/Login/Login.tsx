@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import { CloseIcon, AlertIcon } from '@class101/ui';
+import { CloseIcon } from '@class101/ui';
 import { loginDto } from 'api/auth/auth.dto';
 import Button from 'common/Button';
 import Input from 'common/Input';
@@ -14,9 +14,17 @@ type Props = {
   setValue: Dispatch<SetStateAction<loginDto>>;
   login: () => void;
   status: number;
+  goToRegister: () => void;
 };
 
-const Login = ({ closeModal, value, setValue, login, status }: Props) => {
+const Login = ({
+  closeModal,
+  value,
+  setValue,
+  login,
+  status,
+  goToRegister,
+}: Props) => {
   const [inputLogin] = useInput<loginDto>();
 
   const inputCommonStyle = useMemo(() => {
@@ -94,7 +102,7 @@ const Login = ({ closeModal, value, setValue, login, status }: Props) => {
           borderRadius={0.5}
         />
       </ButtonWrapper>
-      <RegisterButton>
+      <RegisterButton onClick={goToRegister}>
         <RegisterOfferText>계정이 없으신가요?</RegisterOfferText>
         <RegisterJoinText>가입하기</RegisterJoinText>
       </RegisterButton>

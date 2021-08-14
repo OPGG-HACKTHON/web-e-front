@@ -4,10 +4,10 @@ import useNav from 'hooks/useNav';
 import Button from 'common/Button';
 import useAuth from 'hooks/useAuth';
 import Login from 'components/Auth/Login/Login';
+import Register from 'components/Auth/Register';
 import ModalContainer from 'common/ModalContainer';
 import UnderToggleLayer from 'common/UnderToggleLayer';
 import { ItemStyle } from 'common/UnderToggleLayer/UnderToggleLayer';
-
 import { color, typography } from 'styles/theme';
 import { useRecoilValue } from 'recoil';
 import { myProfileAtom } from 'atom/profileAtom';
@@ -39,9 +39,12 @@ const Nav = () => {
     handleLogin,
     loginErrorStatus,
     handleLogout,
+    handleRegisterModal,
+    isRegisterModal,
+    handleGoToLoginModal,
+    handleGoToRegisterModal,
   } = useAuth();
 
-  console.log(clickAlramPosition, clickProfilePosition);
   return (
     <>
       <NavWrapper>
@@ -92,7 +95,7 @@ const Nav = () => {
                 />
                 <Button
                   text="회원가입"
-                  onClick={() => console.log('REGISTER BUTTON')}
+                  onClick={handleRegisterModal}
                   fontColor={themeStyle.color.white}
                   bkgColor={themeStyle.color.yellow}
                   padding="0.8rem 0.7rem"
@@ -117,8 +120,15 @@ const Nav = () => {
             setValue={setLoginObj}
             login={handleLogin}
             status={loginErrorStatus}
+            goToRegister={handleGoToRegisterModal}
           />
         }
+      />
+
+      <ModalContainer
+        isPopup={isRegisterModal}
+        onClickOverlay={handleRegisterModal}
+        contentComponent={<Register goToLogin={handleGoToLoginModal} />}
       />
       <UnderToggleLayer
         width={84}
