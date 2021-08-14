@@ -3,8 +3,9 @@ import { uploadModalStep } from 'atom/uploadModalAtom';
 import { uploadSelectedFile } from 'atom/uploadSelectedFile';
 import Button from 'common/Button';
 import React, { useContext, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled, { ThemeContext } from 'styled-components';
+import { getButtonStyleByCondition } from 'util/getButtonStyle';
 import { EUploadStep } from 'enum/uploadStep.enum';
 import LevelTwo from 'assets/svg/upload_level_2.svg';
 
@@ -17,16 +18,19 @@ const SecondContent = () => {
   const isNextContent = useRecoilValue(isNext);
 
   const useRecoilSeletedFile = useRecoilValue(uploadSelectedFile);
-  const currentStep = useRecoilValue(uploadModalStep);
+  const [currentStep, setCurrentStep] = useRecoilState(uploadModalStep);
 
   const [text, setText] = useState('');
   const [selectedButton, setSelectedButton] = useState(0);
   const [readyToUpload, setReadyToUpload] = useState(false);
-  const getSelectedButton = (value: React.SetStateAction<number>) => {
+  const selectButton = (value: React.SetStateAction<number>) => {
     setSelectedButton(value);
   };
   const handleChange = (e: any) => {
     setText(e.target.value);
+  };
+  const onClickUpload = () => {
+    setCurrentStep(currentStep + 1);
   };
 
   return (
@@ -39,93 +43,75 @@ const SecondContent = () => {
           <VideoContent>
             <h3>게임선택</h3>
             <div>
-              {selectedButton !== 1 ? (
-                <Button
-                  text="리그오브레전드"
-                  onClick={() => getSelectedButton(1)}
-                  fontColor={themeStyle.color.grayScale[500]}
-                  bkgColor={themeStyle.color.grayScale[50]}
-                  padding="0.8rem 0.7rem"
-                  width={12}
-                  height={3.6}
-                  borderRadius={0.5}
-                  fontStyle={themeStyle.typography.bodyRgBold}
-                  hoverBkgColor={themeStyle.color.grayScale[50]}
-                  hoverFontColor={themeStyle.color.grayScale[500]}
-                />
-              ) : (
-                <Button
-                  text="리그오브레전드"
-                  onClick={() => getSelectedButton(1)}
-                  fontColor={themeStyle.color.white}
-                  bkgColor={themeStyle.color.yellow}
-                  padding="0.8rem 0.7rem"
-                  width={12}
-                  height={3.6}
-                  borderRadius={0.5}
-                  fontStyle={themeStyle.typography.bodyRgBold}
-                  hoverBkgColor={themeStyle.color.yellow}
-                  hoverFontColor={themeStyle.color.white}
-                />
-              )}
-              {selectedButton !== 2 ? (
-                <Button
-                  text="배틀그라운드"
-                  onClick={() => getSelectedButton(2)}
-                  fontColor={themeStyle.color.grayScale[500]}
-                  bkgColor={themeStyle.color.grayScale[50]}
-                  padding="0.8rem 0.7rem"
-                  width={11}
-                  height={3.6}
-                  borderRadius={0.5}
-                  fontStyle={themeStyle.typography.bodyRgBold}
-                  hoverBkgColor={themeStyle.color.grayScale[50]}
-                  hoverFontColor={themeStyle.color.grayScale[500]}
-                />
-              ) : (
-                <Button
-                  text="배틀그라운드"
-                  onClick={() => getSelectedButton(2)}
-                  fontColor={themeStyle.color.white}
-                  bkgColor={themeStyle.color.yellow}
-                  padding="0.8rem 0.7rem"
-                  width={11}
-                  height={3.6}
-                  borderRadius={0.5}
-                  fontStyle={themeStyle.typography.bodyRgBold}
-                  hoverBkgColor={themeStyle.color.yellow}
-                  hoverFontColor={themeStyle.color.white}
-                />
-              )}
-              {selectedButton !== 3 ? (
-                <Button
-                  text="오버워치"
-                  onClick={() => getSelectedButton(3)}
-                  fontColor={themeStyle.color.grayScale[500]}
-                  bkgColor={themeStyle.color.grayScale[50]}
-                  padding="0.8rem 0.7rem"
-                  width={8.2}
-                  height={3.6}
-                  borderRadius={0.5}
-                  fontStyle={themeStyle.typography.bodyRgBold}
-                  hoverBkgColor={themeStyle.color.grayScale[50]}
-                  hoverFontColor={themeStyle.color.grayScale[500]}
-                />
-              ) : (
-                <Button
-                  text="오버워치"
-                  onClick={() => getSelectedButton(3)}
-                  fontColor={themeStyle.color.white}
-                  bkgColor={themeStyle.color.yellow}
-                  padding="0.8rem 0.7rem"
-                  width={8.2}
-                  height={3.6}
-                  borderRadius={0.5}
-                  fontStyle={themeStyle.typography.bodyRgBold}
-                  hoverBkgColor={themeStyle.color.yellow}
-                  hoverFontColor={themeStyle.color.white}
-                />
-              )}
+              <Button
+                text="리그오브레전드"
+                onClick={() => selectButton(1)}
+                fontColor={
+                  getButtonStyleByCondition(selectedButton === 1).fontColor
+                }
+                bkgColor={
+                  getButtonStyleByCondition(selectedButton === 1)
+                    .backGroundColor
+                }
+                padding="0.8rem 0.7rem"
+                width={12}
+                height={3.6}
+                borderRadius={0.5}
+                fontStyle={themeStyle.typography.bodyRgBold}
+                hoverBkgColor={
+                  getButtonStyleByCondition(selectedButton === 1)
+                    .hoverBackGroundColor
+                }
+                hoverFontColor={
+                  getButtonStyleByCondition(selectedButton === 1).hoverFontColor
+                }
+              />
+              <Button
+                text="배틀그라운드"
+                onClick={() => selectButton(2)}
+                fontColor={
+                  getButtonStyleByCondition(selectedButton === 2).fontColor
+                }
+                bkgColor={
+                  getButtonStyleByCondition(selectedButton === 2)
+                    .backGroundColor
+                }
+                padding="0.8rem 0.7rem"
+                width={11}
+                height={3.6}
+                borderRadius={0.5}
+                fontStyle={themeStyle.typography.bodyRgBold}
+                hoverBkgColor={
+                  getButtonStyleByCondition(selectedButton === 2)
+                    .hoverBackGroundColor
+                }
+                hoverFontColor={
+                  getButtonStyleByCondition(selectedButton === 2).hoverFontColor
+                }
+              />
+              <Button
+                text="오버워치"
+                onClick={() => selectButton(3)}
+                fontColor={
+                  getButtonStyleByCondition(selectedButton === 3).fontColor
+                }
+                bkgColor={
+                  getButtonStyleByCondition(selectedButton === 3)
+                    .backGroundColor
+                }
+                padding="0.8rem 0.7rem"
+                width={8.2}
+                height={3.6}
+                borderRadius={0.5}
+                fontStyle={themeStyle.typography.bodyRgBold}
+                hoverBkgColor={
+                  getButtonStyleByCondition(selectedButton === 3)
+                    .hoverBackGroundColor
+                }
+                hoverFontColor={
+                  getButtonStyleByCondition(selectedButton === 3).hoverFontColor
+                }
+              />
             </div>
           </VideoContent>
           <VideoContent>
@@ -139,35 +125,25 @@ const SecondContent = () => {
           <Img src={LevelTwo} alt="alt" />
         </BottomContent>
         <BottomContent>
-          {!selectedButton ? (
-            <Button
-              text="업로드"
-              onClick={() => console.log('업로드')}
-              fontColor={themeStyle.color.grayScale[500]}
-              bkgColor={themeStyle.color.grayScale[50]}
-              padding="0.8rem 0.7rem"
-              width={5.5}
-              height={3.6}
-              borderRadius={0.5}
-              fontStyle={themeStyle.typography.bodyRgBold}
-              hoverBkgColor={themeStyle.color.grayScale[50]}
-              hoverFontColor={themeStyle.color.grayScale[500]}
-            />
-          ) : (
-            <Button
-              text="업로드"
-              onClick={() => console.log('업로드')}
-              fontColor={themeStyle.color.white}
-              bkgColor={themeStyle.color.yellow}
-              padding="0.8rem 0.7rem"
-              width={5.5}
-              height={3.6}
-              borderRadius={0.5}
-              fontStyle={themeStyle.typography.bodyRgBold}
-              hoverBkgColor={themeStyle.color.yellow}
-              hoverFontColor={themeStyle.color.white}
-            />
-          )}
+          <Button
+            text="업로드"
+            onClick={onClickUpload}
+            fontColor={getButtonStyleByCondition(selectedButton > 0).fontColor}
+            bkgColor={
+              getButtonStyleByCondition(selectedButton > 0).backGroundColor
+            }
+            padding="0.8rem 0.7rem"
+            width={5.5}
+            height={3.6}
+            borderRadius={0.5}
+            fontStyle={themeStyle.typography.bodyRgBold}
+            hoverBkgColor={
+              getButtonStyleByCondition(selectedButton > 0).hoverBackGroundColor
+            }
+            hoverFontColor={
+              getButtonStyleByCondition(selectedButton > 0).hoverFontColor
+            }
+          />
         </BottomContent>
       </BottomWrapper>
     </ContentWrapper>
