@@ -2,21 +2,30 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Back from 'assets/svg/back_icon.svg';
 import Close from 'assets/svg/close_icon.svg';
-import { useSetRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilState, useRecoilValue } from 'recoil';
 import { isNext } from 'atom/uploadIsNext';
+import { uploadModalStep } from 'atom/uploadModalAtom';
 import UploadContent from './UploadContent';
 
-const Upload = () => {
+interface IUploadProps {
+  onClickClose: (e: React.MouseEvent<HTMLElement>) => void;
+}
+
+const Upload = ({ onClickClose }: IUploadProps) => {
   const setIsNext = useSetRecoilState(isNext);
-  const isBack = () => {
+  const [currentStep, setModalStep] = useRecoilState(uploadModalStep);
+
+  const onClickBack = () => {
     setIsNext(false);
+    if (currentStep > 0) setModalStep(currentStep - 1);
   };
+
   return (
     <UploadWrapper>
       <UploadHeader>
-        <Icon src={Back} alt="alt" onClick={() => isBack()} />
+        <Icon src={Back} alt="alt" onClick={onClickBack} />
         <UploadTitle>동영상 업로드</UploadTitle>
-        <Icon src={Close} alt="alt" />
+        <Icon src={Close} alt="alt" onClick={onClickClose} />
       </UploadHeader>
       <UploadContent />
     </UploadWrapper>

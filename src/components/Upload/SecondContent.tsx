@@ -1,9 +1,11 @@
 import { isNext } from 'atom/uploadIsNext';
+import { uploadModalStep } from 'atom/uploadModalAtom';
 import { uploadSelectedFile } from 'atom/uploadSelectedFile';
 import Button from 'common/Button';
 import React, { useContext, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled, { ThemeContext } from 'styled-components';
+import { EUploadStep } from 'enum/uploadStep.enum';
 import LevelTwo from 'assets/svg/upload_level_2.svg';
 
 interface IActiveStyleProps {
@@ -13,19 +15,22 @@ interface IActiveStyleProps {
 const SecondContent = () => {
   const themeStyle = useContext(ThemeContext);
   const isNextContent = useRecoilValue(isNext);
+
   const useRecoilSeletedFile = useRecoilValue(uploadSelectedFile);
+  const currentStep = useRecoilValue(uploadModalStep);
+
   const [text, setText] = useState('');
   const [selectedButton, setSelectedButton] = useState(0);
   const [readyToUpload, setReadyToUpload] = useState(false);
   const getSelectedButton = (value: React.SetStateAction<number>) => {
     setSelectedButton(value);
-    console.log(selectedButton);
   };
   const handleChange = (e: any) => {
     setText(e.target.value);
   };
+
   return (
-    <ContentWrapper active={isNextContent}>
+    <ContentWrapper active={currentStep === EUploadStep.SECOND_STEP}>
       <FlexWrapper>
         <VideoWrapper>
           <video autoPlay muted loop src={useRecoilSeletedFile as string} />
@@ -176,11 +181,7 @@ const ContentWrapper = styled.div<IActiveStyleProps>`
   margin-top: ${({ theme }) => theme.margins.base};
   flex-direction: column;
   align-items: center;
-  ${({ active }) =>
-    active &&
-    `
-display: flex;ß
-`}
+  ${({ active }) => active && `display: flex;`}
 `;
 
 const VideoWrapper = styled.div`
@@ -188,8 +189,8 @@ const VideoWrapper = styled.div`
     width: 21rem;
     border-radius: 5px;
   }
-  margin: ${({ theme }) => theme.margins.base}
-    ${({ theme }) => theme.margins.xl};
+  margin: ${({ theme }) => theme.margins.base};
+  ${({ theme }) => theme.margins.xl};
 `;
 
 const VideoContentWrapper = styled.div`
@@ -207,6 +208,7 @@ const VideoContent = styled.div`
     display: block;
   }
   & > textarea {
+    padding: 1rem;
     width: 42rem;
     height: 10rem;
     margin-right: ${({ theme }) => theme.margins.xl};

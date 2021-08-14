@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
-// import { datas } from 'data/main';
+import { useRecoilState } from 'recoil';
+import { EUploadStep } from 'enum/uploadStep.enum';
 import VideoWrapper from 'styles/mainStyles/videoComponents/videoWrapper';
 import ModalContainer from 'common/ModalContainer';
 import VideoModal from 'components/VideoModal';
 import MainWrapper from 'styles/mainStyles/videoComponents/MainWrapper';
 import Upload from 'components/Upload';
+import { uploadModalStep } from 'atom/uploadModalAtom';
 import VideoSelectBar from './VideoSelectBar';
 import VideoList from './VideoList';
 
 const Main = () => {
+  const [currentUploadModalStep, setUploadModalStep] =
+    useRecoilState(uploadModalStep);
+
   const [isUploadModalOpen, setUploadModalOpen] = useState(false);
 
   const openUploadModal = (e: React.MouseEvent<HTMLElement>) => {
@@ -17,6 +22,7 @@ const Main = () => {
 
   const closeUploadModal = (e: React.MouseEvent<HTMLElement>) => {
     setUploadModalOpen(false);
+    setUploadModalStep(EUploadStep.FIRST_STEP);
   };
 
   const [isVideoModalOpen, setVideoModalOpen] = useState(false);
@@ -37,7 +43,7 @@ const Main = () => {
       <ModalContainer
         isPopup={isUploadModalOpen}
         onClickOverlay={closeUploadModal}
-        contentComponent={<Upload />}
+        contentComponent={<Upload onClickClose={closeUploadModal} />}
         width={75}
         height={53.6}
         borderRadius={0.5}

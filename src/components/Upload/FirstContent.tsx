@@ -7,11 +7,9 @@ import LevelOne from 'assets/svg/upload_level_1.svg';
 import Button from 'common/Button';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { isNext } from 'atom/uploadIsNext';
+import { uploadModalStep } from 'atom/uploadModalAtom';
 import { uploadSelectedFile } from 'atom/uploadSelectedFile';
-
-type a = {
-  a?: string | ArrayBuffer | null;
-};
+import { EUploadStep } from 'enum/uploadStep.enum';
 
 interface IActiveStyleProps {
   active: boolean;
@@ -34,18 +32,16 @@ const FirstContent = () => {
     };
   };
 
-  const [isNextContent, setIsNext] = useRecoilState(isNext);
+  // const [isNextContent, setIsNext] = useRecoilState(isNext);
+  const [currentStep, setCurrentStep] = useRecoilState(uploadModalStep);
 
   const nextClick = () => {
-    setIsNext(true);
-    console.log(isNextContent);
+    // setIsNext(true);
+    if (currentStep < 2) setCurrentStep(currentStep + 1);
   };
 
-  //   useEffect(() => {
-  //     console.log(selectedFile);
-  //   }, [selectedFile]);
   return (
-    <ContentWrapper active={isNextContent}>
+    <ContentWrapper active={currentStep === EUploadStep.FIRST_STEP}>
       <label className="input-btn" htmlFor="input_file">
         <ImgWrapper>
           {!selectedFile ? (
@@ -104,14 +100,10 @@ const FirstContent = () => {
 };
 export default FirstContent;
 const ContentWrapper = styled.div<IActiveStyleProps>`
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
-  ${({ active }) =>
-    active &&
-    `
-display: none;
-`}
+  ${({ active }) => active && `display: flex;`}
 `;
 const ImgWrapper = styled.div`
   width: fit-content;
