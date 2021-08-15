@@ -1,7 +1,7 @@
 import { isNext } from 'atom/uploadIsNext';
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import { uploadModalStep } from 'atom/uploadModalAtom';
+import { uploadModalStep } from 'atom/uploadModalStepAtom';
 import styled from 'styled-components';
 import { EUploadStep } from 'enum/uploadStep.enum';
 import SecondContent from './SecondContent';

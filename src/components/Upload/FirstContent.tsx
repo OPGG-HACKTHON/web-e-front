@@ -9,7 +9,7 @@ import useUpload from 'hooks/useUpload/useUpload';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { isNext } from 'atom/uploadIsNext';
 import { myProfileAtom } from 'atom/profileAtom';
-import { uploadModalStep } from 'atom/uploadModalAtom';
+import { uploadModalStep } from 'atom/uploadModalStepAtom';
 import { uploadSelectedFile } from 'atom/uploadSelectedFile';
 import { EUploadStep } from 'enum/uploadStep.enum';
 

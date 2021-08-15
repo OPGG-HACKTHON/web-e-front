@@ -4,7 +4,7 @@ import Back from 'assets/svg/back_icon.svg';
 import Close from 'assets/svg/close_icon.svg';
 import { useSetRecoilState, useRecoilState, useRecoilValue } from 'recoil';
 import { isNext } from 'atom/uploadIsNext';
-import { uploadModalStep } from 'atom/uploadModalAtom';
+import { uploadModalStep } from 'atom/uploadModalStepAtom';
 import UploadContent from './UploadContent';
 import ThirdContent from './ThirdContent';
 

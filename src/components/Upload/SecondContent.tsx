@@ -4,7 +4,7 @@ import useUpload from 'hooks/useUpload/useUpload';
 import Button from 'common/Button';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { uploadModalStep } from 'atom/uploadModalAtom';
+import { uploadModalStep } from 'atom/uploadModalStepAtom';
 import { myProfileAtom } from 'atom/profileAtom';
 import { uploadSelectedFile } from 'atom/uploadSelectedFile';
 import { isNext } from 'atom/uploadIsNext';
@@ -38,7 +38,6 @@ const SecondContent = () => {
     useUpload();
 
   const selectButton = (value: React.SetStateAction<number>) => {
-    console.log(uploadObj);
     setUploadObj({
       ...uploadObj,
       category: GAME_CATEGORY[selectedButton - 1],
