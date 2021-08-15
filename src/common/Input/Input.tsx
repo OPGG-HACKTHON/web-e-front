@@ -9,7 +9,7 @@ type Props = {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   placeHolder?: string;
   placeHolderFontSize?: string;
-  borderRadius?: number;
+  borderRadius?: string;
   borderStyle?: string;
   backgroundColor: string;
   placeHolderColor?: string;
@@ -22,7 +22,7 @@ type Props = {
 interface IInputStyleProps {
   width: string;
   height: string;
-  borderRadius?: number;
+  borderRadius?: string;
   borderStyle?: string;
   backgroundColor: string;
   placeHolderColor: string;
@@ -85,6 +85,10 @@ const InputItem = styled.input<IInputStyleProps>`
   &::placeholder {
     color: ${({ placeHolderColor }) => placeHolderColor};
     font-size: ${({ placeHolderFontSize }) => placeHolderFontSize};
+  }
+
+  &:focus {
+    outline: none;
   }
 `;
 

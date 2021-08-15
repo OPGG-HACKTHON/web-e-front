@@ -1,1 +1,1 @@
-export { setToken, getToken } from './token';
+export { default } from './token';
