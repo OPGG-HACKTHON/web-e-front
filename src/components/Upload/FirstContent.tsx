@@ -1,14 +1,11 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import UploadFind from 'assets/svg/upload_1.svg';
 import LevelOne from 'assets/svg/upload_level_1.svg';
 import Button from 'common/Button';
-import useUpload from 'hooks/useUpload/useUpload';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { isNext } from 'atom/uploadIsNext';
-import { myProfileAtom } from 'atom/profileAtom';
 import { uploadModalStep } from 'atom/uploadModalStepAtom';
 import { uploadSelectedFile } from 'atom/uploadSelectedFile';
 import { EUploadStep } from 'enum/uploadStep.enum';
@@ -19,28 +16,23 @@ interface IActiveStyleProps {
 
 const FirstContent = () => {
   const themeStyle = useContext(ThemeContext);
-  const myProfile = useRecoilValue(myProfileAtom);
-  const [selectedFile, setSelectedFile] = useState<string | ArrayBuffer | null>(
-    ''
-  );
-  const setRecoilSelectedFile = useSetRecoilState(uploadSelectedFile);
+  const [selectedFile, setRecoilSelectedFile] =
+    useRecoilState(uploadSelectedFile);
 
   const onChange = (event: any) => {
     const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = function (e) {
+
+    const binaryReader = new FileReader();
+    binaryReader.readAsBinaryString(file.slice(0, file.size));
+    binaryReader.onloadend = function (e) {
       const fileContent = e?.target?.result;
-      setSelectedFile(fileContent as string);
       setRecoilSelectedFile(fileContent as string);
     };
   };
 
-  // const [isNextContent, setIsNext] = useRecoilState(isNext);
   const [currentStep, setCurrentStep] = useRecoilState(uploadModalStep);
 
   const nextClick = () => {
-    // setIsNext(true);
     if (currentStep < 2) setCurrentStep(currentStep + 1);
   };
 
@@ -52,7 +44,12 @@ const FirstContent = () => {
             <Img src={UploadFind} alt="alt" />
           ) : (
             <VideoWrapper>
-              <video autoPlay muted loop src={selectedFile as string} />
+              <video
+                autoPlay
+                muted
+                loop
+                src={`data:video/webm;base64,${btoa(selectedFile as string)}`}
+              />
             </VideoWrapper>
           )}
         </ImgWrapper>

@@ -5,45 +5,38 @@ import Button from 'common/Button';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { uploadModalStep } from 'atom/uploadModalStepAtom';
-import { myProfileAtom } from 'atom/profileAtom';
 import { uploadSelectedFile } from 'atom/uploadSelectedFile';
-import { isNext } from 'atom/uploadIsNext';
 
 import {
   enabledButtonStyle,
   getButtonStyleByCondition,
 } from 'util/getButtonStyle';
 import { EUploadStep } from 'enum/uploadStep.enum';
+import { EGameList } from 'enum/game.enum';
 import LevelTwo from 'assets/svg/upload_level_2.svg';
 
 interface IActiveStyleProps {
   active: boolean;
 }
 
-const GAME_CATEGORY = ['리그오브레전드', '배틀그라운드', '오버워치'];
-
 const SecondContent = () => {
   const themeStyle = useContext(ThemeContext);
-  const isNextContent = useRecoilValue(isNext);
 
   const selectedFile = useRecoilValue(uploadSelectedFile);
-  const myProfile = useRecoilValue(myProfileAtom);
   const [currentStep, setCurrentStep] = useRecoilState(uploadModalStep);
 
   const [text, setText] = useState('');
-  const [selectedButton, setSelectedButton] = useState(0);
-  const [readyToUpload, setReadyToUpload] = useState(false);
+  const [selectedButton, setSelectedButton] = useState<EGameList>();
 
   const { uploadObj, setUploadObj, handleUpload, uploadErrorStatus } =
     useUpload();
 
-  const selectButton = (value: React.SetStateAction<number>) => {
+  const selectButton = (value: EGameList) => {
     setUploadObj({
       ...uploadObj,
-      category: 'lol',
+      category: value,
     });
     setSelectedButton(value);
-    console.log(uploadObj);
   };
   const handleChange = (e: any) => {
     setUploadObj({
@@ -53,7 +46,7 @@ const SecondContent = () => {
     setText(e.target.value);
   };
   const onClickUpload = () => {
-    if (selectedButton > 0) {
+    if (selectedButton) {
       handleUpload();
       setCurrentStep(currentStep + 1);
     }
@@ -63,7 +56,12 @@ const SecondContent = () => {
     <ContentWrapper active={currentStep === EUploadStep.SECOND_STEP}>
       <FlexWrapper>
         <VideoWrapper>
-          <video autoPlay muted loop src={selectedFile as string} />
+          <video
+            autoPlay
+            muted
+            loop
+            src={`data:video/webm;base64,${btoa(selectedFile as string)}`}
+          />
         </VideoWrapper>
         <VideoContentWrapper>
           <VideoContent>
@@ -71,12 +69,13 @@ const SecondContent = () => {
             <div>
               <Button
                 text="리그오브레전드"
-                onClick={() => selectButton(1)}
+                onClick={() => selectButton(EGameList.LOL)}
                 fontColor={
-                  getButtonStyleByCondition(selectedButton === 1).fontColor
+                  getButtonStyleByCondition(selectedButton === EGameList.LOL)
+                    .fontColor
                 }
                 bkgColor={
-                  getButtonStyleByCondition(selectedButton === 1)
+                  getButtonStyleByCondition(selectedButton === EGameList.LOL)
                     .backGroundColor
                 }
                 padding="0.8rem 0.7rem"
@@ -85,21 +84,23 @@ const SecondContent = () => {
                 borderRadius={0.5}
                 fontStyle={themeStyle.typography.bodyRgBold}
                 hoverBkgColor={
-                  getButtonStyleByCondition(selectedButton === 1)
+                  getButtonStyleByCondition(selectedButton === EGameList.LOL)
                     .hoverBackGroundColor
                 }
                 hoverFontColor={
-                  getButtonStyleByCondition(selectedButton === 1).hoverFontColor
+                  getButtonStyleByCondition(selectedButton === EGameList.LOL)
+                    .hoverFontColor
                 }
               />
               <Button
                 text="배틀그라운드"
-                onClick={() => selectButton(2)}
+                onClick={() => selectButton(EGameList.PUBG)}
                 fontColor={
-                  getButtonStyleByCondition(selectedButton === 2).fontColor
+                  getButtonStyleByCondition(selectedButton === EGameList.PUBG)
+                    .fontColor
                 }
                 bkgColor={
-                  getButtonStyleByCondition(selectedButton === 2)
+                  getButtonStyleByCondition(selectedButton === EGameList.PUBG)
                     .backGroundColor
                 }
                 padding="0.8rem 0.7rem"
@@ -108,22 +109,26 @@ const SecondContent = () => {
                 borderRadius={0.5}
                 fontStyle={themeStyle.typography.bodyRgBold}
                 hoverBkgColor={
-                  getButtonStyleByCondition(selectedButton === 2)
+                  getButtonStyleByCondition(selectedButton === EGameList.PUBG)
                     .hoverBackGroundColor
                 }
                 hoverFontColor={
-                  getButtonStyleByCondition(selectedButton === 2).hoverFontColor
+                  getButtonStyleByCondition(selectedButton === EGameList.PUBG)
+                    .hoverFontColor
                 }
               />
               <Button
                 text="오버워치"
-                onClick={() => selectButton(3)}
+                onClick={() => selectButton(EGameList.OVERWATCH)}
                 fontColor={
-                  getButtonStyleByCondition(selectedButton === 3).fontColor
+                  getButtonStyleByCondition(
+                    selectedButton === EGameList.OVERWATCH
+                  ).fontColor
                 }
                 bkgColor={
-                  getButtonStyleByCondition(selectedButton === 3)
-                    .backGroundColor
+                  getButtonStyleByCondition(
+                    selectedButton === EGameList.OVERWATCH
+                  ).backGroundColor
                 }
                 padding="0.8rem 0.7rem"
                 width={8.2}
@@ -131,11 +136,14 @@ const SecondContent = () => {
                 borderRadius={0.5}
                 fontStyle={themeStyle.typography.bodyRgBold}
                 hoverBkgColor={
-                  getButtonStyleByCondition(selectedButton === 3)
-                    .hoverBackGroundColor
+                  getButtonStyleByCondition(
+                    selectedButton === EGameList.OVERWATCH
+                  ).hoverBackGroundColor
                 }
                 hoverFontColor={
-                  getButtonStyleByCondition(selectedButton === 3).hoverFontColor
+                  getButtonStyleByCondition(
+                    selectedButton === EGameList.OVERWATCH
+                  ).hoverFontColor
                 }
               />
             </div>
@@ -154,9 +162,12 @@ const SecondContent = () => {
           <Button
             text="업로드"
             onClick={onClickUpload}
-            fontColor={getButtonStyleByCondition(selectedButton > 0).fontColor}
+            fontColor={
+              getButtonStyleByCondition(selectedButton !== undefined).fontColor
+            }
             bkgColor={
-              getButtonStyleByCondition(selectedButton > 0).backGroundColor
+              getButtonStyleByCondition(selectedButton !== undefined)
+                .backGroundColor
             }
             padding="0.8rem 0.7rem"
             width={5.5}
