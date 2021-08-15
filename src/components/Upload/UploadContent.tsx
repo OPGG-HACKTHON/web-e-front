@@ -22,12 +22,3 @@ export default UploadContent;
 const ContentWrapper = styled.div`
   margin: 0 auto;
 `;
-
-// const FirstContent = styled.div<IActiveStyleProps>`
-/* display: block;
-  ${({ active }) =>
-    active &&
-    `
-display: hidden;
-`} */
-// `;

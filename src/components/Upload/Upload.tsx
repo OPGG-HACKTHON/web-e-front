@@ -6,9 +6,10 @@ import { useSetRecoilState, useRecoilState, useRecoilValue } from 'recoil';
 import { isNext } from 'atom/uploadIsNext';
 import { uploadModalStep } from 'atom/uploadModalAtom';
 import UploadContent from './UploadContent';
+import ThirdContent from './ThirdContent';
 
 interface IUploadProps {
-  onClickClose: (e: React.MouseEvent<HTMLElement>) => void;
+  onClickClose: () => void;
 }
 
 const Upload = ({ onClickClose }: IUploadProps) => {
@@ -21,14 +22,20 @@ const Upload = ({ onClickClose }: IUploadProps) => {
   };
 
   return (
-    <UploadWrapper>
-      <UploadHeader>
-        <Icon src={Back} alt="alt" onClick={onClickBack} />
-        <UploadTitle>동영상 업로드</UploadTitle>
-        <Icon src={Close} alt="alt" onClick={onClickClose} />
-      </UploadHeader>
-      <UploadContent />
-    </UploadWrapper>
+    <>
+      {currentStep < 2 ? (
+        <UploadWrapper>
+          <UploadHeader>
+            <Icon src={Back} alt="alt" onClick={onClickBack} />
+            <UploadTitle>동영상 업로드</UploadTitle>
+            <Icon src={Close} alt="alt" onClick={onClickClose} />
+          </UploadHeader>
+          <UploadContent />
+        </UploadWrapper>
+      ) : (
+        <ThirdContent onClickClose={onClickClose} />
+      )}
+    </>
   );
 };
 

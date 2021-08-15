@@ -20,7 +20,7 @@ const Main = () => {
     setUploadModalOpen(true);
   };
 
-  const closeUploadModal = (e: React.MouseEvent<HTMLElement>) => {
+  const closeUploadModal = () => {
     setUploadModalOpen(false);
     setUploadModalStep(EUploadStep.FIRST_STEP);
   };
@@ -44,8 +44,8 @@ const Main = () => {
         isPopup={isUploadModalOpen}
         onClickOverlay={closeUploadModal}
         contentComponent={<Upload onClickClose={closeUploadModal} />}
-        width={75}
-        height={53.6}
+        width={currentUploadModalStep === EUploadStep.THIRD_STEP ? 45 : 75}
+        height={currentUploadModalStep === EUploadStep.THIRD_STEP ? 18.6 : 53.6}
         borderRadius={0.5}
       />
       <button type="button" onClick={openUploadModal}>

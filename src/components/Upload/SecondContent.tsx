@@ -5,7 +5,10 @@ import Button from 'common/Button';
 import React, { useContext, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled, { ThemeContext } from 'styled-components';
-import { getButtonStyleByCondition } from 'util/getButtonStyle';
+import {
+  enabledButtonStyle,
+  getButtonStyleByCondition,
+} from 'util/getButtonStyle';
 import { EUploadStep } from 'enum/uploadStep.enum';
 import LevelTwo from 'assets/svg/upload_level_2.svg';
 
@@ -30,7 +33,7 @@ const SecondContent = () => {
     setText(e.target.value);
   };
   const onClickUpload = () => {
-    setCurrentStep(currentStep + 1);
+    if (selectedButton > 0) setCurrentStep(currentStep + 1);
   };
 
   return (
@@ -137,12 +140,8 @@ const SecondContent = () => {
             height={3.6}
             borderRadius={0.5}
             fontStyle={themeStyle.typography.bodyRgBold}
-            hoverBkgColor={
-              getButtonStyleByCondition(selectedButton > 0).hoverBackGroundColor
-            }
-            hoverFontColor={
-              getButtonStyleByCondition(selectedButton > 0).hoverFontColor
-            }
+            hoverBkgColor={enabledButtonStyle.hoverBackGroundColor}
+            hoverFontColor={enabledButtonStyle.hoverFontColor}
           />
         </BottomContent>
       </BottomWrapper>
