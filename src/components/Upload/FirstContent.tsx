@@ -1,6 +1,6 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import UploadFind from 'assets/svg/upload_1.svg';
 import LevelOne from 'assets/svg/upload_level_1.svg';
@@ -16,17 +16,21 @@ interface IActiveStyleProps {
 
 const FirstContent = () => {
   const themeStyle = useContext(ThemeContext);
-  const [selectedFile, setRecoilSelectedFile] =
-    useRecoilState(uploadSelectedFile);
+  const [readableSelectedFile, setReadableSelectedFile] = useState<string>('');
+  const setRecoilSelectedFile = useSetRecoilState(uploadSelectedFile);
 
   const onChange = (event: any) => {
     const file = event.target.files[0];
+    setRecoilSelectedFile(file);
+    readFile(file);
+  };
 
-    const binaryReader = new FileReader();
-    binaryReader.readAsBinaryString(file.slice(0, file.size));
-    binaryReader.onloadend = function (e) {
+  const readFile = (file: any) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = function (e) {
       const fileContent = e?.target?.result;
-      setRecoilSelectedFile(fileContent as string);
+      setReadableSelectedFile(fileContent as string);
     };
   };
 
@@ -40,16 +44,11 @@ const FirstContent = () => {
     <ContentWrapper active={currentStep === EUploadStep.FIRST_STEP}>
       <label className="input-btn" htmlFor="input_file">
         <ImgWrapper>
-          {!selectedFile ? (
+          {!readableSelectedFile ? (
             <Img src={UploadFind} alt="alt" />
           ) : (
             <VideoWrapper>
-              <video
-                autoPlay
-                muted
-                loop
-                src={`data:video/webm;base64,${btoa(selectedFile as string)}`}
-              />
+              <video autoPlay muted loop src={readableSelectedFile} />
             </VideoWrapper>
           )}
         </ImgWrapper>
@@ -66,7 +65,7 @@ const FirstContent = () => {
           <Img src={LevelOne} alt="alt" />
         </BottomContent>
         <BottomContent>
-          {!selectedFile ? (
+          {!readableSelectedFile ? (
             // <img src={DisBnt} alt="alt" />
             <Button
               text="다음"

@@ -3,5 +3,5 @@ export type uploadDto = {
   describe: string;
   category: string;
   description?: string;
-  video: string;
+  video: unknown;
 };

@@ -12,7 +12,7 @@ const useUpload = () => {
   const selectedFile = useRecoilValue(uploadSelectedFile);
   const [uploadObj, setUploadObj] = useState<uploadDto>({
     userId: myProfile?.id || '',
-    describe: '',
+    describe: 'title',
     category: '',
     description: '',
     video: (selectedFile as string) || '',

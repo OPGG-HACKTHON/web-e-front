@@ -22,6 +22,7 @@ interface IActiveStyleProps {
 const SecondContent = () => {
   const themeStyle = useContext(ThemeContext);
 
+  const [readableSelectedFile, setSelectedFile] = useState<string>('');
   const selectedFile = useRecoilValue(uploadSelectedFile);
   const [currentStep, setCurrentStep] = useRecoilState(uploadModalStep);
 
@@ -52,16 +53,24 @@ const SecondContent = () => {
     }
   };
 
+  const readFile = (file: any) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = function (e) {
+      const fileContent = e?.target?.result;
+      setSelectedFile(fileContent as string);
+    };
+  };
+
+  useEffect(() => {
+    readFile(selectedFile);
+  }, [selectedFile]);
+
   return (
     <ContentWrapper active={currentStep === EUploadStep.SECOND_STEP}>
       <FlexWrapper>
         <VideoWrapper>
-          <video
-            autoPlay
-            muted
-            loop
-            src={`data:video/webm;base64,${btoa(selectedFile as string)}`}
-          />
+          <video autoPlay muted loop src={readableSelectedFile as string} />
         </VideoWrapper>
         <VideoContentWrapper>
           <VideoContent>
