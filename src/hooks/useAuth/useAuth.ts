@@ -4,6 +4,7 @@ import useProfile from 'hooks/useProfile/useProfile';
 import { loginDto, registerDto } from 'api/auth/auth.dto';
 import Token from 'lib/token';
 import customAxios from 'lib/axios';
+import { termsCheckedProps } from 'types/auth';
 
 const useAuth = () => {
   const [loginObj, setLoginObj] = useState<loginDto>({
@@ -15,7 +16,11 @@ const useAuth = () => {
   const [isLoginModal, setIsLoginModal] = useState(false);
   const [loginErrorStatus, setLoginErrorStatus] = useState<number>(0);
   const [isRegisterModal, setIsRegisterModal] = useState(false);
-
+  const [termsChecked, setTermsChecked] = useState<termsCheckedProps>({
+    utilization: false,
+    personalinformation: false,
+    pushEvent: false,
+  });
   const [registerObj, setRegisterObj] = useState<registerDto>({
     userId: '',
     userName: '',
@@ -97,6 +102,8 @@ const useAuth = () => {
     isRegisterModal,
     handleGoToLoginModal,
     handleGoToRegisterModal,
+    termsChecked,
+    setTermsChecked,
   };
 };
 

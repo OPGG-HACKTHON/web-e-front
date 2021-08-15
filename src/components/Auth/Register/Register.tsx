@@ -1,6 +1,8 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable indent */
 import React, { useCallback, useState, useMemo } from 'react';
 import styled from 'styled-components';
+
 import BACK_ARROW_IMG from 'assets/svg/backArrow.svg';
 import CLOSE_BUTTON from 'assets/svg/X.svg';
 import AgreementTerms from './RegisterPage/AgreementTerms';
@@ -9,7 +11,7 @@ type Props = {
   goToLogin: () => void;
 };
 
-enum EButtonType {
+export enum EButtonType {
   NEXT,
   PREV,
 }
@@ -17,7 +19,7 @@ enum EButtonType {
 const Register = ({ goToLogin }: Props) => {
   const [pageCount, setPageCount] = useState(0);
 
-  const handlePage = useCallback(
+  const pageHandler = useCallback(
     (buttonType: EButtonType) => () => {
       switch (buttonType) {
         case EButtonType.NEXT:
@@ -49,28 +51,27 @@ const Register = ({ goToLogin }: Props) => {
       <TopSection>
         {pageCount === 0 ? (
           <TopUserClickButton
-            onClick={handlePage(EButtonType.PREV)}
             alt="backArrowButton"
             src={BACK_ARROW_IMG}
             isVisible
           />
         ) : (
           <TopUserClickButton
-            onClick={handlePage(EButtonType.PREV)}
+            onClick={pageHandler(EButtonType.PREV)}
             alt="backArrowButton"
             src={BACK_ARROW_IMG}
           />
         )}
 
         <TopText>{pageSpecificText}</TopText>
-        <TopUserClickButton
-          onClick={handlePage(EButtonType.NEXT)}
-          alt="closeButton"
-          src={CLOSE_BUTTON}
-        />
+        <TopUserClickButton alt="closeButton" src={CLOSE_BUTTON} />
       </TopSection>
       <PageSection>
-        <AgreementTerms />
+        {pageCount === 0 ? (
+          <AgreementTerms pageHandler={pageHandler} />
+        ) : pageCount === 1 ? (
+          '123'
+        ) : null}
       </PageSection>
       <BottomLoginWrapper onClick={goToLogin}>
         <BottomLoginWrapperText>이미 회원이신가요?</BottomLoginWrapperText>
@@ -120,7 +121,7 @@ const RegisterWrapper = styled.div`
 `;
 
 const TopSection = styled.section`
-  padding: 0px 10px;
+  padding: 0px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
