@@ -40,7 +40,7 @@ const SecondContent = () => {
   const selectButton = (value: React.SetStateAction<number>) => {
     setUploadObj({
       ...uploadObj,
-      category: GAME_CATEGORY[selectedButton - 1],
+      category: 'lol',
     });
     setSelectedButton(value);
     console.log(uploadObj);
