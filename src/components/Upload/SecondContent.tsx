@@ -1,10 +1,14 @@
-import { isNext } from 'atom/uploadIsNext';
-import { uploadModalStep } from 'atom/uploadModalAtom';
-import { uploadSelectedFile } from 'atom/uploadSelectedFile';
-import Button from 'common/Button';
-import React, { useContext, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import React, { useContext, useState, useEffect } from 'react';
 import styled, { ThemeContext } from 'styled-components';
+import useUpload from 'hooks/useUpload/useUpload';
+import Button from 'common/Button';
+
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { uploadModalStep } from 'atom/uploadModalAtom';
+import { myProfileAtom } from 'atom/profileAtom';
+import { uploadSelectedFile } from 'atom/uploadSelectedFile';
+import { isNext } from 'atom/uploadIsNext';
+
 import {
   enabledButtonStyle,
   getButtonStyleByCondition,
@@ -16,31 +20,51 @@ interface IActiveStyleProps {
   active: boolean;
 }
 
+const GAME_CATEGORY = ['리그오브레전드', '배틀그라운드', '오버워치'];
+
 const SecondContent = () => {
   const themeStyle = useContext(ThemeContext);
   const isNextContent = useRecoilValue(isNext);
 
-  const useRecoilSeletedFile = useRecoilValue(uploadSelectedFile);
+  const selectedFile = useRecoilValue(uploadSelectedFile);
+  const myProfile = useRecoilValue(myProfileAtom);
   const [currentStep, setCurrentStep] = useRecoilState(uploadModalStep);
 
   const [text, setText] = useState('');
   const [selectedButton, setSelectedButton] = useState(0);
   const [readyToUpload, setReadyToUpload] = useState(false);
+
+  const { uploadObj, setUploadObj, handleUpload, uploadErrorStatus } =
+    useUpload();
+
   const selectButton = (value: React.SetStateAction<number>) => {
+    console.log(uploadObj);
+    setUploadObj({
+      ...uploadObj,
+      category: GAME_CATEGORY[selectedButton - 1],
+    });
     setSelectedButton(value);
+    console.log(uploadObj);
   };
   const handleChange = (e: any) => {
+    setUploadObj({
+      ...uploadObj,
+      description: e.target.value,
+    });
     setText(e.target.value);
   };
   const onClickUpload = () => {
-    if (selectedButton > 0) setCurrentStep(currentStep + 1);
+    if (selectedButton > 0) {
+      handleUpload();
+      setCurrentStep(currentStep + 1);
+    }
   };
 
   return (
     <ContentWrapper active={currentStep === EUploadStep.SECOND_STEP}>
       <FlexWrapper>
         <VideoWrapper>
-          <video autoPlay muted loop src={useRecoilSeletedFile as string} />
+          <video autoPlay muted loop src={selectedFile as string} />
         </VideoWrapper>
         <VideoContentWrapper>
           <VideoContent>

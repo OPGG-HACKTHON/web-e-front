@@ -5,8 +5,10 @@ import styled, { ThemeContext } from 'styled-components';
 import UploadFind from 'assets/svg/upload_1.svg';
 import LevelOne from 'assets/svg/upload_level_1.svg';
 import Button from 'common/Button';
+import useUpload from 'hooks/useUpload/useUpload';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { isNext } from 'atom/uploadIsNext';
+import { myProfileAtom } from 'atom/profileAtom';
 import { uploadModalStep } from 'atom/uploadModalAtom';
 import { uploadSelectedFile } from 'atom/uploadSelectedFile';
 import { EUploadStep } from 'enum/uploadStep.enum';
@@ -17,10 +19,12 @@ interface IActiveStyleProps {
 
 const FirstContent = () => {
   const themeStyle = useContext(ThemeContext);
+  const myProfile = useRecoilValue(myProfileAtom);
   const [selectedFile, setSelectedFile] = useState<string | ArrayBuffer | null>(
     ''
   );
   const setRecoilSelectedFile = useSetRecoilState(uploadSelectedFile);
+
   const onChange = (event: any) => {
     const file = event.target.files[0];
     const reader = new FileReader();
