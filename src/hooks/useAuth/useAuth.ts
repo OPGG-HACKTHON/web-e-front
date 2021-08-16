@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useState, useEffect } from 'react';
 import { login, register } from 'api/auth/auth';
 import useProfile from 'hooks/useProfile/useProfile';
@@ -5,6 +6,9 @@ import { loginDto, registerDto } from 'api/auth/auth.dto';
 import Token from 'lib/token';
 import customAxios from 'lib/axios';
 import { termsCheckedProps } from 'types/auth';
+import { EButtonType } from 'components/Auth/Register/Register';
+import { useRecoilState } from 'recoil';
+import { termsCheckedAtom, allAgreeTerms, userInfo } from 'atom/authAtom';
 
 const useAuth = () => {
   const [loginObj, setLoginObj] = useState<loginDto>({
@@ -16,17 +20,9 @@ const useAuth = () => {
   const [isLoginModal, setIsLoginModal] = useState(false);
   const [loginErrorStatus, setLoginErrorStatus] = useState<number>(0);
   const [isRegisterModal, setIsRegisterModal] = useState(false);
-  const [termsChecked, setTermsChecked] = useState<termsCheckedProps>({
-    utilization: false,
-    personalinformation: false,
-    pushEvent: false,
-  });
-  const [registerObj, setRegisterObj] = useState<registerDto>({
-    userId: '',
-    userName: '',
-    userPassword: '',
-    userEmail: '',
-  });
+  const [termsChecked, setTermsChecked] = useRecoilState(termsCheckedAtom);
+  const [registerObj, setRegisterObj] = useRecoilState(userInfo);
+  const [allAgree, setAllAgree] = useRecoilState(allAgreeTerms);
 
   const handleLogin = useCallback(async () => {
     try {
@@ -86,6 +82,49 @@ const useAuth = () => {
     setIsRegisterModal(true);
   }, []);
 
+  const handleCheckAllAgree = useCallback(() => {
+    setAllAgree((prev) => !prev);
+    if (!allAgree) {
+      setTermsChecked({
+        utilization: true,
+        personalinformation: true,
+        pushEvent: true,
+      });
+    } else {
+      setTermsChecked({
+        utilization: false,
+        personalinformation: false,
+        pushEvent: false,
+      });
+    }
+  }, [allAgree, setTermsChecked]);
+
+  const handleCheckedTerms = useCallback(
+    (name: string) => {
+      setTermsChecked((prev: termsCheckedProps) => ({
+        ...prev,
+        [name]: !termsChecked[name],
+      }));
+    },
+    [setTermsChecked, termsChecked]
+  );
+
+  useEffect(() => {
+    if (
+      termsChecked.utilization &&
+      termsChecked.personalinformation &&
+      termsChecked.pushEvent
+    ) {
+      setAllAgree(true);
+    } else {
+      setAllAgree(false);
+    }
+  }, [
+    termsChecked.personalinformation,
+    termsChecked.pushEvent,
+    termsChecked.utilization,
+  ]);
+
   return {
     loginObj,
     setLoginObj,
@@ -102,8 +141,8 @@ const useAuth = () => {
     isRegisterModal,
     handleGoToLoginModal,
     handleGoToRegisterModal,
-    termsChecked,
-    setTermsChecked,
+    handleCheckAllAgree,
+    handleCheckedTerms,
   };
 };
 

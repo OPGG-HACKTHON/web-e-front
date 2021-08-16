@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, CSSProperties } from 'react';
 import styled from 'styled-components';
 
 type Props = {
@@ -17,6 +17,8 @@ type Props = {
   paddingStyle: string;
   fontColor?: string;
   name: string;
+  focusOutline?: string;
+  focusBackgroundColor?: string;
 };
 
 interface IInputStyleProps {
@@ -30,6 +32,8 @@ interface IInputStyleProps {
   paddingStyle: string;
   placeHolderFontSize: string;
   fontColor: string;
+  focusOutline: string;
+  focusBackgroundColor: string;
 }
 
 const Input = ({
@@ -48,6 +52,8 @@ const Input = ({
   placeHolderFontSize = '1rem',
   fontColor = '#000',
   name,
+  focusOutline = '',
+  focusBackgroundColor = '',
 }: Props) => {
   return (
     <InputItem
@@ -66,6 +72,8 @@ const Input = ({
       placeHolderFontSize={placeHolderFontSize}
       fontColor={fontColor}
       name={name}
+      focusOutline={focusOutline}
+      focusBackgroundColor={focusBackgroundColor}
     />
   );
 };
@@ -89,6 +97,8 @@ const InputItem = styled.input<IInputStyleProps>`
 
   &:focus {
     outline: none;
+    background-color: ${({ focusBackgroundColor }) => focusBackgroundColor};
+    border: ${({ focusOutline }) => focusOutline};
   }
 `;
 
@@ -102,4 +112,6 @@ Input.defaultProps = {
   placeHolderFontSize: '1rem',
   placeHolderColor: '#000',
   fontColor: '#000',
+  focusOutline: '',
+  focusBackgroundColor: '',
 };

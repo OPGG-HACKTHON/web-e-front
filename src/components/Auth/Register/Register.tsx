@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import BACK_ARROW_IMG from 'assets/svg/backArrow.svg';
 import CLOSE_BUTTON from 'assets/svg/X.svg';
 import AgreementTerms from './RegisterPage/AgreementTerms';
+import UserInfoInput from './RegisterPage/UserInfoInput';
 
 type Props = {
   goToLogin: () => void;
@@ -18,7 +19,6 @@ export enum EButtonType {
 
 const Register = ({ goToLogin }: Props) => {
   const [pageCount, setPageCount] = useState(0);
-
   const pageHandler = useCallback(
     (buttonType: EButtonType) => () => {
       switch (buttonType) {
@@ -70,7 +70,7 @@ const Register = ({ goToLogin }: Props) => {
         {pageCount === 0 ? (
           <AgreementTerms pageHandler={pageHandler} />
         ) : pageCount === 1 ? (
-          '123'
+          <UserInfoInput pageHandler={pageHandler} />
         ) : null}
       </PageSection>
       <BottomLoginWrapper onClick={goToLogin}>

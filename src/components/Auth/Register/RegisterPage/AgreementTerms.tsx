@@ -1,9 +1,11 @@
 import Button from 'common/Button';
 import CheckBox from 'common/CheckBox';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useMemo, memo } from 'react';
 import styled from 'styled-components';
 import useAuth from 'hooks/useAuth';
 import { termsCheckedProps } from 'types/auth';
+import { useRecoilValue } from 'recoil';
+import { allAgreeTerms, termsCheckedAtom } from 'atom/authAtom';
 
 import { color, typography } from 'styles/theme';
 import { EButtonType } from '../Register';
@@ -13,9 +15,9 @@ type Props = {
 };
 
 const AgreementTerms = ({ pageHandler }: Props) => {
-  const [allAgree, setAllAgree] = useState(false);
-  const { termsChecked, setTermsChecked } = useAuth();
-
+  const { handleCheckAllAgree, handleCheckedTerms } = useAuth();
+  const termsChecked = useRecoilValue(termsCheckedAtom);
+  const allAgree = useRecoilValue(allAgreeTerms);
   const buttonProps = useMemo(() => {
     if (termsChecked.utilization && termsChecked.personalinformation) {
       return {
@@ -36,49 +38,6 @@ const AgreementTerms = ({ pageHandler }: Props) => {
       bkgColor: color.grayScale[50],
     };
   }, [pageHandler, termsChecked.personalinformation, termsChecked.utilization]);
-
-  const handleCheckAllAgree = useCallback(() => {
-    setAllAgree((prev) => !prev);
-    if (!allAgree) {
-      setTermsChecked({
-        utilization: true,
-        personalinformation: true,
-        pushEvent: true,
-      });
-    } else {
-      setTermsChecked({
-        utilization: false,
-        personalinformation: false,
-        pushEvent: false,
-      });
-    }
-  }, [allAgree, setTermsChecked]);
-
-  const handleCheckedTerms = useCallback(
-    (name: string) => {
-      setTermsChecked((prev: termsCheckedProps) => ({
-        ...prev,
-        [name]: !termsChecked[name],
-      }));
-    },
-    [setTermsChecked, termsChecked]
-  );
-
-  useEffect(() => {
-    if (
-      termsChecked.utilization &&
-      termsChecked.personalinformation &&
-      termsChecked.pushEvent
-    ) {
-      setAllAgree(true);
-    } else {
-      setAllAgree(false);
-    }
-  }, [
-    termsChecked.personalinformation,
-    termsChecked.pushEvent,
-    termsChecked.utilization,
-  ]);
 
   return (
     <AgreementTermsWrapper>
@@ -141,7 +100,7 @@ const AgreementTerms = ({ pageHandler }: Props) => {
   );
 };
 
-export default AgreementTerms;
+export default memo(AgreementTerms);
 
 const AgreementTermsWrapper = styled.div``;
 
