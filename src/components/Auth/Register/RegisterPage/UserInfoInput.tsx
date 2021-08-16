@@ -139,7 +139,7 @@ const UserInfoInput = ({ pageHandler }: Props) => {
           />
           {(registerObj.userName.length >= 1 &&
             registerObj.userName.length < 3) ===
-          !regName.test(registerObj.userName) ? (
+          !regName.test(registerObj.userName.slice()) ? (
             <NoticeProvision>
               ⚠︎ 최소 3자이상 영문자, 숫자, _ 만 입력 가능합니다.
             </NoticeProvision>

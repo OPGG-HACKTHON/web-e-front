@@ -28,3 +28,18 @@ export const userInfo = atom<registerDto>({
   key: 'userInfo',
   default: initUserData,
 });
+
+export const SELECT_LOL_TIER = atom({
+  key: 'SELECT_LOL_TIER',
+  default: 'UNRANKED',
+});
+
+export const SELECT_OVERWATCH_TIER = atom({
+  key: 'SELECT_OVERWATCH_TIER',
+  default: 'UNRANKED',
+});
+
+export const SELECT_PUBG_TIER = atom({
+  key: 'SELECT_PUBG_TIER',
+  default: 'UNRANKED',
+});

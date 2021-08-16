@@ -7,6 +7,7 @@ import BACK_ARROW_IMG from 'assets/svg/backArrow.svg';
 import CLOSE_BUTTON from 'assets/svg/X.svg';
 import AgreementTerms from './RegisterPage/AgreementTerms';
 import UserInfoInput from './RegisterPage/UserInfoInput';
+import AdditionalInfo from './RegisterPage/AdditionalInfo';
 
 type Props = {
   goToLogin: () => void;
@@ -71,7 +72,9 @@ const Register = ({ goToLogin }: Props) => {
           <AgreementTerms pageHandler={pageHandler} />
         ) : pageCount === 1 ? (
           <UserInfoInput pageHandler={pageHandler} />
-        ) : null}
+        ) : (
+          <AdditionalInfo pageHandler={pageHandler} />
+        )}
       </PageSection>
       <BottomLoginWrapper onClick={goToLogin}>
         <BottomLoginWrapperText>이미 회원이신가요?</BottomLoginWrapperText>
