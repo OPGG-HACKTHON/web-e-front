@@ -8,6 +8,7 @@ import Register from 'components/Auth/Register';
 import ModalContainer from 'common/ModalContainer';
 import UnderToggleLayer from 'common/UnderToggleLayer';
 import { ItemStyle } from 'common/UnderToggleLayer/UnderToggleLayer';
+
 import { color, typography } from 'styles/theme';
 import { useRecoilValue } from 'recoil';
 import { myProfileAtom } from 'atom/profileAtom';
@@ -45,6 +46,7 @@ const Nav = () => {
     handleGoToRegisterModal,
   } = useAuth();
 
+  console.log(clickAlramPosition, clickProfilePosition);
   return (
     <>
       <NavWrapper>
