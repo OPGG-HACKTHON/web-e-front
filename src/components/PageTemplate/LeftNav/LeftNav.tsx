@@ -4,8 +4,9 @@ import useNav from 'hooks/useNav';
 import useProfile from 'hooks/useProfile/useProfile';
 import Button from 'common/Button';
 
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { leftNavItemState } from 'atom/pageAtom';
+import { uploadModalPopState } from 'atom/uploadModalPopStateAtom';
 import { color, typography } from 'styles/theme';
 import { EGameList } from 'enum/game.enum';
 import { myProfileAtom } from 'atom/profileAtom';
@@ -18,6 +19,8 @@ const LeftNav = () => {
   const { handleSelectNavItem } = useNav();
   const selectNavName = useRecoilValue(leftNavItemState);
   const myProfile = useRecoilValue(myProfileAtom);
+  const [isUploadModalPoped, setUploadModalPopstate] =
+    useRecoilState(uploadModalPopState);
   const isSelectedGameArg = useCallback(
     (arg: EGameList) => {
       return arg === selectNavName;
@@ -25,12 +28,15 @@ const LeftNav = () => {
     [selectNavName]
   );
   const { handleMyProfile } = useProfile();
-
   useEffect(() => {
     handleMyProfile();
   }, [handleMyProfile]);
+  // console.log(myProfile);
 
-  console.log(myProfile);
+  const onClickUpload = () => {
+    if (myProfile?.id) setUploadModalPopstate(true);
+    else alert('로그인이 필요한 기능입니다!');
+  };
 
   // TODO: 일단 컴포넌트 다 만들고 생각해야겠당 잠와..
   return (
@@ -45,6 +51,7 @@ const LeftNav = () => {
           </UserInfoSection>
           <Button
             text="업로드"
+            onClick={onClickUpload}
             fontColor={color.white}
             bkgColor={color.yellow}
             padding=""

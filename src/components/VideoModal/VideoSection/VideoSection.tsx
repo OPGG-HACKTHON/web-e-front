@@ -19,8 +19,9 @@ const VideoSection = ({ videoSrc }: Props) => {
           width: '100%',
           height: '100%',
           position: 'absolute',
-          objectFit: 'cover',
+          objectFit: 'contain',
           zIndex: 0,
+          background: '#000',
         }}
       >
         <source src={videoSrc} type="video/mp4" />
