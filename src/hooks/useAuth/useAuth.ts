@@ -5,7 +5,6 @@ import { loginDto, registerDto } from 'api/auth/auth.dto';
 import Token from 'lib/token';
 import customAxios from 'lib/axios';
 import { termsCheckedProps } from 'types/auth';
-import { EButtonType } from 'components/Auth/Register/Register';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   termsCheckedAtom,
@@ -69,7 +68,7 @@ const useAuth = () => {
     const temp = [
       { name: 'LOL', index: LOL_INDEX },
       { name: 'PUBG', index: PUBG_INDEX },
-      { name: 'OVERWATCH', index: OVERWATCH_INDEX },
+      { name: 'WATCH', index: OVERWATCH_INDEX },
     ];
 
     temp.sort((a, b) => {
@@ -78,37 +77,29 @@ const useAuth = () => {
     return temp[0].name;
   }, [LOL_TIER_SELECT, OVERWATCH_TIER_SELECT, PUBG_TIER_SELECT]);
 
-  console.log(
-    'outer',
-    LOL_TIER_SELECT,
-    PUBG_TIER_SELECT,
-    OVERWATCH_TIER_SELECT
-  );
-
   const handleRegister = useCallback(async () => {
     try {
-      console.log(
-        'inner',
-        LOL_TIER_SELECT,
-        PUBG_TIER_SELECT,
-        OVERWATCH_TIER_SELECT
-      );
-
       const temp: any = {
         ...registerObj,
-        // userFeed: FIND_GAME_TOP,
+        userFeed: FIND_GAME_TOP,
         lolTier: LOL_TIER_SELECT,
         pubgTier: PUBG_TIER_SELECT,
         watchTier: OVERWATCH_TIER_SELECT,
       };
-      console.log(temp);
+
       const data = await register(temp);
-      console.log(data);
+
       return data;
     } catch (err) {
       return err;
     }
-  }, [LOL_TIER_SELECT, OVERWATCH_TIER_SELECT, PUBG_TIER_SELECT, registerObj]);
+  }, [
+    FIND_GAME_TOP,
+    LOL_TIER_SELECT,
+    OVERWATCH_TIER_SELECT,
+    PUBG_TIER_SELECT,
+    registerObj,
+  ]);
 
   const handleLogout = useCallback(() => {
     Token.removeToken('access_token');
