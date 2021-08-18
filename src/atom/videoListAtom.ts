@@ -1,25 +1,44 @@
 import { atom, RecoilValue, selector } from 'recoil';
 import { datas } from 'data/main';
+import getVideos from 'api/video/video';
 import { leftNavItemState } from './pageAtom';
 import { selectorState } from './selectorAtom';
 
-// eslint-disable-next-line import/prefer-default-export
-export const videoListState = atom({
+export const getVideoTrigger = atom({
+  key: '_getVideoTrigger',
+  default: 0,
+});
+
+export const videoListState = selector({
   key: 'videoListState',
-  default: datas.videos,
+  get: async ({ get }) => {
+    get(getVideoTrigger);
+    const response = await getVideos();
+    return response.data;
+  },
+  set: ({ set }) => {
+    set(getVideoTrigger, (v) => v + 1);
+  },
 });
 
 export const vListByCategoryState = selector({
   key: 'vListByCategoryState',
   get: ({ get }) => {
     const selectNavName = get(leftNavItemState);
+    const videos = get(videoListState);
     let returnArr: any[] | Promise<any[]> | RecoilValue<any[]> = [];
     if (selectNavName === 'lol') {
-      returnArr = datas.videos.filter((data) => data.category === 'lol');
+      returnArr = videos.filter(
+        (data: { category: string }) => data.category === 'lol'
+      );
     } else if (selectNavName === 'pubg') {
-      returnArr = datas.videos.filter((data) => data.category === 'pubg');
+      returnArr = videos.filter(
+        (data: { category: string }) => data.category === 'pubg'
+      );
     } else if (selectNavName === 'overwatch') {
-      returnArr = datas.videos.filter((data) => data.category === 'overwatch');
+      returnArr = videos.filter(
+        (data: { category: string }) => data.category === 'overwatch'
+      );
     }
     return returnArr;
   },

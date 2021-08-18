@@ -7,7 +7,7 @@ import { typography } from 'styles/theme';
 export interface Iprops {
   src: string;
   describe: string;
-  hashtag: string;
+  // hashtag: string;
   likes: number;
   comments: number;
   pName: string;
@@ -20,7 +20,7 @@ const LazyVideo = lazy(() => import('./LazyVideo'));
 const LazyItem = ({
   src,
   describe,
-  hashtag,
+  // hashtag,
   likes,
   comments,
   pName,
@@ -28,62 +28,62 @@ const LazyItem = ({
   pFollowNum,
 }: Iprops) => {
   const themeStyle = useContext(ThemeContext);
-  const splitedHashtags = hashtag.split(' ');
+  // const splitedHashtags = hashtag.split(' ');
   return (
     <VideoItem>
-      <Suspense fallback={<div>...loading</div>}>
-        <LazyVideo
-          src={src}
-          describe={describe}
-          hashtag={hashtag}
-          likes={likes}
-          comments={comments}
-          pName={pName}
-          pPic={pPic}
-          pFollowNum={pFollowNum}
-        />
-        <InfoWrapper>
-          <div className="poster_info">
-            <PosterImgBtn
-              className="poster_img"
-              onClick={() => console.log('posteruserspage')}
+      {/* <Suspense fallback={<div>...loading</div>}> */}
+      <LazyVideo
+        src={src}
+        describe={describe}
+        // hashtag={hashtag}
+        likes={likes}
+        comments={comments}
+        pName={pName}
+        pPic={pPic}
+        pFollowNum={pFollowNum}
+      />
+      <InfoWrapper>
+        <div className="poster_info">
+          <PosterImgBtn
+            className="poster_img"
+            onClick={() => console.log('posteruserspage')}
+          >
+            <img src={pPic} alt="alt" className="userPicImg" />
+          </PosterImgBtn>
+          <PosterNameBtn onClick={() => console.log('posteruserspage')}>
+            <div className="poster_name">{pName}</div>
+            <div className="poster_followers">팔로워 {pFollowNum}</div>
+          </PosterNameBtn>
+          <div className="follow_btn_div">
+            <Button
+              text="팔로우"
+              onClick={() => console.log('팔로우')}
+              fontColor={themeStyle.color.white}
+              bkgColor={themeStyle.color.yellow}
+              padding="0.8rem 0.7rem"
+              width={5.5}
+              height={2.3}
+              borderRadius={0.5}
+              fontStyle={typography.bodyRgBold}
+              hoverBkgColor={themeStyle.color.white}
+              hoverFontColor={themeStyle.color.yellow}
+            />
+          </div>
+        </div>
+        <div className="desc_div">
+          <span className="describe_span">{describe}</span>
+          {/* {splitedHashtags.map((tag: string) => (
+            <Hashtag
+              onClick={() => console.log('팔로우')}
+              key={splitedHashtags.indexOf(`${tag}`)}
             >
-              <img src={pPic} alt="alt" className="userPicImg" />
-            </PosterImgBtn>
-            <PosterNameBtn onClick={() => console.log('posteruserspage')}>
-              <div className="poster_name">{pName}</div>
-              <div className="poster_followers">팔로워 {pFollowNum}</div>
-            </PosterNameBtn>
-            <div className="follow_btn_div">
-              <Button
-                text="팔로우"
-                onClick={() => console.log('팔로우')}
-                fontColor={themeStyle.color.white}
-                bkgColor={themeStyle.color.yellow}
-                padding="0.8rem 0.7rem"
-                width={5.5}
-                height={2.3}
-                borderRadius={0.5}
-                fontStyle={typography.bodyRgBold}
-                hoverBkgColor={themeStyle.color.white}
-                hoverFontColor={themeStyle.color.yellow}
-              />
-            </div>
-          </div>
-          <div className="desc_div">
-            <span className="describe_span">{describe}</span>
-            {splitedHashtags.map((tag: string) => (
-              <Hashtag
-                onClick={() => console.log('팔로우')}
-                key={splitedHashtags.indexOf(`${tag}`)}
-              >
-                {tag}
-              </Hashtag>
-            ))}
-          </div>
-        </InfoWrapper>
-        <Line />
-      </Suspense>
+              {tag}
+            </Hashtag>
+          ))} */}
+        </div>
+      </InfoWrapper>
+      <Line />
+      {/* </Suspense> */}
     </VideoItem>
   );
 };

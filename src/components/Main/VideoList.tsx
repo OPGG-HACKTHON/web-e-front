@@ -22,7 +22,7 @@ const VideoList = () => {
               key={data.id}
               src={data.src}
               describe={data.describe}
-              hashtag={data.hashtag}
+              // hashtag={data.hashtag}
               likes={data.likes}
               comments={data.comments}
               pName={data.poster.name}
@@ -47,7 +47,7 @@ const VideoList = () => {
               key={data.id}
               src={data.src}
               describe={data.describe}
-              hashtag={data.hashtag}
+              // hashtag={data.hashtag}
               likes={data.likes}
               comments={data.comments}
               pName={data.poster.name}
