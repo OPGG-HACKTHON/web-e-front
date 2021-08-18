@@ -10,7 +10,7 @@ type Props = {
 
 const VideoModal = ({ videoSrc }: Props) => {
   return (
-    <>
+    <ModalContentWrapper>
       <ModalLeftContent>
         <VideoSection videoSrc={videoSrc} />
       </ModalLeftContent>
@@ -18,17 +18,12 @@ const VideoModal = ({ videoSrc }: Props) => {
         <UploaderSection />
         <CommentSection />
       </ModalRightContent>
-    </>
+    </ModalContentWrapper>
   );
 };
 
 const ModalContentWrapper = styled.div`
-  position: fixed;
-  height: 682px;
-  width: 770px;
-  border-radius: 5px;
-  background: #fff;
-  display: flex;
+  display: contents;
 `;
 
 const ModalLeftContent = styled.div`
