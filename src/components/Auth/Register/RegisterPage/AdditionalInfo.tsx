@@ -53,7 +53,6 @@ const AdditionalInfo = ({ pageHandler }: Props) => {
     [handleRegister]
   );
 
-  console.log(selectLol);
   return (
     <AdditionalInfoWrapper>
       <TopText>회원님의 게임 티어를 선택해주세요. 건너뛸 수 있습니다.</TopText>

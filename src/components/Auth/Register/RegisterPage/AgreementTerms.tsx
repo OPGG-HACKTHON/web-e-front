@@ -122,7 +122,7 @@ const HorizontalLine = styled.div`
 
 const TermsWrapper = styled.div`
   width: 100%;
-  height: 374px;
+  height: 325px;
   overflow-y: auto;
   position: relative;
 `;

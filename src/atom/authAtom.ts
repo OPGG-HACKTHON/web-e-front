@@ -43,3 +43,18 @@ export const SELECT_PUBG_TIER = atom({
   key: 'SELECT_PUBG_TIER',
   default: 'UNRANKED',
 });
+
+export const isLoginModalAtom = atom<boolean>({
+  key: 'isLoginModalAtom',
+  default: false,
+});
+
+export const isRegisterModalAtom = atom<boolean>({
+  key: 'isRegisterModalAtom',
+  default: false,
+});
+
+export const registerStatusAtom = atom<number>({
+  key: 'registerStatus',
+  default: 0,
+});

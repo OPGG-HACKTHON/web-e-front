@@ -5,7 +5,7 @@ import { loginDto, registerDto } from 'api/auth/auth.dto';
 import Token from 'lib/token';
 import customAxios from 'lib/axios';
 import { termsCheckedProps } from 'types/auth';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
   termsCheckedAtom,
   allAgreeTerms,
@@ -13,6 +13,9 @@ import {
   SELECT_LOL_TIER,
   SELECT_OVERWATCH_TIER,
   SELECT_PUBG_TIER,
+  isLoginModalAtom,
+  isRegisterModalAtom,
+  registerStatusAtom,
 } from 'atom/authAtom';
 import { LOL_TIER, OVERWATCH_TIER, PUBG_TIER } from 'model/authModel';
 
@@ -23,9 +26,12 @@ const useAuth = () => {
   });
   const { handleMyProfile } = useProfile();
 
-  const [isLoginModal, setIsLoginModal] = useState(false);
+  const [isLoginModal, setIsLoginModal] = useRecoilState(isLoginModalAtom);
   const [loginErrorStatus, setLoginErrorStatus] = useState<number>(0);
-  const [isRegisterModal, setIsRegisterModal] = useState(false);
+  const [isRegisterSuccess, setIsRegisterSuccess] = useState(true);
+  const [isRegisterModal, setIsRegisterModal] =
+    useRecoilState(isRegisterModalAtom);
+  const setRegisterStatus = useSetRecoilState(registerStatusAtom);
   const [termsChecked, setTermsChecked] = useRecoilState(termsCheckedAtom);
   const [registerObj, setRegisterObj] = useRecoilState(userInfo);
   const [allAgree, setAllAgree] = useRecoilState(allAgreeTerms);
@@ -56,7 +62,7 @@ const useAuth = () => {
 
       return err;
     }
-  }, [handleMyProfile, loginObj]);
+  }, [handleMyProfile, loginObj, setIsLoginModal]);
 
   const FIND_GAME_TOP = useMemo(() => {
     const LOL_INDEX = LOL_TIER.findIndex((i) => i.value === LOL_TIER_SELECT);
@@ -88,9 +94,15 @@ const useAuth = () => {
       };
 
       const data = await register(temp);
-
+      const { status } = data;
+      if (status === 201) {
+        setRegisterStatus(status);
+        setIsRegisterModal(false);
+      }
       return data;
     } catch (err) {
+      const { status } = err.response;
+      setRegisterStatus(status);
       return err;
     }
   }, [
@@ -99,6 +111,8 @@ const useAuth = () => {
     OVERWATCH_TIER_SELECT,
     PUBG_TIER_SELECT,
     registerObj,
+    setIsRegisterModal,
+    setRegisterStatus,
   ]);
 
   const handleLogout = useCallback(() => {
@@ -108,21 +122,30 @@ const useAuth = () => {
 
   const handleLoginModal = useCallback(() => {
     setIsLoginModal((prev) => !prev);
-  }, []);
+  }, [setIsLoginModal]);
 
   const handleRegisterModal = useCallback(() => {
     setIsRegisterModal((prev) => !prev);
-  }, []);
+  }, [setIsRegisterModal]);
 
   const handleGoToLoginModal = useCallback(() => {
     setIsRegisterModal(false);
     setIsLoginModal(true);
-  }, []);
+  }, [setIsLoginModal, setIsRegisterModal]);
 
   const handleGoToRegisterModal = useCallback(() => {
     setIsLoginModal(false);
     setIsRegisterModal(true);
+  }, [setIsLoginModal, setIsRegisterModal]);
+
+  const handleSuccessRegisterModal = useCallback(() => {
+    setIsRegisterSuccess((prev) => !prev);
   }, []);
+
+  const closeWelcomModalGoToLoginModal = useCallback(() => {
+    setIsLoginModal(true);
+    setIsRegisterSuccess(false);
+  }, [setIsLoginModal]);
 
   const handleCheckAllAgree = useCallback(() => {
     setAllAgree((prev) => !prev);
@@ -186,6 +209,9 @@ const useAuth = () => {
     handleGoToRegisterModal,
     handleCheckAllAgree,
     handleCheckedTerms,
+    handleSuccessRegisterModal,
+    isRegisterSuccess,
+    closeWelcomModalGoToLoginModal,
   };
 };
 
