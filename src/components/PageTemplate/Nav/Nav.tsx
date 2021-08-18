@@ -123,7 +123,6 @@ const Nav = () => {
         isPopup={isLoginModal}
         onClickOverlay={handleLoginModal}
         width={46}
-        isHeight
         borderRadius={0.5}
         contentComponent={
           <Login
@@ -153,7 +152,6 @@ const Nav = () => {
         isPopup={isRegisterModal}
         onClickOverlay={handleRegisterModal}
         width={46}
-        isHeight
         borderRadius={0.5}
         contentComponent={<Register goToLogin={handleGoToLoginModal} />}
       />

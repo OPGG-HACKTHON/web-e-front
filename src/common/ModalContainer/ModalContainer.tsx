@@ -10,7 +10,6 @@ type Props = {
   width?: number;
   height?: number;
   borderRadius?: number;
-  isHeight?: boolean;
 };
 
 const ModalContainer = ({
@@ -20,7 +19,6 @@ const ModalContainer = ({
   width = 0,
   height = 0,
   borderRadius = 0,
-  isHeight = false,
 }: Props) => {
   const onClickOnlyOverlay = (e: React.MouseEvent<HTMLElement>) => {
     if (e.target !== e.currentTarget) return;
@@ -34,7 +32,6 @@ const ModalContainer = ({
         width={width}
         height={height}
         borderRadius={borderRadius}
-        isHeight={isHeight}
       />
     </Overlay>
   ) : (
@@ -66,5 +63,4 @@ ModalContainer.defaultProps = {
   width: 0,
   height: 0,
   borderRadius: 0,
-  isHeight: false,
 };
