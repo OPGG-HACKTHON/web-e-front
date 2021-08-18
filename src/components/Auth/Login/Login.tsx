@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import { CloseIcon, AlertIcon } from '@class101/ui';
+import { CloseIcon } from '@class101/ui';
 import { loginDto } from 'api/auth/auth.dto';
 import Button from 'common/Button';
 import Input from 'common/Input';
@@ -14,23 +14,49 @@ type Props = {
   setValue: Dispatch<SetStateAction<loginDto>>;
   login: () => void;
   status: number;
+  goToRegister: () => void;
 };
 
-const Login = ({ closeModal, value, setValue, login, status }: Props) => {
+enum EInputType {
+  ID,
+  PW,
+}
+
+const Login = ({
+  closeModal,
+  value,
+  setValue,
+  login,
+  status,
+  goToRegister,
+}: Props) => {
   const [inputLogin] = useInput<loginDto>();
 
-  const inputCommonStyle = useMemo(() => {
-    return {
-      height: '40px',
-      placeHolder: '아이디를 입력해 주세요.',
-      placeHolderFontSize: '1.2rem',
-      borderRadius: '5px',
-      borderStyle: `1px solid ${color.grayScale[250]}`,
-      backgroundColor: color.grayScale[50],
-      placeHolderColor: color.grayScale[500],
-      fontSize: '1.2rem',
-    };
-  }, []);
+  const inputCommonStyle = useMemo(
+    () => ({
+      [EInputType.ID]: {
+        height: '40px',
+        placeHolder: '아이디를 입력해 주세요.',
+        placeHolderFontSize: '1.2rem',
+        borderRadius: '5px',
+        borderStyle: `1px solid ${color.grayScale[250]}`,
+        backgroundColor: color.grayScale[50],
+        placeHolderColor: color.grayScale[500],
+        fontSize: '1.2rem',
+      },
+      [EInputType.PW]: {
+        height: '40px',
+        placeHolder: '비밀번호를 입력해 주세요.',
+        placeHolderFontSize: '1.2rem',
+        borderRadius: '5px',
+        borderStyle: `1px solid ${color.grayScale[250]}`,
+        backgroundColor: color.grayScale[50],
+        placeHolderColor: color.grayScale[500],
+        fontSize: '1.2rem',
+      },
+    }),
+    []
+  );
 
   const loginButtonStyle = useMemo(() => {
     return value.userId.length <= 0 || value.userPassword.length <= 0
@@ -58,23 +84,27 @@ const Login = ({ closeModal, value, setValue, login, status }: Props) => {
         <InputWrapper>
           <LabelText>아이디</LabelText>
           <Input
-            {...inputCommonStyle}
+            {...inputCommonStyle[EInputType.ID]}
             inputType="text"
             value={value.userId}
             onChange={(e) => inputLogin(e, setValue)}
             name="userId"
             paddingStyle="9px"
+            focusOutline={`1px solid ${color.yellow}`}
+            focusBackgroundColor={color.white}
           />
         </InputWrapper>
         <InputWrapper>
           <LabelText>비밀번호</LabelText>
           <Input
-            {...inputCommonStyle}
+            {...inputCommonStyle[EInputType.PW]}
             inputType="password"
             value={value.userPassword}
             onChange={(e) => inputLogin(e, setValue)}
             name="userPassword"
             paddingStyle="9px"
+            focusOutline={`1px solid ${color.yellow}`}
+            focusBackgroundColor={color.white}
           />
         </InputWrapper>
       </InputElementWrapper>
@@ -94,7 +124,7 @@ const Login = ({ closeModal, value, setValue, login, status }: Props) => {
           borderRadius={0.5}
         />
       </ButtonWrapper>
-      <RegisterButton>
+      <RegisterButton onClick={goToRegister}>
         <RegisterOfferText>계정이 없으신가요?</RegisterOfferText>
         <RegisterJoinText>가입하기</RegisterJoinText>
       </RegisterButton>

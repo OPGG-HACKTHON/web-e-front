@@ -4,9 +4,12 @@ import useNav from 'hooks/useNav';
 import Button from 'common/Button';
 import useAuth from 'hooks/useAuth';
 import Login from 'components/Auth/Login/Login';
+import Register from 'components/Auth/Register';
 import ModalContainer from 'common/ModalContainer';
 import UnderToggleLayer from 'common/UnderToggleLayer';
 import { ItemStyle } from 'common/UnderToggleLayer/UnderToggleLayer';
+import { registerStatusAtom } from 'atom/authAtom';
+import Welcome from 'components/Auth/Welcome';
 
 import { color, typography } from 'styles/theme';
 import { useRecoilValue } from 'recoil';
@@ -39,7 +42,16 @@ const Nav = () => {
     handleLogin,
     loginErrorStatus,
     handleLogout,
+    handleRegisterModal,
+    isRegisterModal,
+    handleGoToLoginModal,
+    handleGoToRegisterModal,
+    handleSuccessRegisterModal,
+    isRegisterSuccess,
+    closeWelcomModalGoToLoginModal,
   } = useAuth();
+
+  const registerStatus = useRecoilValue(registerStatusAtom);
 
   console.log(clickAlramPosition, clickProfilePosition);
   return (
@@ -92,7 +104,7 @@ const Nav = () => {
                 />
                 <Button
                   text="회원가입"
-                  onClick={() => console.log('REGISTER BUTTON')}
+                  onClick={handleRegisterModal}
                   fontColor={themeStyle.color.white}
                   bkgColor={themeStyle.color.yellow}
                   padding="0.8rem 0.7rem"
@@ -110,6 +122,8 @@ const Nav = () => {
       <ModalContainer
         isPopup={isLoginModal}
         onClickOverlay={handleLoginModal}
+        width={46}
+        borderRadius={0.5}
         contentComponent={
           <Login
             closeModal={handleLoginModal}
@@ -117,8 +131,29 @@ const Nav = () => {
             setValue={setLoginObj}
             login={handleLogin}
             status={loginErrorStatus}
+            goToRegister={handleGoToRegisterModal}
           />
         }
+      />
+
+      {registerStatus === 201 && (
+        <ModalContainer
+          width={46}
+          height={19.4}
+          isPopup={isRegisterSuccess}
+          onClickOverlay={handleSuccessRegisterModal}
+          borderRadius={0.5}
+          contentComponent={
+            <Welcome onClick={closeWelcomModalGoToLoginModal} />
+          }
+        />
+      )}
+      <ModalContainer
+        isPopup={isRegisterModal}
+        onClickOverlay={handleRegisterModal}
+        width={46}
+        borderRadius={0.5}
+        contentComponent={<Register goToLogin={handleGoToLoginModal} />}
       />
       <UnderToggleLayer
         width={84}
