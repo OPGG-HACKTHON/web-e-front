@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { EUploadStep } from 'enum/uploadStep.enum';
 import VideoWrapper from 'styles/mainStyles/videoComponents/videoWrapper';
 import ModalContainer from 'common/ModalContainer';
@@ -8,6 +8,7 @@ import MainWrapper from 'styles/mainStyles/videoComponents/MainWrapper';
 import Upload from 'components/Upload';
 import { uploadModalStep } from 'atom/uploadModalStepAtom';
 import { uploadModalPopState } from 'atom/uploadModalPopStateAtom';
+import { videoListState } from 'atom/videoListAtom';
 import VideoSelectBar from './VideoSelectBar';
 import VideoList from './VideoList';
 
@@ -16,8 +17,10 @@ const Main = () => {
     useRecoilState(uploadModalStep);
   const [isUploadModalPoped, setUploadModalPopState] =
     useRecoilState(uploadModalPopState);
+  const [_, refechVideoList] = useRecoilState(videoListState);
 
   const closeUploadModal = () => {
+    refechVideoList(0);
     setUploadModalPopState(false);
     setUploadModalStep(EUploadStep.FIRST_STEP);
   };
