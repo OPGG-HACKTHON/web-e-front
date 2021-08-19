@@ -16,6 +16,8 @@ import {
   isLoginModalAtom,
   isRegisterModalAtom,
   registerStatusAtom,
+  initUserData,
+  initTermsData,
 } from 'atom/authAtom';
 import { LOL_TIER, OVERWATCH_TIER, PUBG_TIER } from 'model/authModel';
 
@@ -35,9 +37,13 @@ const useAuth = () => {
   const [termsChecked, setTermsChecked] = useRecoilState(termsCheckedAtom);
   const [registerObj, setRegisterObj] = useRecoilState(userInfo);
   const [allAgree, setAllAgree] = useRecoilState(allAgreeTerms);
-  const LOL_TIER_SELECT = useRecoilValue(SELECT_LOL_TIER);
-  const PUBG_TIER_SELECT = useRecoilValue(SELECT_PUBG_TIER);
-  const OVERWATCH_TIER_SELECT = useRecoilValue(SELECT_OVERWATCH_TIER);
+  const [LOL_TIER_SELECT, SET_LOL_TIER_SELECT] =
+    useRecoilState(SELECT_LOL_TIER);
+  const [PUBG_TIER_SELECT, SET_PUBG_TIRE_SELECT] =
+    useRecoilState(SELECT_PUBG_TIER);
+  const [OVERWATCH_TIER_SELECT, SET_OVERWATCH_TIER_SELECT] = useRecoilState(
+    SELECT_OVERWATCH_TIER
+  );
 
   const handleLogin = useCallback(async () => {
     try {
@@ -98,6 +104,12 @@ const useAuth = () => {
       if (status === 201) {
         setRegisterStatus(status);
         setIsRegisterModal(false);
+        setRegisterObj(initUserData);
+        setTermsChecked(initTermsData);
+        setAllAgree(false);
+        SET_LOL_TIER_SELECT('UNRANKED');
+        SET_PUBG_TIRE_SELECT('UNRANKED');
+        SET_OVERWATCH_TIER_SELECT('UNRANKED');
       }
       return data;
     } catch (err) {
@@ -110,9 +122,15 @@ const useAuth = () => {
     LOL_TIER_SELECT,
     OVERWATCH_TIER_SELECT,
     PUBG_TIER_SELECT,
+    SET_LOL_TIER_SELECT,
+    SET_OVERWATCH_TIER_SELECT,
+    SET_PUBG_TIRE_SELECT,
     registerObj,
+    setAllAgree,
     setIsRegisterModal,
+    setRegisterObj,
     setRegisterStatus,
+    setTermsChecked,
   ]);
 
   const handleLogout = useCallback(() => {
