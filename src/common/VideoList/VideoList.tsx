@@ -1,18 +1,17 @@
-import { vListbySelectorState } from 'atom/videoListAtom';
 import React from 'react';
-import { useRecoilValue } from 'recoil';
 import LazyItem from './LazyItem';
+import { Props } from './Main';
 
-const VideoList = () => {
-  const list = useRecoilValue(vListbySelectorState);
+const VideoList = ({ videos, isNeedDescription }: Props) => {
+  // const list = useRecoilValue(vListbySelectorState);
   return (
     <>
       <div>
-        {list[0].map(
+        {videos[0].map(
           (data: {
             id: React.Key | null | undefined;
             src: string;
-            describe: string;
+            description: string;
             hashtag: string;
             likes: number;
             comments: number;
@@ -21,23 +20,24 @@ const VideoList = () => {
             <LazyItem
               key={data.id}
               src={data.src}
-              describe={data.describe}
+              description={data.description}
               // hashtag={data.hashtag}
               likes={data.likes}
               comments={data.comments}
               pName={data.poster.name}
               pPic={data.poster.picture}
               pFollowNum={data.poster.followNum}
+              isNeedDescription={isNeedDescription}
             />
           )
         )}
       </div>
       <div>
-        {list[1].map(
+        {videos[1].map(
           (data: {
             id: React.Key | null | undefined;
             src: string;
-            describe: string;
+            description: string;
             hashtag: string;
             likes: number;
             comments: number;
@@ -46,13 +46,14 @@ const VideoList = () => {
             <LazyItem
               key={data.id}
               src={data.src}
-              describe={data.describe}
+              description={data.description}
               // hashtag={data.hashtag}
               likes={data.likes}
               comments={data.comments}
               pName={data.poster.name}
               pPic={data.poster.picture}
               pFollowNum={data.poster.followNum}
+              isNeedDescription={isNeedDescription}
             />
           )
         )}

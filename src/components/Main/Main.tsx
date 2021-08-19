@@ -1,23 +1,21 @@
-import React, { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import React from 'react';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { EUploadStep } from 'enum/uploadStep.enum';
-import VideoWrapper from 'styles/mainStyles/videoComponents/videoWrapper';
 import ModalContainer from 'common/ModalContainer';
-import VideoModal from 'components/VideoModal';
 import MainWrapper from 'styles/mainStyles/videoComponents/MainWrapper';
 import Upload from 'components/Upload';
 import { uploadModalStep } from 'atom/uploadModalStepAtom';
 import { uploadModalPopState } from 'atom/uploadModalPopStateAtom';
-import { videoListState } from 'atom/videoListAtom';
+import { videoListState, vListbySelectorState } from 'atom/videoListAtom';
+import VideoListMain from 'common/VideoList/Main';
 import VideoSelectBar from './VideoSelectBar';
-import VideoList from './VideoList';
 
 const Main = () => {
   const [currentUploadModalStep, setUploadModalStep] =
     useRecoilState(uploadModalStep);
   const [isUploadModalPoped, setUploadModalPopState] =
     useRecoilState(uploadModalPopState);
-  const [_, refechVideoList] = useRecoilState(videoListState);
+  const refechVideoList = useSetRecoilState(videoListState);
 
   const closeUploadModal = () => {
     refechVideoList(0);
@@ -25,19 +23,8 @@ const Main = () => {
     setUploadModalStep(EUploadStep.FIRST_STEP);
   };
 
-  const [isVideoModalOpen, setVideoModalOpen] = useState(false);
-  const [videoModalSrc, setVideoModalSrc] = useState('');
-
-  const openVideoModal = (e: React.MouseEvent<HTMLElement>) => {
-    if ((e.target as HTMLElement).tagName === 'VIDEO') {
-      setVideoModalOpen(true);
-      setVideoModalSrc((e.target as HTMLMediaElement).currentSrc);
-    }
-  };
-
-  const closeVideoModal = (e: React.MouseEvent<HTMLElement>) => {
-    setVideoModalOpen(false);
-  };
+  const videos = useRecoilValue(vListbySelectorState);
+  const isNeedDescription = true;
   return (
     <MainWrapper>
       <ModalContainer
@@ -49,17 +36,7 @@ const Main = () => {
         borderRadius={0.5}
       />
       <VideoSelectBar />
-      <ModalContainer
-        isPopup={isVideoModalOpen}
-        onClickOverlay={closeVideoModal}
-        contentComponent={<VideoModal videoSrc={videoModalSrc} />}
-        width={77}
-        height={68.2}
-        borderRadius={0.5}
-      />
-      <VideoWrapper onClick={openVideoModal}>
-        <VideoList />
-      </VideoWrapper>
+      <VideoListMain videos={videos} isNeedDescription={isNeedDescription} />
     </MainWrapper>
   );
 };
