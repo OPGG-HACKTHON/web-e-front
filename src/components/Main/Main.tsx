@@ -1,22 +1,28 @@
 import React, { useState } from 'react';
-// import { datas } from 'data/main';
+import { useRecoilState } from 'recoil';
+import { EUploadStep } from 'enum/uploadStep.enum';
 import VideoWrapper from 'styles/mainStyles/videoComponents/videoWrapper';
 import ModalContainer from 'common/ModalContainer';
 import VideoModal from 'components/VideoModal';
 import MainWrapper from 'styles/mainStyles/videoComponents/MainWrapper';
 import Upload from 'components/Upload';
+import { uploadModalStep } from 'atom/uploadModalStepAtom';
+import { uploadModalPopState } from 'atom/uploadModalPopStateAtom';
+import { videoListState } from 'atom/videoListAtom';
 import VideoSelectBar from './VideoSelectBar';
 import VideoList from './VideoList';
 
 const Main = () => {
-  const [isUploadModalOpen, setUploadModalOpen] = useState(false);
+  const [currentUploadModalStep, setUploadModalStep] =
+    useRecoilState(uploadModalStep);
+  const [isUploadModalPoped, setUploadModalPopState] =
+    useRecoilState(uploadModalPopState);
+  const [_, refechVideoList] = useRecoilState(videoListState);
 
-  const openUploadModal = (e: React.MouseEvent<HTMLElement>) => {
-    setUploadModalOpen(true);
-  };
-
-  const closeUploadModal = (e: React.MouseEvent<HTMLElement>) => {
-    setUploadModalOpen(false);
+  const closeUploadModal = () => {
+    refechVideoList(0);
+    setUploadModalPopState(false);
+    setUploadModalStep(EUploadStep.FIRST_STEP);
   };
 
   const [isVideoModalOpen, setVideoModalOpen] = useState(false);
@@ -35,16 +41,13 @@ const Main = () => {
   return (
     <MainWrapper>
       <ModalContainer
-        isPopup={isUploadModalOpen}
+        isPopup={isUploadModalPoped}
         onClickOverlay={closeUploadModal}
-        contentComponent={<Upload />}
-        width={75}
-        height={53.6}
+        contentComponent={<Upload onClickClose={closeUploadModal} />}
+        width={currentUploadModalStep === EUploadStep.THIRD_STEP ? 45 : 75}
+        height={currentUploadModalStep === EUploadStep.THIRD_STEP ? 18.6 : 53.6}
         borderRadius={0.5}
       />
-      <button type="button" onClick={openUploadModal}>
-        upload
-      </button>
       <VideoSelectBar />
       <ModalContainer
         isPopup={isVideoModalOpen}

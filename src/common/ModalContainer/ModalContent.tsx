@@ -35,8 +35,8 @@ export default ModalContent;
 
 const ModalContentWrapper = styled.div<IModalStyleProps>`
   position: fixed;
-  width: ${({ width }) => `${width}rem`};
-  height: ${({ height }) => `${height}rem`};
+  ${({ width }) => (width ? `width: ${width}rem` : ``)};
+  ${({ height }) => (height ? `height: ${height}rem` : ``)};
   border-radius: ${({ borderRadius }) => `${borderRadius}rem`};
   background: #fff;
   display: flex;

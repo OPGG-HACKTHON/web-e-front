@@ -4,7 +4,7 @@ import styled, { ThemeContext } from 'styled-components';
 import UploadFind from 'assets/svg/upload_1.svg';
 import LevelOne from 'assets/svg/upload_level_1.svg';
 import Button from 'common/Button';
-import { uploadSelectedFileState } from 'atom/uploadSelectedFile';
+import { uploadSelectedFileState } from 'atom/uploadIsNext';
 import { useRecoilState } from 'recoil';
 import { read } from 'fs';
 

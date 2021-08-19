@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, CSSProperties } from 'react';
 import styled from 'styled-components';
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   placeHolder?: string;
   placeHolderFontSize?: string;
-  borderRadius?: number;
+  borderRadius?: string;
   borderStyle?: string;
   backgroundColor: string;
   placeHolderColor?: string;
@@ -17,12 +17,14 @@ type Props = {
   paddingStyle: string;
   fontColor?: string;
   name: string;
+  focusOutline?: string;
+  focusBackgroundColor?: string;
 };
 
 interface IInputStyleProps {
   width: string;
   height: string;
-  borderRadius?: number;
+  borderRadius?: string;
   borderStyle?: string;
   backgroundColor: string;
   placeHolderColor: string;
@@ -30,6 +32,8 @@ interface IInputStyleProps {
   paddingStyle: string;
   placeHolderFontSize: string;
   fontColor: string;
+  focusOutline: string;
+  focusBackgroundColor: string;
 }
 
 const Input = ({
@@ -48,6 +52,8 @@ const Input = ({
   placeHolderFontSize = '1rem',
   fontColor = '#000',
   name,
+  focusOutline = '',
+  focusBackgroundColor = '',
 }: Props) => {
   return (
     <InputItem
@@ -66,6 +72,8 @@ const Input = ({
       placeHolderFontSize={placeHolderFontSize}
       fontColor={fontColor}
       name={name}
+      focusOutline={focusOutline}
+      focusBackgroundColor={focusBackgroundColor}
     />
   );
 };
@@ -86,6 +94,12 @@ const InputItem = styled.input<IInputStyleProps>`
     color: ${({ placeHolderColor }) => placeHolderColor};
     font-size: ${({ placeHolderFontSize }) => placeHolderFontSize};
   }
+
+  &:focus {
+    outline: none;
+    background-color: ${({ focusBackgroundColor }) => focusBackgroundColor};
+    border: ${({ focusOutline }) => focusOutline};
+  }
 `;
 
 Input.defaultProps = {
@@ -98,4 +112,6 @@ Input.defaultProps = {
   placeHolderFontSize: '1rem',
   placeHolderColor: '#000',
   fontColor: '#000',
+  focusOutline: '',
+  focusBackgroundColor: '',
 };
