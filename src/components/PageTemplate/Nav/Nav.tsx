@@ -14,7 +14,7 @@ import Welcome from 'components/Auth/Welcome';
 import { color, typography } from 'styles/theme';
 import { useRecoilValue } from 'recoil';
 import { myProfileAtom } from 'atom/profileAtom';
-import WATPL from 'assets/svg/왓플-WATPL.svg';
+import WATPL from 'assets/svg/WAPPLE_LOGO.svg';
 import Search from 'assets/svg/Search.svg';
 import UploadSvg from '../SvgElement/UploadSvg';
 import AlramSvg from '../SvgElement/AlarmSvg';
@@ -224,8 +224,7 @@ const NavInnerWrapper = styled.div`
 `;
 
 const Logo = styled.img`
-  width: 109px;
-  height: 26px;
+  margin-left: 10px;
 `;
 
 const SearchWrapper = styled.div`
