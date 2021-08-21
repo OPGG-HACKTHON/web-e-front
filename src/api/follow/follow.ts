@@ -1,15 +1,15 @@
 import customAxios from 'lib/axios';
-import { subscribeDto } from './follow.dto';
+import { followDto } from './follow.dto';
 
 const commonUrl = '/follow';
 
-export const subscribe = async (dto: subscribeDto) => {
+export const follow = async (dto: followDto) => {
   const targetUrl = commonUrl + '/subscribe';
   const data = await customAxios.post(targetUrl, dto);
   return data;
 };
 
-export const unsubscribe = async (dto: subscribeDto) => {
+export const unfollow = async (dto: followDto) => {
   const targetUrl = commonUrl;
   const wrappedParam = {
     data: dto,

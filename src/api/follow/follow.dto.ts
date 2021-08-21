@@ -1,4 +1,4 @@
-export type subscribeDto = {
+export type followDto = {
   userId: string;
   followingId: string;
 };
