@@ -45,6 +45,7 @@ const useFollow = () => {
     followObj,
     setFollowObj,
     handleFollow,
+    handleUnFollow,
     followErrorStatus,
   };
 };

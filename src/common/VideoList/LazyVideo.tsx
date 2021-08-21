@@ -6,6 +6,7 @@ import Comment from 'assets/svg/comment_w.svg';
 import { Iprops } from './LazyItem';
 
 const LazyVideo = ({ src, likes, comments }: Iprops) => {
+  console.log(src, likes, comments);
   return (
     <>
       <VidoeBtn onClick={() => console.log('btn')}>

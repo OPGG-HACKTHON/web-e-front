@@ -1,9 +1,13 @@
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
+import useFollow from 'hooks/useFollow';
 import { typography } from 'styles/theme';
 
 const UploaderSection = () => {
   const themeStyle = useContext(ThemeContext);
+
+  const { followObj, setFollowObj, handleFollow, handleUnFollow } = useFollow();
+
   return (
     <ContentWrapper gray={themeStyle.color.grayScale[250]}>
       <ProfileWrapper>

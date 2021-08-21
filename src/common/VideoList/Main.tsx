@@ -16,6 +16,7 @@ const Main = ({ videos, isNeedDescription }: Props) => {
   const openVideoModal = (e: React.MouseEvent<HTMLElement>) => {
     if ((e.target as HTMLElement).tagName === 'VIDEO') {
       setVideoModalOpen(true);
+      console.log(e);
       setVideoModalSrc((e.target as HTMLMediaElement).currentSrc);
     }
   };
