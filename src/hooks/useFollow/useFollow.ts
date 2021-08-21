@@ -15,31 +15,35 @@ const useFollow = () => {
   });
   const [followErrorStatus, setFollowErrorStatus] = useState<number>(0);
 
-  const handleFollow = useCallback(async () => {
+  const handleFollow = async (followingId: string) => {
     try {
-      const res = await follow(followObj);
+      const res = await follow({
+        userId: followObj.userId,
+        followingId,
+      });
       const { data, status } = res;
-      await handleMyProfile();
       return data;
     } catch (err) {
       const { status } = err.response;
       setFollowErrorStatus(status);
       return err;
     }
-  }, [handleMyProfile, followObj]);
+  };
 
-  const handleUnFollow = useCallback(async () => {
+  const handleUnFollow = async (followingId: string) => {
     try {
-      const res = await unfollow(followObj);
+      const res = await unfollow({
+        userId: followObj.userId,
+        followingId,
+      });
       const { data, status } = res;
-      await handleMyProfile();
       return data;
     } catch (err) {
       const { status } = err.response;
       setFollowErrorStatus(status);
       return err;
     }
-  }, [handleMyProfile, followObj]);
+  };
 
   return {
     followObj,

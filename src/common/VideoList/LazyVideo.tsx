@@ -1,15 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useSetRecoilState } from 'recoil';
+import { videoModalAtom } from 'atom/videoModalAtom';
 // import VidoeContent from 'styles/mainStyles/videoComponents/VideoContent';
 import Like from 'assets/svg/like_w.svg';
 import Comment from 'assets/svg/comment_w.svg';
 import { Iprops } from './LazyItem';
 
-const LazyVideo = ({ src, likes, comments }: Iprops) => {
-  console.log(src, likes, comments);
+const LazyVideo = ({ videoModalState, src, likes, comments }: Iprops) => {
+  const setVideoModalState = useSetRecoilState(videoModalAtom);
+
+  const onClickBtn = () => {
+    setVideoModalState(videoModalState);
+  };
+
   return (
     <>
-      <VidoeBtn onClick={() => console.log('btn')}>
+      <VidoeBtn onClick={onClickBtn}>
         <video autoPlay muted loop width="100%" height="100%">
           <source src={src} type="video/mp4" />
         </video>

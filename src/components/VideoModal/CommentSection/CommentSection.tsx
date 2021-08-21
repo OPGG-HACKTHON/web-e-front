@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import { typography } from 'styles/theme';
+import { useRecoilValue } from 'recoil';
+import { videoModalAtom } from 'atom/videoModalAtom';
 import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 
 const dummyComments = [
@@ -26,23 +28,23 @@ const dummyComments = [
     comment: 'Good!',
   },
   {
-    id: 3,
+    id: 4,
     name: '레오나 장인',
     comment: '굿!',
   },
   {
-    id: 4,
+    id: 5,
     name: '아칼리장인123',
     comment: '이건 아칼리가 못했네.',
   },
   {
-    id: 5,
+    id: 6,
     name: 'edin',
     comment:
       '솔라리 성전사 레오나는 천공의 검과 여명의 방패로 타곤 산을 수호한다.',
   },
   {
-    id: 6,
+    id: 7,
     name: '트위치',
     comment: 'Good!',
   },
@@ -50,6 +52,7 @@ const dummyComments = [
 
 const CommentSection = () => {
   const themeStyle = useContext(ThemeContext);
+  const videoModalState = useRecoilValue(videoModalAtom);
   return (
     <ContentWrapper>
       <LikeWrapper>
@@ -60,7 +63,9 @@ const CommentSection = () => {
             fill: themeStyle.color.grayScale[500],
           }}
         />
-        <LikeText gray={themeStyle.color.grayScale[500]}>좋아요 1,001</LikeText>
+        <LikeText
+          gray={themeStyle.color.grayScale[500]}
+        >{`좋아요 ${videoModalState.likeNumber}`}</LikeText>
       </LikeWrapper>
       <CommentScrollSection>
         {dummyComments.map((data) => (

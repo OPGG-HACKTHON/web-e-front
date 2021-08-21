@@ -11,13 +11,10 @@ export interface Props {
 
 const Main = ({ videos, isNeedDescription }: Props) => {
   const [isVideoModalOpen, setVideoModalOpen] = useState(false);
-  const [videoModalSrc, setVideoModalSrc] = useState('');
 
   const openVideoModal = (e: React.MouseEvent<HTMLElement>) => {
     if ((e.target as HTMLElement).tagName === 'VIDEO') {
       setVideoModalOpen(true);
-      console.log(e);
-      setVideoModalSrc((e.target as HTMLMediaElement).currentSrc);
     }
   };
 
@@ -29,7 +26,7 @@ const Main = ({ videos, isNeedDescription }: Props) => {
       <ModalContainer
         isPopup={isVideoModalOpen}
         onClickOverlay={closeVideoModal}
-        contentComponent={<VideoModal videoSrc={videoModalSrc} />}
+        contentComponent={<VideoModal />}
         width={77}
         height={68.2}
         borderRadius={0.5}
