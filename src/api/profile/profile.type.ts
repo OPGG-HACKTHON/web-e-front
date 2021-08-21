@@ -9,3 +9,14 @@ export type myProfileType = {
   role: string;
   watchTier: string;
 };
+
+// type followersList = {};
+export type follwerType = {
+  followers: [];
+  followersCount: number;
+};
+
+export type follwingType = {
+  followings: [];
+  followingsCounts: number;
+};

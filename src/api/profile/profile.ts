@@ -1,9 +1,25 @@
+import { AxiosResponse } from 'axios';
 import customAxios from 'lib/axios';
+import { follwerType, follwingType } from './profile.type';
 
-const myProfileInfo = async () => {
+export const myProfileInfo = async () => {
   const data = await customAxios.get('/profile');
 
   return data;
 };
 
-export default myProfileInfo;
+export const findFollower = async (
+  userId: string
+): Promise<AxiosResponse<follwerType>> => {
+  const data = await customAxios.get(`/follow/${userId}/follower`);
+
+  return data;
+};
+
+export const findFollowing = async (
+  userId: string
+): Promise<AxiosResponse<follwingType>> => {
+  const data = await customAxios.get(`/follow/${userId}/following`);
+
+  return data;
+};

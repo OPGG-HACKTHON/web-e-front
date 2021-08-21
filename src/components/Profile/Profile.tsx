@@ -1,9 +1,20 @@
+import React, { useEffect } from 'react';
 import Banner from 'common/Banner';
-import React from 'react';
 import styled from 'styled-components';
-import { getTextOfJSDocComment } from 'typescript';
+import { useRecoilValue } from 'recoil';
+import { myProfileAtom } from 'atom/profileAtom';
+import useProfile from 'hooks/useProfile/useProfile';
 
 const Profile = () => {
+  const { handleMyProfile, followerCount, followingCount } = useProfile();
+
+  const userProfile = useRecoilValue(myProfileAtom);
+  const { id, intro } = userProfile;
+
+  useEffect(() => {
+    handleMyProfile();
+  }, [handleMyProfile]);
+
   return (
     <ProfileWrapper>
       <Banner />
@@ -12,15 +23,17 @@ const Profile = () => {
           <UserImg />
           <InfoWrapper>
             <UserNameWrapper>
-              <UserName>사용자1</UserName>
+              <UserName>{id}</UserName>
             </UserNameWrapper>
             <FollowWrapper>
-              <div>0 팔로워</div>
-              <div>0 팔로우</div>
+              <div>{followerCount} 팔로워</div>
+              <div>{followingCount} 팔로우</div>
             </FollowWrapper>
           </InfoWrapper>
         </UserInfoWrapper>
-        <Introdunction>자기소개</Introdunction>
+        <Introdunction>
+          {intro === null ? '자기소개가 없습니다.' : intro}
+        </Introdunction>
       </UserWrapperPosition>
     </ProfileWrapper>
   );
@@ -49,8 +62,10 @@ const UserInfoWrapper = styled.div`
 const UserImg = styled.div`
   width: 80px;
   height: 80px;
-  background-color: ${({ theme }) => theme.color.grayScale[250]};
+  background-color: ${({ theme }) => theme.color.white};
   margin-left: 30px;
+  border-radius: 5px;
+  border: 1px solid ${({ theme }) => theme.color.grayScale[250]};
 `;
 
 const InfoWrapper = styled.div`
