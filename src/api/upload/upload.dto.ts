@@ -1,7 +1,7 @@
 export type uploadDto = {
   userId: string;
-  describe: string;
+  videoName: string;
   category: string;
-  description?: string;
+  videoIntro?: string;
   video: unknown;
 };

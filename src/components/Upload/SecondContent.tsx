@@ -42,7 +42,7 @@ const SecondContent = () => {
   const handleChange = (e: any) => {
     setUploadObj({
       ...uploadObj,
-      description: e.target.value,
+      videoIntro: e.target.value,
     });
     setText(e.target.value);
   };
