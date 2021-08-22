@@ -1,8 +1,12 @@
-import React, { useContext } from 'react';
+/* eslint-disable indent */
+import React, { useContext, useEffect } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import { typography } from 'styles/theme';
 import { useRecoilValue } from 'recoil';
 import { videoModalAtom } from 'atom/videoModalAtom';
+import { pressLike, cancleLike } from 'api/like/like';
+import { likeDto } from 'api/like/like.dto';
+import useLike from 'hooks/useLike';
 import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 
 const dummyComments = [
@@ -53,14 +57,51 @@ const dummyComments = [
 const CommentSection = () => {
   const themeStyle = useContext(ThemeContext);
   const videoModalState = useRecoilValue(videoModalAtom);
+  const { handlePressLike, handleCancleLike, likeErrorStatus } = useLike();
+
+  const getLikeButtonFill = (() => {
+    if (videoModalState.relation.isLike) {
+      return 'red';
+    }
+    return themeStyle.color.grayScale[500];
+  })();
+
+  const onClickLikeBtn = () => {
+    const { uploaderId, videoId } = videoModalState;
+
+    if (videoModalState.relation.isLike) {
+      handleCancleLike(uploaderId, videoId);
+    } else {
+      handlePressLike(uploaderId, videoId);
+    }
+  };
+
+  useEffect(() => {
+    switch (likeErrorStatus) {
+      case 401:
+        alert('로그인이 필요한 서비스입니다');
+        break;
+      case 404:
+        alert('탈퇴한 사용자입니다');
+        break;
+      case 405:
+        alert('자신의 비디오에 좋아요를 하실 수 없습니다');
+        break;
+      default:
+        break;
+    }
+  }, [likeErrorStatus]);
+
   return (
     <ContentWrapper>
       <LikeWrapper>
         <FavoriteRoundedIcon
+          onClick={onClickLikeBtn}
           style={{
             width: 30,
             height: 30,
-            fill: themeStyle.color.grayScale[500],
+            fill: getLikeButtonFill,
+            cursor: 'pointer',
           }}
         />
         <LikeText

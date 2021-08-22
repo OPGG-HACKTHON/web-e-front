@@ -1,5 +1,5 @@
 export type likeDto = {
   userId: string;
   likeId: string;
-  videoId: string;
+  videoId: number;
 };
