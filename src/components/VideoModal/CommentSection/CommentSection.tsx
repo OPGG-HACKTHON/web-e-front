@@ -1,6 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import { typography } from 'styles/theme';
+import { useRecoilValue } from 'recoil';
+import { videoModalAtom } from 'atom/videoModalAtom';
+import { pressLike, cancleLike } from 'api/like/like';
+import { likeDto } from 'api/like/like.dto';
+import useLike from 'hooks/useLike';
 import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 
 const dummyComments = [
@@ -26,23 +31,23 @@ const dummyComments = [
     comment: 'Good!',
   },
   {
-    id: 3,
+    id: 4,
     name: '레오나 장인',
     comment: '굿!',
   },
   {
-    id: 4,
+    id: 5,
     name: '아칼리장인123',
     comment: '이건 아칼리가 못했네.',
   },
   {
-    id: 5,
+    id: 6,
     name: 'edin',
     comment:
       '솔라리 성전사 레오나는 천공의 검과 여명의 방패로 타곤 산을 수호한다.',
   },
   {
-    id: 6,
+    id: 7,
     name: '트위치',
     comment: 'Good!',
   },
@@ -50,17 +55,57 @@ const dummyComments = [
 
 const CommentSection = () => {
   const themeStyle = useContext(ThemeContext);
+  const videoModalState = useRecoilValue(videoModalAtom);
+  const { handlePressLike, handleCancleLike, likeErrorStatus } = useLike();
+
+  const getLikeButtonFill = (() => {
+    if (videoModalState.relation.isLike) {
+      return 'red';
+    }
+    return themeStyle.color.grayScale[500];
+  })();
+
+  const onClickLikeBtn = () => {
+    const { uploaderId, videoId } = videoModalState;
+
+    if (videoModalState.relation.isLike) {
+      handleCancleLike(uploaderId, videoId);
+    } else {
+      handlePressLike(uploaderId, videoId);
+    }
+  };
+
+  useEffect(() => {
+    switch (likeErrorStatus) {
+      case 401:
+        alert('로그인이 필요한 서비스입니다');
+        break;
+      case 404:
+        alert('탈퇴한 사용자입니다');
+        break;
+      case 405:
+        alert('자신의 비디오에 좋아요를 하실 수 없습니다');
+        break;
+      default:
+        break;
+    }
+  }, [likeErrorStatus]);
+
   return (
     <ContentWrapper>
       <LikeWrapper>
         <FavoriteRoundedIcon
+          onClick={onClickLikeBtn}
           style={{
             width: 30,
             height: 30,
-            fill: themeStyle.color.grayScale[500],
+            fill: getLikeButtonFill,
+            cursor: 'pointer',
           }}
         />
-        <LikeText gray={themeStyle.color.grayScale[500]}>좋아요 1,001</LikeText>
+        <LikeText
+          gray={themeStyle.color.grayScale[500]}
+        >{`좋아요 ${videoModalState.likeNumber}`}</LikeText>
       </LikeWrapper>
       <CommentScrollSection>
         {dummyComments.map((data) => (

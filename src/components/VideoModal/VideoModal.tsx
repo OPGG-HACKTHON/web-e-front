@@ -4,15 +4,11 @@ import VideoSection from './VideoSection';
 import UploaderSection from './UploaderSection';
 import CommentSection from './CommentSection';
 
-type Props = {
-  videoSrc: string;
-};
-
-const VideoModal = ({ videoSrc }: Props) => {
+const VideoModal = () => {
   return (
     <>
       <ModalLeftContent>
-        <VideoSection videoSrc={videoSrc} />
+        <VideoSection />
       </ModalLeftContent>
       <ModalRightContent>
         <UploaderSection />

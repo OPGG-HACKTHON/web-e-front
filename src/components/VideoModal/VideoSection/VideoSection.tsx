@@ -2,12 +2,12 @@ import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import VolumeUpRoundedIcon from '@material-ui/icons/VolumeUpRounded';
+import { useRecoilValue } from 'recoil';
+import { videoModalAtom } from 'atom/videoModalAtom';
 
-type Props = {
-  videoSrc: string;
-};
+const VideoSection = () => {
+  const videoModalState = useRecoilValue(videoModalAtom);
 
-const VideoSection = ({ videoSrc }: Props) => {
   return (
     <VideoWrapper>
       <video
@@ -24,7 +24,7 @@ const VideoSection = ({ videoSrc }: Props) => {
           background: '#000',
         }}
       >
-        <source src={videoSrc} type="video/mp4" />
+        <source src={videoModalState.src} type="video/mp4" />
         <track kind="captions" />
       </video>
       <VideoController>
