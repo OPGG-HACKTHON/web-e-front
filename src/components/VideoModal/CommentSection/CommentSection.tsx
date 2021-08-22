@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import React, { useContext, useEffect } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import { typography } from 'styles/theme';
