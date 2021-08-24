@@ -210,12 +210,11 @@ const NavWrapper = styled.nav`
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom: 34px;
 `;
 
 const NavInnerWrapper = styled.div`
   width: 100%;
-  max-width: 930px;
+  max-width: 940px;
   height: 60px;
   display: flex;
   align-items: center;

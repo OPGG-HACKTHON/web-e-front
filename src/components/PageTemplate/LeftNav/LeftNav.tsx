@@ -149,6 +149,7 @@ const UserInfoSection = styled.div`
 
 const LeftNavWrapper = styled.div`
   width: 100%;
+  margin-top: 33px;
   max-width: 300px;
   display: flex;
   flex-direction: column;
@@ -169,7 +170,7 @@ const UserWrapper = styled.div`
   align-items: center;
   width: 100%;
   max-width: 290px;
-  padding-bottom: 24px;
+  padding-bottom: 26px;
   border-bottom: 1px solid ${({ theme }) => theme.color.grayScale[500]};
   justify-content: space-between;
 `;

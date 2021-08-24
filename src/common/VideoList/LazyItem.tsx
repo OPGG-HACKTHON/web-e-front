@@ -1,9 +1,11 @@
 import React, { lazy } from 'react';
 import styled from 'styled-components';
 import VideoItem from 'styles/mainStyles/videoComponents/VideoItem';
+import { IVideoModalAtom } from 'atom/videoModalAtom';
 import Description from './Description';
 
 export interface Iprops {
+  videoModalState?: IVideoModalAtom;
   src: string;
   description?: string;
   // hashtag?: string;
@@ -18,6 +20,7 @@ export interface Iprops {
 const LazyVideo = lazy(() => import('./LazyVideo'));
 
 const LazyItem = ({
+  videoModalState,
   src,
   description,
   // hashtag,
@@ -32,7 +35,12 @@ const LazyItem = ({
   return (
     <VideoItem>
       {/* <Suspense fallback={<div>...loading</div>}> */}
-      <LazyVideo src={src} likes={likes} comments={comments} />
+      <LazyVideo
+        videoModalState={videoModalState}
+        src={src}
+        likes={likes}
+        comments={comments}
+      />
       {isNeedDescription ? (
         <Description
           description={description}

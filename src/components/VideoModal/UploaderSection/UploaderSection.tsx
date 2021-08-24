@@ -1,24 +1,55 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled, { ThemeContext } from 'styled-components';
+import { useRecoilValue } from 'recoil';
+import { videoModalAtom } from 'atom/videoModalAtom';
+import useFollow from 'hooks/useFollow';
+import Button from 'common/Button';
 import { typography } from 'styles/theme';
 
 const UploaderSection = () => {
   const themeStyle = useContext(ThemeContext);
+  const videoModalState = useRecoilValue(videoModalAtom);
+
+  const { handleFollow, handleUnFollow, followErrorStatus } = useFollow();
+
+  const onClickFollowBtn = () => {
+    if (videoModalState.relation.isFollow) {
+      handleUnFollow(videoModalState.uploaderId);
+    } else handleFollow(videoModalState.uploaderId);
+  };
+
+  useEffect(() => {
+    if (followErrorStatus === 401) {
+      alert('로그인이 필요한 서비스입니다.');
+    }
+    if (followErrorStatus === 405) {
+      alert('나 자신을 팔로우 할 수 없습니다.');
+    }
+  }, [followErrorStatus]);
+
   return (
     <ContentWrapper gray={themeStyle.color.grayScale[250]}>
       <ProfileWrapper>
         <ProfileImage />
         <ProfileText>
-          <ProfileName>lolking_123</ProfileName>
+          <ProfileName>{videoModalState.uploaderId}</ProfileName>
           <ProfileFollow gray={themeStyle.color.grayScale[500]}>
-            팔로우 123
+            {`팔로우 ${videoModalState.followNumber}`}
           </ProfileFollow>
         </ProfileText>
-        <FollowButton mainColor={themeStyle.color.yellow}>팔로우</FollowButton>
+        <Button
+          text={videoModalState.relation.isFollow ? '팔로우 취소' : '팔로우'}
+          onClick={onClickFollowBtn}
+          fontColor={themeStyle.color.white}
+          bkgColor={themeStyle.color.yellow}
+          padding=""
+          width={6.9}
+          height={3.6}
+          borderRadius={0.5}
+          fontStyle={typography.bodyRgBold}
+        />
       </ProfileWrapper>
-      <DescriptionParagraph>
-        레오나로 아칼리 솔킬 #매드무비
-      </DescriptionParagraph>
+      <DescriptionParagraph>{videoModalState.videoIntro}</DescriptionParagraph>
     </ContentWrapper>
   );
 };
