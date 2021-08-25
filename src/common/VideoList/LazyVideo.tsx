@@ -11,7 +11,9 @@ const LazyVideo = ({ videoModalState, src, likes, comments }: Iprops) => {
   const setVideoModalState = useSetRecoilState(videoModalAtom);
 
   const onClickBtn = () => {
-    setVideoModalState(videoModalState);
+    // FIX ME: videosModalState 못쓰는 API
+    // setVideoModalState(videoModalState);
+    console.log('click');
   };
 
   return (

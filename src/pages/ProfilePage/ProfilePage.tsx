@@ -1,11 +1,13 @@
 import PageTemplate from 'components/PageTemplate';
 import Profile from 'components/Profile';
-import React from 'react';
+import React, { Suspense } from 'react';
 
 const ProfilePage = () => {
   return (
     <PageTemplate>
-      <Profile />
+      <Suspense fallback={<div>...loading</div>}>
+        <Profile />
+      </Suspense>
     </PageTemplate>
   );
 };

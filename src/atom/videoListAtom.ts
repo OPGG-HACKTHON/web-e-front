@@ -3,6 +3,7 @@ import { datas } from 'data/main';
 import getVideos from 'api/video/video';
 import { leftNavItemState } from './pageAtom';
 import { selectorState } from './selectorAtom';
+import { myProfileAtom } from './profileAtom';
 
 export const getVideoTrigger = atom({
   key: '_getVideoTrigger',
@@ -15,9 +16,24 @@ export const videoListState = selector({
     get(getVideoTrigger);
     const response = await getVideos();
     return response.data;
+    // return datas.videos;
   },
   set: ({ set }) => {
     set(getVideoTrigger, (v) => v + 1);
+  },
+});
+
+export const userVideoList = selector({
+  key: 'userVideoList',
+  get: ({ get }) => {
+    const list = get(videoListState);
+    const userInfo = get(myProfileAtom);
+    const { id } = userInfo;
+    let returnArr: any[] | Promise<any[]> | RecoilValue<any[]> = [];
+    if (list.userId === id) {
+      returnArr = list.filter((data) => data.userId === id);
+    }
+    return returnArr;
   },
 });
 

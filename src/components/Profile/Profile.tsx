@@ -4,12 +4,20 @@ import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { myProfileAtom } from 'atom/profileAtom';
 import useProfile from 'hooks/useProfile/useProfile';
+import VideoListMain from 'common/VideoList/Main';
+import { myVideoListState } from 'atom/profileVideoAtom';
+import { getMyVideoList } from 'api/profileVideo/profileVideo';
+import { userVideoList } from 'atom/videoListAtom';
 
 const Profile = () => {
+  const isNeedDescription = false;
+
   const { handleMyProfile, followerCount, followingCount } = useProfile();
 
   const userProfile = useRecoilValue(myProfileAtom);
   const { id, intro } = userProfile;
+
+  const videos = useRecoilValue(userVideoList);
 
   useEffect(() => {
     handleMyProfile();
@@ -35,6 +43,7 @@ const Profile = () => {
           {intro === null ? '자기소개가 없습니다.' : intro}
         </Introdunction>
       </UserWrapperPosition>
+      <VideoListMain videos={videos} isNeedDescription={isNeedDescription} />
     </ProfileWrapper>
   );
 };

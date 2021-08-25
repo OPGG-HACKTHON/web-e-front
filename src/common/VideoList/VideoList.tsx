@@ -4,14 +4,14 @@ import LazyItem from './LazyItem';
 import { Props } from './Main';
 
 export interface IPoster {
-  name: string;
+  name?: string;
   picture?: string;
-  followNum: number;
+  followNum?: number;
 }
 
 export interface IRelation {
-  isFollow: boolean;
-  isLike: boolean;
+  isFollow?: boolean;
+  isLike?: boolean;
 }
 
 export interface IVideoPayload {
@@ -25,92 +25,100 @@ export interface IVideoPayload {
   videoIntro: string;
   likes: number;
   comments: number; // this should be comment type array
-  poster: IPoster;
-  relation: IRelation;
+  poster?: IPoster;
+  relation?: IRelation;
 }
 
 const VideoList = ({ videos, isNeedDescription }: Props) => {
   // const list = useRecoilValue(vListbySelectorState);
+  console.log(typeof videos, videos);
+
   return (
     <>
-      <div>
-        {videos[0].map(
-          (
-            data: IVideoPayload
-            //   {
-            //   id: React.Key | null | undefined;
-            //   src: string;
-            //   description: string;
-            //   hashtag: string;
-            //   likes: number;
-            //   comments: number;
-            //   poster: { name: string; picture: string; followNum: number };
-            // }
-          ) => (
-            <LazyItem
-              videoModalState={{
-                src: data.src,
-                videoId: data.id,
-                followNumber: data.poster.followNum,
-                likeNumber: data.likes,
-                commentArray: [], // empty array for now
-                videoIntro: data.videoIntro,
-                uploaderId: data.poster.name,
-                relation: data.relation,
-              }}
-              key={data.id}
-              src={data.src}
-              description={data.videoIntro}
-              // hashtag={data.hashtag}
-              likes={data.likes}
-              comments={data.comments}
-              pName={data.poster.name}
-              pPic={data.poster.picture}
-              pFollowNum={data.poster.followNum}
-              isNeedDescription={isNeedDescription}
-            />
-          )
-        )}
-      </div>
-      <div>
-        {videos[1].map(
-          (
-            data: IVideoPayload
-            //   {
-            //   id: React.Key | null | undefined;
-            //   src: string;
-            //   description: string;
-            //   hashtag: string;
-            //   likes: number;
-            //   comments: number;
-            //   poster: { name: string; picture: string; followNum: number };
-            // }
-          ) => (
-            <LazyItem
-              videoModalState={{
-                src: data.src,
-                videoId: data.id,
-                followNumber: data.poster.followNum,
-                likeNumber: data.likes,
-                commentArray: [], // empty array for now
-                videoIntro: data.videoIntro,
-                uploaderId: data.poster.name,
-                relation: data.relation,
-              }}
-              key={data.id}
-              src={data.src}
-              description={data.videoIntro}
-              // hashtag={data.hashtag}
-              likes={data.likes}
-              comments={data.comments}
-              pName={data.poster.name}
-              pPic={data.poster.picture}
-              pFollowNum={data.poster.followNum}
-              isNeedDescription={isNeedDescription}
-            />
-          )
-        )}
-      </div>
+      {Array.isArray(videos[0]) ? (
+        <>
+          <div>
+            {videos[0].map(
+              (
+                data: IVideoPayload
+                //   {
+                //   id: React.Key | null | undefined;
+                //   src: string;
+                //   description: string;
+                //   hashtag: string;
+                //   likes: number;
+                //   comments: number;
+                //   poster: { name: string; picture: string; followNum: number };
+                // }
+              ) => (
+                <LazyItem
+                  videoModalState={{
+                    src: data.src,
+                    videoId: data.id,
+                    followNumber: data.poster.followNum,
+                    likeNumber: data.likes,
+                    commentArray: [], // empty array for now
+                    videoIntro: data.videoIntro,
+                    uploaderId: data.poster.name,
+                    relation: data.relation,
+                  }}
+                  key={data.id}
+                  src={data.src}
+                  description={data.videoIntro}
+                  // hashtag={data.hashtag}
+                  likes={data.likes}
+                  comments={data.comments}
+                  pName={data.poster.name}
+                  pPic={data.poster.picture}
+                  pFollowNum={data.poster.followNum}
+                  isNeedDescription={isNeedDescription}
+                />
+              )
+            )}
+          </div>
+          <div>
+            {videos[1].map(
+              (
+                data: IVideoPayload
+                //   {
+                //   id: React.Key | null | undefined;
+                //   src: string;
+                //   description: string;
+                //   hashtag: string;
+                //   likes: number;
+                //   comments: number;
+                //   poster: { name: string; picture: string; followNum: number };
+                // }
+              ) => (
+                <LazyItem
+                  videoModalState={{
+                    src: data.src,
+                    videoId: data.id,
+                    followNumber: data.poster.followNum,
+                    likeNumber: data.likes,
+                    commentArray: [], // empty array for now
+                    videoIntro: data.videoIntro,
+                    uploaderId: data.poster.name,
+                    relation: data.relation,
+                  }}
+                  key={data.id}
+                  src={data.src}
+                  description={data.videoIntro}
+                  // hashtag={data.hashtag}
+                  likes={data.likes}
+                  comments={data.comments}
+                  pName={data.poster.name}
+                  pPic={data.poster.picture}
+                  pFollowNum={data.poster.followNum}
+                  isNeedDescription={isNeedDescription}
+                />
+              )
+            )}
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 };
