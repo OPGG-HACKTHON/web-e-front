@@ -6,7 +6,12 @@ import { myProfileAtom } from 'atom/profileAtom';
 import useProfile from 'hooks/useProfile/useProfile';
 
 const Profile = () => {
-  const { handleMyProfile, followerCount, followingCount } = useProfile();
+  const {
+    handleMyProfile,
+    followerCount,
+    followingCount,
+    handleEditProfilePage,
+  } = useProfile();
 
   const userProfile = useRecoilValue(myProfileAtom);
   const { id, intro } = userProfile;
@@ -24,6 +29,9 @@ const Profile = () => {
           <InfoWrapper>
             <UserNameWrapper>
               <UserName>{id}</UserName>
+              <EditProfile onClick={handleEditProfilePage}>
+                프로필 편집
+              </EditProfile>
             </UserNameWrapper>
             <FollowWrapper>
               <div>{followerCount} 팔로워</div>
@@ -41,9 +49,24 @@ const Profile = () => {
 
 export default Profile;
 
+const EditProfile = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 78px;
+  height: 23px;
+  border-radius: 5px;
+  border: 1px solid ${({ theme }) => `${theme.color.grayScale[500]}7F`};
+  ${({ theme }) => theme.typography.bodySmBold}
+  color:${({ theme }) => theme.color.grayScale[500]};
+  margin-left: 10px;
+  cursor: pointer;
+`;
+
 const ProfileWrapper = styled.div`
   width: 100%;
   position: relative;
+  margin-left: 26px;
 `;
 
 const UserWrapperPosition = styled.div`
@@ -56,7 +79,6 @@ const UserInfoWrapper = styled.div`
   width: 100%;
   align-items: flex-end;
   position: relative;
-  /* top: -20px; */
 `;
 
 const UserImg = styled.div`
@@ -77,6 +99,7 @@ const InfoWrapper = styled.div`
 const UserNameWrapper = styled.div`
   width: 100%;
   display: flex;
+  align-items: center;
 `;
 
 const UserName = styled.div`
@@ -84,6 +107,7 @@ const UserName = styled.div`
 `;
 
 const FollowWrapper = styled.div`
+  margin-top: 6px;
   display: flex;
   ${({ theme }) => theme.typography.bodyRg}
   & > * + * {

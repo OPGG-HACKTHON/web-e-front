@@ -5,11 +5,12 @@ import {
 } from 'api/profile/profile';
 import { myProfileAtom } from 'atom/profileAtom';
 import { useCallback, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
 const useProfile = () => {
   const setMyProfile = useSetRecoilState(myProfileAtom);
-
+  const history = useHistory();
   const [followerCount, setFollowerCount] = useState<number>(0);
   const [followingCount, setFollowingCount] = useState<number>(0);
 
@@ -47,7 +48,16 @@ const useProfile = () => {
     }
   }, [handleFindFollower, handleFindFollowing, setMyProfile]);
 
-  return { handleMyProfile, followerCount, followingCount };
+  const handleEditProfilePage = useCallback(() => {
+    return history.push('profileEdit');
+  }, [history]);
+
+  return {
+    handleMyProfile,
+    followerCount,
+    followingCount,
+    handleEditProfilePage,
+  };
 };
 
 export default useProfile;

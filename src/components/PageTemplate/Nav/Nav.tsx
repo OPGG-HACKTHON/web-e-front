@@ -53,7 +53,6 @@ const Nav = () => {
 
   const registerStatus = useRecoilValue(registerStatusAtom);
 
-  console.log(clickAlramPosition, clickProfilePosition);
   return (
     <>
       <NavWrapper>
@@ -215,6 +214,7 @@ const NavWrapper = styled.nav`
 const NavInnerWrapper = styled.div`
   width: 100%;
   max-width: 940px;
+  background-color: ${({ theme }) => theme.color.white};
   height: 60px;
   display: flex;
   align-items: center;
