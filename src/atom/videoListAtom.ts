@@ -14,7 +14,7 @@ export const videoListState = selector({
   get: async ({ get }) => {
     get(getVideoTrigger);
     const response = await getVideos();
-    return response.data;
+    return response.datas;
   },
   set: ({ set }) => {
     set(getVideoTrigger, (v) => v + 1);
