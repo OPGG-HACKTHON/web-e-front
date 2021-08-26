@@ -1,8 +1,32 @@
-import React, { useState } from 'react';
+/* eslint-disable react/jsx-props-no-spreading */
+import Button from 'common/Button';
+import useEditProfile from 'hooks/useEditProfile/useEditProfile';
+import React, { useState, useRef, useMemo } from 'react';
 import styled from 'styled-components';
+import { color, typography } from 'styles/theme';
 
 const EditProfile = () => {
   const [isEditProfileSetting, setIsEditProfileSetting] = useState(true);
+
+  const {
+    imgFile,
+    imgBase64,
+    handleHiddenInput,
+    hiddenInputRef,
+    handleChangeFile,
+  } = useEditProfile();
+
+  const commonButtonProps = useMemo(
+    () => ({
+      height: 2.3,
+      bkgColor: color.grayScale[50],
+      fontStyle: typography.bodySmBold,
+      borderRadius: 0.5,
+      fontColor: color.blackScale[50],
+      padding: '',
+    }),
+    []
+  );
 
   return (
     <EditProfileWrapper>
@@ -19,17 +43,22 @@ const EditProfile = () => {
                 <SubTitle>권장규격 80 x 80</SubTitle>
               </TitleWrapper>
               <div>
-                <ProfileImg />
+                <ProfileImg src={imgBase64} />
                 <UploadWrapper>
                   <HiddenInput
+                    ref={hiddenInputRef}
                     type="file"
-                    id="real-input"
-                    className="image_inputType_file"
                     accept="img/*"
                     required
                     multiple
+                    onChange={handleChangeFile}
                   />
-                  <UploadButton>사진 업로드</UploadButton>
+                  <Button
+                    {...commonButtonProps}
+                    text="사진업로드"
+                    width={7.6}
+                    onClick={handleHiddenInput}
+                  />
                 </UploadWrapper>
               </div>
             </ProfileUploadWrapper>
@@ -160,15 +189,8 @@ const UploadWrapper = styled.div`
 
 const UploadButton = styled.div`
   width: 76px;
-  height: 23px;
-  background-color: ${({ theme }) => theme.color.grayScale[50]};
-  ${({ theme }) => theme.typography.bodySmBold}
-  display:flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
 `;
 
 const HiddenInput = styled.input`
-  display: hidden;
+  display: none;
 `;
