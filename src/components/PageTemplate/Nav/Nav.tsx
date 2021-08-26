@@ -220,6 +220,7 @@ const NavInnerWrapper = styled.div`
   align-items: center;
   border-bottom: 0.5px solid ${({ theme }) => theme.color.grayScale[500]};
   justify-content: space-between;
+  padding-right: 10px;
 `;
 
 const Logo = styled.img`

@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
+
+import React, { useState, useMemo } from 'react';
 import Button from 'common/Button';
 import useEditProfile from 'hooks/useEditProfile/useEditProfile';
-import React, { useState, useRef, useMemo } from 'react';
 import styled from 'styled-components';
 import { color, typography } from 'styles/theme';
 
@@ -9,11 +10,14 @@ const EditProfile = () => {
   const [isEditProfileSetting, setIsEditProfileSetting] = useState(true);
 
   const {
-    imgFile,
-    imgBase64,
-    handleHiddenInput,
-    hiddenInputRef,
-    handleChangeFile,
+    handleProfileImgReader,
+    profileBanner64,
+    handleHiddenProfileInput,
+    handleHiddenCoverInput,
+    hiddenProfileInputRef,
+    hiddenCoverInputRef,
+    handleCoverImgReader,
+    bannerBase64,
   } = useEditProfile();
 
   const commonButtonProps = useMemo(
@@ -43,21 +47,26 @@ const EditProfile = () => {
                 <SubTitle>권장규격 80 x 80</SubTitle>
               </TitleWrapper>
               <div>
-                <ProfileImg src={imgBase64} />
+                {profileBanner64.length <= 0 ? (
+                  <ProfileImgMock />
+                ) : (
+                  <ProfileImg src={profileBanner64} />
+                )}
+
                 <UploadWrapper>
                   <HiddenInput
-                    ref={hiddenInputRef}
+                    ref={hiddenProfileInputRef}
                     type="file"
                     accept="img/*"
                     required
                     multiple
-                    onChange={handleChangeFile}
+                    onChange={handleProfileImgReader}
                   />
                   <Button
                     {...commonButtonProps}
                     text="사진업로드"
                     width={7.6}
-                    onClick={handleHiddenInput}
+                    onClick={handleHiddenProfileInput}
                   />
                 </UploadWrapper>
               </div>
@@ -67,6 +76,29 @@ const EditProfile = () => {
                 <TopTitle>커버 사진</TopTitle>
                 <SubTitle>권장규격 640 x 100</SubTitle>
               </TitleWrapper>
+              <div>
+                {bannerBase64.length <= 0 ? (
+                  <CoverSectionMock />
+                ) : (
+                  <CoverSection src={bannerBase64} />
+                )}
+                <UploadWrapper>
+                  <HiddenInput
+                    ref={hiddenCoverInputRef}
+                    type="file"
+                    accept="img/*"
+                    required
+                    multiple
+                    onChange={handleCoverImgReader}
+                  />
+                  <Button
+                    {...commonButtonProps}
+                    text="사진업로드"
+                    width={7.6}
+                    onClick={handleHiddenCoverInput}
+                  />
+                </UploadWrapper>
+              </div>
             </CoverImgWarpper>
             <NameWrapper>
               <TitleWrapper>
@@ -162,7 +194,8 @@ const IntroWrapper = styled.div`
 `;
 
 const TitleWrapper = styled.div`
-  width: 132px;
+  max-width: 132px;
+  min-width: 132px;
   height: 100%;
 `;
 
@@ -182,15 +215,31 @@ const ProfileImg = styled.img`
   border: 1px solid ${({ theme }) => theme.color.grayScale[250]};
 `;
 
+const ProfileImgMock = styled.div`
+  width: 60px;
+  height: 60px;
+  border-radius: 5px;
+  background-color: ${({ theme }) => theme.color.grayScale[500]};
+`;
+
 const UploadWrapper = styled.div`
   display: flex;
   margin-top: 10px;
 `;
 
-const UploadButton = styled.div`
-  width: 76px;
-`;
-
 const HiddenInput = styled.input`
   display: none;
+`;
+
+const CoverSection = styled.img`
+  width: 498px;
+  height: 78px;
+  border-radius: 5px;
+`;
+
+const CoverSectionMock = styled.div`
+  width: 498px;
+  height: 78px;
+  border-radius: 5px;
+  background-color: ${({ theme }) => theme.color.grayScale[500]};
 `;

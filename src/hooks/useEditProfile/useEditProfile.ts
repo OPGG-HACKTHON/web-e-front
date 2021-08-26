@@ -1,15 +1,34 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, Dispatch, SetStateAction } from 'react';
+
+type imgHandlerType = {
+  event: any;
+  setImgBase64: Dispatch<SetStateAction<string>>;
+  setImgFile: Dispatch<SetStateAction<string>>;
+};
 
 const useEditProfile = () => {
-  const [imgFile, setImgFile] = useState<string>('');
-  const [imgBase64, setImgBase64] = useState<string>('');
-  const hiddenInputRef = useRef(null);
+  const [profileImg, setProfileImg] = useState<string>('');
+  const [profileBanner64, setProfileBanner64] = useState<string>('');
 
-  const handleHiddenInput = useCallback(() => {
-    hiddenInputRef.current.click();
+  const [bannerFile, setBannerFile] = useState<string>('');
+  const [bannerBase64, setBannerBase64] = useState<string>('');
+
+  const hiddenProfileInputRef = useRef(null);
+  const hiddenCoverInputRef = useRef(null);
+
+  const handleHiddenProfileInput = useCallback(() => {
+    hiddenProfileInputRef.current.click();
   }, []);
 
-  const handleChangeFile = (event) => {
+  const handleHiddenCoverInput = useCallback(() => {
+    hiddenCoverInputRef.current.click();
+  }, []);
+
+  const handleChangeFile = ({
+    event,
+    setImgBase64,
+    setImgFile,
+  }: imgHandlerType) => {
     const reader = new FileReader();
 
     reader.onloadend = () => {
@@ -24,12 +43,33 @@ const useEditProfile = () => {
     }
   };
 
+  const handleProfileImgReader = useCallback((event) => {
+    handleChangeFile({
+      event,
+      setImgBase64: setProfileBanner64,
+      setImgFile: setProfileImg,
+    });
+  }, []);
+
+  const handleCoverImgReader = useCallback((event) => {
+    handleChangeFile({
+      event,
+      setImgBase64: setBannerBase64,
+      setImgFile: setBannerFile,
+    });
+  }, []);
+
   return {
-    imgFile,
-    imgBase64,
-    handleHiddenInput,
-    handleChangeFile,
-    hiddenInputRef,
+    handleProfileImgReader,
+    profileImg,
+    profileBanner64,
+    handleHiddenProfileInput,
+    handleHiddenCoverInput,
+    hiddenProfileInputRef,
+    handleCoverImgReader,
+    hiddenCoverInputRef,
+    bannerFile,
+    bannerBase64,
   };
 };
 
