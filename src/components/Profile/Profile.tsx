@@ -4,18 +4,14 @@ import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { myProfileAtom } from 'atom/profileAtom';
 import useProfile from 'hooks/useProfile/useProfile';
+import { fetchUserInfoAtom } from 'atom/userAtom';
 
 const Profile = () => {
-  const {
-    handleMyProfile,
-    followerCount,
-    followingCount,
-    handleEditProfilePage,
-  } = useProfile();
-
-  const userProfile = useRecoilValue(myProfileAtom);
-  const { id, intro } = userProfile;
-
+  const { handleMyProfile, followingCount, handleEditProfilePage } =
+    useProfile();
+  const userInfo = useRecoilValue(fetchUserInfoAtom);
+  const { userName, userIntro, userPhotoURL, followerCount } = userInfo;
+  console.log(followingCount);
   useEffect(() => {
     handleMyProfile();
   }, [handleMyProfile]);
@@ -25,22 +21,24 @@ const Profile = () => {
       <Banner />
       <UserWrapperPosition>
         <UserInfoWrapper>
-          <UserImg />
+          <UserImg src={userPhotoURL} />
           <InfoWrapper>
             <UserNameWrapper>
-              <UserName>{id}</UserName>
+              <UserName>{userName}</UserName>
               <EditProfile onClick={handleEditProfilePage}>
                 프로필 편집
               </EditProfile>
             </UserNameWrapper>
             <FollowWrapper>
               <div>{followerCount} 팔로워</div>
-              <div>{followingCount} 팔로우</div>
+              <div>
+                {followingCount === undefined ? 0 : followingCount} 팔로우
+              </div>
             </FollowWrapper>
           </InfoWrapper>
         </UserInfoWrapper>
         <Introdunction>
-          {intro === null ? '자기소개가 없습니다.' : intro}
+          {userIntro === null ? '자기소개가 없습니다.' : userIntro}
         </Introdunction>
       </UserWrapperPosition>
     </ProfileWrapper>
@@ -81,7 +79,7 @@ const UserInfoWrapper = styled.div`
   position: relative;
 `;
 
-const UserImg = styled.div`
+const UserImg = styled.img`
   width: 80px;
   height: 80px;
   background-color: ${({ theme }) => theme.color.white};

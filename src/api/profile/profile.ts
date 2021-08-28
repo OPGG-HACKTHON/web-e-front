@@ -39,7 +39,20 @@ export const modifyProfile = async (
   modiftObj: patchProfileDto,
   userId: string
 ) => {
-  const { data } = await customAxios.patch(`/user/${userId}`, { modiftObj });
+  const { data } = await customAxios.patch(`/users/${userId}`, modiftObj);
+
+  return data;
+};
+
+export const uploadImg = async (image: File) => {
+  const formData = new FormData();
+  formData.append('image', image);
+
+  const { data } = await customAxios.post('/image/upload', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 
   return data;
 };

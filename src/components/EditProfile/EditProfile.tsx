@@ -24,6 +24,8 @@ const EditProfile = () => {
     bannerBase64,
     editProfileInputObj,
     setEditProfileInputObj,
+    handleModifyProfileEdit,
+    goBakcProfileHistory,
   } = useEditProfile();
 
   const commonButtonProps = useMemo(
@@ -53,6 +55,17 @@ const EditProfile = () => {
     };
   }, []);
 
+  const commonButtonStyle = useMemo(
+    () => ({
+      width: 5.6,
+      height: 3.6,
+      fontStyle: typography.bodyRgBold,
+      borderRadius: 0.5,
+      padding: '',
+    }),
+    []
+  );
+
   return (
     <EditProfileWrapper>
       <EditProfileNav>
@@ -61,90 +74,108 @@ const EditProfile = () => {
       </EditProfileNav>
       <ProfileElementWrapper>
         {isEditProfileSetting ? (
-          <ProfileEditWrapper>
-            <ProfileUploadWrapper>
-              <TitleWrapper>
-                <TopTitle>프로필 사진</TopTitle>
-                <SubTitle>권장규격 80 x 80</SubTitle>
-              </TitleWrapper>
-              <div>
-                {profileBanner64.length <= 0 ? (
-                  <ProfileImgMock />
-                ) : (
-                  <ProfileImg src={profileBanner64} />
-                )}
+          <>
+            <ProfileEditWrapper>
+              <ProfileUploadWrapper>
+                <TitleWrapper>
+                  <TopTitle>프로필 사진</TopTitle>
+                  <SubTitle>권장규격 80 x 80</SubTitle>
+                </TitleWrapper>
+                <div>
+                  {profileBanner64.length <= 0 ? (
+                    <ProfileImgMock />
+                  ) : (
+                    <ProfileImg src={profileBanner64} />
+                  )}
 
-                <UploadWrapper>
-                  <HiddenInput
-                    ref={hiddenProfileInputRef}
-                    type="file"
-                    accept="img/*"
-                    required
-                    multiple
-                    onChange={handleProfileImgReader}
-                  />
-                  <Button
-                    {...commonButtonProps}
-                    text="사진업로드"
-                    width={7.6}
-                    onClick={handleHiddenProfileInput}
-                  />
-                </UploadWrapper>
-              </div>
-            </ProfileUploadWrapper>
-            <CoverImgWarpper>
-              <TitleWrapper>
-                <TopTitle>커버 사진</TopTitle>
-                <SubTitle>권장규격 640 x 100</SubTitle>
-              </TitleWrapper>
-              <div>
-                {bannerBase64.length <= 0 ? (
-                  <CoverSectionMock />
-                ) : (
-                  <CoverSection src={bannerBase64} />
-                )}
-                <UploadWrapper>
-                  <HiddenInput
-                    ref={hiddenCoverInputRef}
-                    type="file"
-                    accept="img/*"
-                    required
-                    multiple
-                    onChange={handleCoverImgReader}
-                  />
-                  <Button
-                    {...commonButtonProps}
-                    text="사진업로드"
-                    width={7.6}
-                    onClick={handleHiddenCoverInput}
-                  />
-                </UploadWrapper>
-              </div>
-            </CoverImgWarpper>
-            <NameWrapper>
-              <TitleWrapper>
-                <TopTitle>닉네임</TopTitle>
-              </TitleWrapper>
-              <Input
-                width="200px"
-                {...commonInputStyle}
-                value={editProfileInputObj.userName}
-                onChange={(e) => inputProfileEdit(e, setEditProfileInputObj)}
-                name="userName"
+                  <UploadWrapper>
+                    <HiddenInput
+                      ref={hiddenProfileInputRef}
+                      type="file"
+                      accept="img/*"
+                      required
+                      multiple
+                      onChange={handleProfileImgReader}
+                    />
+                    <Button
+                      {...commonButtonProps}
+                      text="사진업로드"
+                      width={7.6}
+                      onClick={handleHiddenProfileInput}
+                    />
+                  </UploadWrapper>
+                </div>
+              </ProfileUploadWrapper>
+              <CoverImgWarpper>
+                <TitleWrapper>
+                  <TopTitle>커버 사진</TopTitle>
+                  <SubTitle>권장규격 640 x 100</SubTitle>
+                </TitleWrapper>
+                <div>
+                  {bannerBase64.length <= 0 ? (
+                    <CoverSectionMock />
+                  ) : (
+                    <CoverSection src={bannerBase64} />
+                  )}
+                  <UploadWrapper>
+                    <HiddenInput
+                      ref={hiddenCoverInputRef}
+                      type="file"
+                      accept="img/*"
+                      required
+                      multiple
+                      onChange={handleCoverImgReader}
+                    />
+                    <Button
+                      {...commonButtonProps}
+                      text="사진업로드"
+                      width={7.6}
+                      onClick={handleHiddenCoverInput}
+                    />
+                  </UploadWrapper>
+                </div>
+              </CoverImgWarpper>
+              <NameWrapper>
+                <TitleWrapper>
+                  <TopTitle>닉네임</TopTitle>
+                </TitleWrapper>
+                <Input
+                  width="200px"
+                  {...commonInputStyle}
+                  value={editProfileInputObj.userName}
+                  onChange={(e) => inputProfileEdit(e, setEditProfileInputObj)}
+                  name="userName"
+                />
+              </NameWrapper>
+              <IntroWrapper>
+                <TitleWrapper>
+                  <TopTitle>자기소개</TopTitle>
+                </TitleWrapper>
+                <Input
+                  {...commonInputStyle}
+                  value={editProfileInputObj.intro}
+                  onChange={(e) => inputProfileEdit(e, setEditProfileInputObj)}
+                  name="intro"
+                />
+              </IntroWrapper>
+            </ProfileEditWrapper>
+            <ButtonWrapper>
+              <Button
+                {...commonButtonStyle}
+                text="적용"
+                bkgColor={color.yellow}
+                fontColor={color.white}
+                onClick={handleModifyProfileEdit}
               />
-            </NameWrapper>
-            <IntroWrapper>
-              <TitleWrapper>
-                <TopTitle>자기소개</TopTitle>
-              </TitleWrapper>
-              <Input
-                {...commonInputStyle}
-                value={editProfileInputObj.intro}
-                onChange={(e) => inputProfileEdit(e, setEditProfileInputObj)}
-                name="intro"
+              <Button
+                {...commonButtonStyle}
+                onClick={goBakcProfileHistory}
+                text="취소"
+                bkgColor={color.white}
+                fontColor={color.grayScale[500]}
               />
-            </IntroWrapper>
-          </ProfileEditWrapper>
+            </ButtonWrapper>
+          </>
         ) : null}
       </ProfileElementWrapper>
     </EditProfileWrapper>
@@ -152,6 +183,17 @@ const EditProfile = () => {
 };
 
 export default EditProfile;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+  justify-content: center;
+
+  & > * + * {
+    margin-left: 20px;
+  }
+`;
 
 const EditProfileWrapper = styled.div`
   display: flex;
