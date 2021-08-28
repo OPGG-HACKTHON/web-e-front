@@ -1,6 +1,11 @@
 import { AxiosResponse } from 'axios';
 import customAxios from 'lib/axios';
-import { follwerType, follwingType, fetchProfileType } from './profile.type';
+import {
+  follwerType,
+  follwingType,
+  fetchProfileType,
+  patchProfileDto,
+} from './profile.type';
 
 export const myProfileInfo = async () => {
   const data = await customAxios.get('/profile');
@@ -26,6 +31,15 @@ export const findFollowing = async (
 
 export const fetchProfileInfo = async (userId: string) => {
   const { data }: fetchProfileType = await customAxios.get(`/users/${userId}`);
+
+  return data;
+};
+
+export const modifyProfile = async (
+  modiftObj: patchProfileDto,
+  userId: string
+) => {
+  const { data } = await customAxios.patch(`/user/${userId}`, { modiftObj });
 
   return data;
 };

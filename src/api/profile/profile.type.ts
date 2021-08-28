@@ -51,3 +51,19 @@ export type profileType = {
   isPro: boolean;
   loginAt: string;
 };
+
+export type patchProfileDto = {
+  userName?: string;
+  userPassword?: string;
+  userPhotoURL?: null | string;
+  userCoverURL?: null | string;
+  userColor?: null | string;
+  userFeed?: string;
+  lolTier?: string;
+  pubgTier?: string;
+  watchTier?: string;
+  userIntro?: null | string;
+  userLolId?: null | string;
+  userWatchId?: null | string;
+  userPubgId?: null | string;
+};
