@@ -64,7 +64,6 @@ const EditProfile = styled.div`
 const ProfileWrapper = styled.div`
   width: 100%;
   position: relative;
-  margin-left: 26px;
 `;
 
 const UserWrapperPosition = styled.div`
