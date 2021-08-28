@@ -5,9 +5,13 @@ import Button from 'common/Button';
 import useEditProfile from 'hooks/useEditProfile/useEditProfile';
 import styled from 'styled-components';
 import { color, typography } from 'styles/theme';
+import Input from 'common/Input';
+import useInput from 'hooks/useInput/useInput';
+import { editProfileUserInputType } from 'api/profile/profile.type';
 
 const EditProfile = () => {
   const [isEditProfileSetting, setIsEditProfileSetting] = useState(true);
+  const [inputProfileEdit] = useInput<editProfileUserInputType>();
 
   const {
     handleProfileImgReader,
@@ -18,6 +22,8 @@ const EditProfile = () => {
     hiddenCoverInputRef,
     handleCoverImgReader,
     bannerBase64,
+    editProfileInputObj,
+    setEditProfileInputObj,
   } = useEditProfile();
 
   const commonButtonProps = useMemo(
@@ -31,6 +37,21 @@ const EditProfile = () => {
     }),
     []
   );
+
+  const commonInputStyle = useMemo(() => {
+    return {
+      height: '40px',
+      placeHolderFontSize: '1.2rem',
+      borderRadius: '5px',
+      borderStyle: `1px solid ${color.grayScale[250]}`,
+      backgroundColor: color.grayScale[50],
+      placeHolderColor: color.grayScale[500],
+      fontSize: '1.2rem',
+      focusBackgroundColor: color.white,
+      focusOutline: `1px solid ${color.yellow}`,
+      paddingStyle: '9px 11px',
+    };
+  }, []);
 
   return (
     <EditProfileWrapper>
@@ -104,11 +125,24 @@ const EditProfile = () => {
               <TitleWrapper>
                 <TopTitle>닉네임</TopTitle>
               </TitleWrapper>
+              <Input
+                width="200px"
+                {...commonInputStyle}
+                value={editProfileInputObj.userName}
+                onChange={(e) => inputProfileEdit(e, setEditProfileInputObj)}
+                name="userName"
+              />
             </NameWrapper>
             <IntroWrapper>
               <TitleWrapper>
                 <TopTitle>자기소개</TopTitle>
               </TitleWrapper>
+              <Input
+                {...commonInputStyle}
+                value={editProfileInputObj.intro}
+                onChange={(e) => inputProfileEdit(e, setEditProfileInputObj)}
+                name="intro"
+              />
             </IntroWrapper>
           </ProfileEditWrapper>
         ) : null}

@@ -1,4 +1,13 @@
-import { useState, useRef, useCallback, Dispatch, SetStateAction } from 'react';
+import { fetchProfileInfo, myProfileInfo } from 'api/profile/profile';
+import { editProfileUserInputType } from 'api/profile/profile.type';
+import {
+  useState,
+  useRef,
+  useCallback,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+} from 'react';
 
 type imgHandlerType = {
   event: any;
@@ -15,6 +24,9 @@ const useEditProfile = () => {
 
   const hiddenProfileInputRef = useRef(null);
   const hiddenCoverInputRef = useRef(null);
+
+  const [editProfileInputObj, setEditProfileInputObj] =
+    useState<editProfileUserInputType>({ userName: '', intro: '' });
 
   const handleHiddenProfileInput = useCallback(() => {
     hiddenProfileInputRef.current.click();
@@ -59,6 +71,30 @@ const useEditProfile = () => {
     });
   }, []);
 
+  const handleFetchMyProfile = useCallback(async () => {
+    try {
+      const myProfileId = await myProfileInfo();
+      const { data } = await fetchProfileInfo(myProfileId.data.id);
+      console.log(data);
+
+      setEditProfileInputObj({
+        userName: data.userName || '',
+        intro: data.userIntro || '',
+      });
+
+      setBannerBase64(data.userCoverURL || '');
+      setProfileBanner64(data.userPhotoURL || '');
+
+      return data;
+    } catch (err) {
+      return err;
+    }
+  }, []);
+
+  useEffect(() => {
+    handleFetchMyProfile();
+  }, [handleFetchMyProfile]);
+
   return {
     handleProfileImgReader,
     profileImg,
@@ -70,6 +106,8 @@ const useEditProfile = () => {
     hiddenCoverInputRef,
     bannerFile,
     bannerBase64,
+    editProfileInputObj,
+    setEditProfileInputObj,
   };
 };
 
