@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import Banner from 'common/Banner';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
-import { myProfileAtom } from 'atom/profileAtom';
 import useProfile from 'hooks/useProfile/useProfile';
 import { fetchUserInfoAtom } from 'atom/userAtom';
 
@@ -11,7 +10,7 @@ const Profile = () => {
     useProfile();
   const userInfo = useRecoilValue(fetchUserInfoAtom);
   const { userName, userIntro, userPhotoURL, followerCount } = userInfo;
-  console.log(followingCount);
+
   useEffect(() => {
     handleMyProfile();
   }, [handleMyProfile]);

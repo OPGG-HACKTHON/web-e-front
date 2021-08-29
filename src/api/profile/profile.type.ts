@@ -67,3 +67,8 @@ export type patchProfileDto = {
   userWatchId?: null | string;
   userPubgId?: null | string;
 };
+
+export type gameNickNameType = {
+  lol: string;
+  pubg: string;
+};

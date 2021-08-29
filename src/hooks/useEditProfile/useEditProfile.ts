@@ -4,7 +4,10 @@ import {
   myProfileInfo,
   uploadImg,
 } from 'api/profile/profile';
-import { editProfileUserInputType } from 'api/profile/profile.type';
+import {
+  editProfileUserInputType,
+  gameNickNameType,
+} from 'api/profile/profile.type';
 import useProfile from 'hooks/useProfile/useProfile';
 import {
   useState,
@@ -24,6 +27,8 @@ type imgHandlerType = {
 
 const useEditProfile = () => {
   const history = useHistory();
+  const [isEditProfileSetting, setIsEditProfileSetting] =
+    useState<boolean>(true);
   const [userId, setUserId] = useState<string>('');
   const [profileUserName, setProfileUserName] = useState<string>('');
   const [profileImg, setProfileImg] = useState<File>();
@@ -31,6 +36,17 @@ const useEditProfile = () => {
 
   const [bannerFile, setBannerFile] = useState<File>();
   const [bannerBase64, setBannerBase64] = useState<string>('');
+
+  const [selectLol, setSelectLol] = useState<string>('');
+  const [selectPubg, setSelectPubg] = useState<string>('');
+  const [selectWatch, setSelectWatch] = useState<string>('');
+
+  const [isDone, setIsDone] = useState<boolean>(false);
+
+  const [gameNickName, setGameNickName] = useState<gameNickNameType>({
+    lol: '',
+    pubg: '',
+  });
 
   const { handleMyProfile } = useProfile();
 
@@ -46,6 +62,10 @@ const useEditProfile = () => {
 
   const handleHiddenCoverInput = useCallback(() => {
     hiddenCoverInputRef.current.click();
+  }, []);
+
+  const handleEditProfileSetting = useCallback((isProfile: boolean) => {
+    setIsEditProfileSetting(isProfile);
   }, []);
 
   const handleChangeFile = useCallback(
@@ -92,17 +112,21 @@ const useEditProfile = () => {
     try {
       const myProfileId = await myProfileInfo();
       const { data } = await fetchProfileInfo(myProfileId.data.id);
-
       setUserId(data.userId);
       setProfileUserName(data.userName);
       setEditProfileInputObj({
         userName: data.userName || '',
         intro: data.userIntro || '',
       });
-
+      setSelectLol(data.lolTier);
+      setSelectPubg(data.pubgTier);
+      setSelectWatch(data.watchTier);
       setBannerBase64(data.userCoverURL || '');
       setProfileBanner64(data.userPhotoURL || '');
-
+      setGameNickName({
+        lol: data.userLolId,
+        pubg: data.userPubgId,
+      });
       return data;
     } catch (err) {
       return err;
@@ -132,7 +156,11 @@ const useEditProfile = () => {
           userCoverURL: bannerUrl.location,
         };
 
-        await modifyProfile(temp, userId);
+        const data = await modifyProfile(temp, userId);
+
+        if (data.statusCode === 200) {
+          setIsDone(true);
+        }
       } else {
         const temp = {
           userName: editProfileInputObj.userName,
@@ -141,7 +169,11 @@ const useEditProfile = () => {
           userCoverURL: bannerUrl.location,
         };
 
-        await modifyProfile(temp, userId);
+        const data = await modifyProfile(temp, userId);
+
+        if (data.statusCode === 200) {
+          setIsDone(true);
+        }
       }
       await handleMyProfile();
       await handleFetchMyProfile();
@@ -160,9 +192,41 @@ const useEditProfile = () => {
     userId,
   ]);
 
+  const handleModifyGameTier = useCallback(async () => {
+    try {
+      const temp = {
+        lolTier: selectLol,
+        pubgTier: selectPubg,
+        watchTier: selectWatch,
+        userLolId: gameNickName.lol,
+        userPubgId: gameNickName.pubg,
+      };
+
+      const data = await modifyProfile(temp, userId);
+      if (data.statusCode === 200) {
+        setIsDone(true);
+      }
+
+      return data;
+    } catch (err) {
+      return err;
+    }
+  }, [
+    gameNickName.lol,
+    gameNickName.pubg,
+    selectLol,
+    selectPubg,
+    selectWatch,
+    userId,
+  ]);
+
   const goBakcProfileHistory = useCallback(() => {
     history.push('/profile');
   }, [history]);
+
+  const handleDonePopup = useCallback(() => {
+    setIsDone((prev) => !prev);
+  }, []);
 
   useEffect(() => {
     handleFetchMyProfile();
@@ -183,6 +247,19 @@ const useEditProfile = () => {
     setEditProfileInputObj,
     handleModifyProfileEdit,
     goBakcProfileHistory,
+    isEditProfileSetting,
+    handleEditProfileSetting,
+    selectLol,
+    setSelectLol,
+    selectPubg,
+    setSelectPubg,
+    selectWatch,
+    setSelectWatch,
+    gameNickName,
+    setGameNickName,
+    handleModifyGameTier,
+    isDone,
+    handleDonePopup,
   };
 };
 
