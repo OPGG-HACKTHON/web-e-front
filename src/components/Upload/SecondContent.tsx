@@ -40,11 +40,15 @@ const SecondContent = () => {
     setSelectedButton(value);
   };
   const handleChange = (e: any) => {
+    setText(e.target.value);
+    const matches = text.match(/#([가-힣a-zA-Z0-9]+)/g);
+    console.log(matches);
+
     setUploadObj({
       ...uploadObj,
       videoIntro: e.target.value,
+      hashtags: matches,
     });
-    setText(e.target.value);
   };
   const onClickUpload = () => {
     if (selectedButton) {
