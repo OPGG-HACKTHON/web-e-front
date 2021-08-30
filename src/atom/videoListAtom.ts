@@ -1,7 +1,6 @@
-import { atom, RecoilValue, selector, selectorFamily } from 'recoil';
+import { atom, RecoilValue, selector } from 'recoil';
 import { datas } from 'data/main';
 import getVideos from 'api/video/video';
-import axios from 'axios';
 import { leftNavItemState } from './pageAtom';
 import { selectorState } from './selectorAtom';
 
