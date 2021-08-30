@@ -1,14 +1,19 @@
-import { atom, RecoilValue, selector } from 'recoil';
+import { atom, RecoilValue, selector, selectorFamily } from 'recoil';
 import { datas } from 'data/main';
 import getVideos from 'api/video/video';
+import axios from 'axios';
 import { leftNavItemState } from './pageAtom';
 import { selectorState } from './selectorAtom';
 
 export const getVideoTrigger = atom({
   key: '_getVideoTrigger',
-  default: 0,
+  default: 1,
 });
 
+export const videoList = atom({
+  key: 'videoList',
+  default: [],
+});
 export const videoListState = selector({
   key: 'videoListState',
   get: async ({ get }) => {
