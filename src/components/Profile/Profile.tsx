@@ -2,14 +2,23 @@ import React, { useEffect } from 'react';
 import Banner from 'common/Banner';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
-import { myProfileAtom } from 'atom/profileAtom';
 import useProfile from 'hooks/useProfile/useProfile';
+import { fetchUserInfoAtom } from 'atom/userAtom';
 
 const Profile = () => {
-  const { handleMyProfile, followerCount, followingCount } = useProfile();
-
-  const userProfile = useRecoilValue(myProfileAtom);
-  const { id, intro } = userProfile;
+  const { handleMyProfile, followingCount, handleEditProfilePage } =
+    useProfile();
+  const userInfo = useRecoilValue(fetchUserInfoAtom);
+  const {
+    userName,
+    userIntro,
+    userPhotoURL,
+    followerCount,
+    userCoverURL,
+    lolTier,
+    pubgTier,
+    watchTier,
+  } = userInfo;
 
   useEffect(() => {
     handleMyProfile();
@@ -17,22 +26,32 @@ const Profile = () => {
 
   return (
     <ProfileWrapper>
-      <Banner />
+      <Banner
+        img={userCoverURL}
+        lolTier={lolTier}
+        pubgTier={pubgTier}
+        watchTier={watchTier}
+      />
       <UserWrapperPosition>
         <UserInfoWrapper>
-          <UserImg />
+          <UserImg src={userPhotoURL} />
           <InfoWrapper>
             <UserNameWrapper>
-              <UserName>{id}</UserName>
+              <UserName>{userName}</UserName>
+              <EditProfile onClick={handleEditProfilePage}>
+                프로필 편집
+              </EditProfile>
             </UserNameWrapper>
             <FollowWrapper>
               <div>{followerCount} 팔로워</div>
-              <div>{followingCount} 팔로우</div>
+              <div>
+                {followingCount === undefined ? 0 : followingCount} 팔로우
+              </div>
             </FollowWrapper>
           </InfoWrapper>
         </UserInfoWrapper>
         <Introdunction>
-          {intro === null ? '자기소개가 없습니다.' : intro}
+          {userIntro === null ? '자기소개가 없습니다.' : userIntro}
         </Introdunction>
       </UserWrapperPosition>
     </ProfileWrapper>
@@ -40,6 +59,20 @@ const Profile = () => {
 };
 
 export default Profile;
+
+const EditProfile = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 78px;
+  height: 23px;
+  border-radius: 5px;
+  border: 1px solid ${({ theme }) => `${theme.color.grayScale[500]}7F`};
+  ${({ theme }) => theme.typography.bodySmBold}
+  color:${({ theme }) => theme.color.grayScale[500]};
+  margin-left: 10px;
+  cursor: pointer;
+`;
 
 const ProfileWrapper = styled.div`
   width: 100%;
@@ -56,10 +89,9 @@ const UserInfoWrapper = styled.div`
   width: 100%;
   align-items: flex-end;
   position: relative;
-  /* top: -20px; */
 `;
 
-const UserImg = styled.div`
+const UserImg = styled.img`
   width: 80px;
   height: 80px;
   background-color: ${({ theme }) => theme.color.white};
@@ -77,6 +109,7 @@ const InfoWrapper = styled.div`
 const UserNameWrapper = styled.div`
   width: 100%;
   display: flex;
+  align-items: center;
 `;
 
 const UserName = styled.div`
@@ -84,6 +117,7 @@ const UserName = styled.div`
 `;
 
 const FollowWrapper = styled.div`
+  margin-top: 6px;
   display: flex;
   ${({ theme }) => theme.typography.bodyRg}
   & > * + * {

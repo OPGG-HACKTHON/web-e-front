@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import useNav from 'hooks/useNav';
 import Button from 'common/Button';
@@ -10,6 +10,8 @@ import UnderToggleLayer from 'common/UnderToggleLayer';
 import { ItemStyle } from 'common/UnderToggleLayer/UnderToggleLayer';
 import { registerStatusAtom } from 'atom/authAtom';
 import Welcome from 'components/Auth/Welcome';
+import useProfile from 'hooks/useProfile/useProfile';
+import { fetchUserInfoAtom } from 'atom/userAtom';
 
 import { color, typography } from 'styles/theme';
 import { useRecoilValue } from 'recoil';
@@ -22,6 +24,8 @@ import AlramSvg from '../SvgElement/AlarmSvg';
 const Nav = () => {
   const themeStyle = useContext(ThemeContext);
   const myProfile = useRecoilValue(myProfileAtom);
+  const userInfo = useRecoilValue(fetchUserInfoAtom);
+  const { userPhotoURL } = userInfo;
   const isLogin = myProfile.id !== null;
 
   const {
@@ -34,6 +38,7 @@ const Nav = () => {
     isClickAlram,
     clickAlramPosition,
   } = useNav();
+
   const {
     isLoginModal,
     handleLoginModal,
@@ -51,9 +56,13 @@ const Nav = () => {
     closeWelcomModalGoToLoginModal,
   } = useAuth();
 
-  const registerStatus = useRecoilValue(registerStatusAtom);
+  const { handleMyProfile } = useProfile();
 
-  console.log(clickAlramPosition, clickProfilePosition);
+  useEffect(() => {
+    handleMyProfile();
+  }, [handleMyProfile]);
+
+  const registerStatus = useRecoilValue(registerStatusAtom);
   return (
     <>
       <NavWrapper>
@@ -82,7 +91,7 @@ const Nav = () => {
                 </AlramWrapper>
                 <ProfileImg
                   ref={profileRef}
-                  src=""
+                  src={userPhotoURL}
                   alt=""
                   onClick={handleClickProfile}
                 />
@@ -181,6 +190,7 @@ const ProfileImg = styled.img`
   width: 32px;
   height: 32px;
   background-color: ${({ theme }) => theme.color.grayScale[500]};
+  border-radius: 5px;
 `;
 
 const RightItemWrapper = styled.div`
@@ -215,11 +225,13 @@ const NavWrapper = styled.nav`
 const NavInnerWrapper = styled.div`
   width: 100%;
   max-width: 940px;
+  background-color: ${({ theme }) => theme.color.white};
   height: 60px;
   display: flex;
   align-items: center;
   border-bottom: 0.5px solid ${({ theme }) => theme.color.grayScale[500]};
   justify-content: space-between;
+  padding-right: 10px;
 `;
 
 const Logo = styled.img`
