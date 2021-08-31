@@ -12,6 +12,8 @@ type Props = {
 
 const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
   const themeStyle = useContext(ThemeContext);
+  const descArray = description.split(' ');
+  const regexp = /#([가-힣a-zA-Z0-9]+)/g;
   return (
     <InfoWrapper>
       <div className="poster_info">
@@ -42,15 +44,17 @@ const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
         </div>
       </div>
       <div className="desc_div">
-        <span className="description_span">{description}</span>
-        {/* {splitedHashtags.map((tag: string) => (
-            <Hashtag
-              onClick={() => console.log('팔로우')}
-              key={splitedHashtags.indexOf(`${tag}`)}
-            >
-              {tag}
-            </Hashtag>
-          ))} */}
+        <span className="description_span">
+          {descArray.map((word: string) =>
+            word.match(regexp) ? (
+              <Hashtag onClick={() => console.log(word)} key={word}>
+                {word}
+              </Hashtag>
+            ) : (
+              <TextContent>{word}</TextContent>
+            )
+          )}
+        </span>
       </div>
     </InfoWrapper>
   );
@@ -58,9 +62,15 @@ const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
 
 export default Description;
 
-const Hashtag = styled.span`
+const Hashtag = styled.a`
   cursor: pointer;
   ${({ theme }) => theme.typography.bodySmBold};
+  margin: 0 2px;
+`;
+
+const TextContent = styled.span`
+  ${({ theme }) => theme.typography.bodySmRegular};
+  margin: 0 2px;
 `;
 
 const PosterImgBtn = styled.div``;
