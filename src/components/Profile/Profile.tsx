@@ -9,7 +9,16 @@ const Profile = () => {
   const { handleMyProfile, followingCount, handleEditProfilePage } =
     useProfile();
   const userInfo = useRecoilValue(fetchUserInfoAtom);
-  const { userName, userIntro, userPhotoURL, followerCount } = userInfo;
+  const {
+    userName,
+    userIntro,
+    userPhotoURL,
+    followerCount,
+    userCoverURL,
+    lolTier,
+    pubgTier,
+    watchTier,
+  } = userInfo;
 
   useEffect(() => {
     handleMyProfile();
@@ -17,7 +26,12 @@ const Profile = () => {
 
   return (
     <ProfileWrapper>
-      <Banner />
+      <Banner
+        img={userCoverURL}
+        lolTier={lolTier}
+        pubgTier={pubgTier}
+        watchTier={watchTier}
+      />
       <UserWrapperPosition>
         <UserInfoWrapper>
           <UserImg src={userPhotoURL} />
