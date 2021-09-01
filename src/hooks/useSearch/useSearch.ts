@@ -1,8 +1,9 @@
-import { searchAreaAtom } from 'atom/searchAreaAtom';
+import { searchAreaAtom, searhUrl } from 'atom/searchAreaAtom';
 import { useRecoilState } from 'recoil';
 
 const useSearch = () => {
   const [keywords, setKeywords] = useRecoilState(searchAreaAtom);
+  const [url, setUrl] = useRecoilState(searhUrl);
 
   const handleAddKeyword = (text) => {
     const keywordsArr = keywords.map((k) => k.keywords);
@@ -26,8 +27,12 @@ const useSearch = () => {
 
   const goToLink = (value) => {
     // 실행할 함수
-    const reValue = value.replaceAll('#', '%23');
-    window.location.href = `/search?hashtags=${reValue}`;
+    if (value.startsWith('#')) {
+      const reValue = value.replaceAll('#', '%23');
+      const getUrl = `/search?hashtags=${reValue}`;
+      setUrl(getUrl);
+      window.location.href = getUrl;
+    }
   };
 
   return {
