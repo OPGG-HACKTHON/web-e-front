@@ -25,8 +25,8 @@ export const getHashtagsList = selector({
   },
 });
 
-export const vListByCategoryState = selector({
-  key: 'vListByCategoryState',
+export const hListByCategoryState = selector({
+  key: 'hListByCategoryState',
   get: ({ get }) => {
     const selectNavName = get(leftNavItemState);
     const videos = get(getHashtagsList);
@@ -48,11 +48,11 @@ export const vListByCategoryState = selector({
   },
 });
 
-export const vListbySelectorState = selector({
-  key: 'vListbySelectorState', // unique ID (with respect to other atoms/selectors)
+export const hListbySelectorState = selector({
+  key: 'hListbySelectorState', // unique ID (with respect to other atoms/selectors)
   get: ({ get }) => {
     const text = get(selectorState);
-    const list = get(vListByCategoryState);
+    const list = get(hListByCategoryState);
     const videoAr = list.slice();
     const lVideo: any[] = [];
     const rVideo: any[] = [];
