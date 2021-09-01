@@ -51,9 +51,8 @@ const SecondContent = () => {
     const hashtags = matches.join(',');
     setUploadObj({
       ...uploadObj,
-      hashtags: JSON.stringify(hashtags),
+      hashtags,
     });
-    console.log(hashtags, '해시', uploadObj.hashtags, uploadObj);
   };
 
   const onClickUpload = () => {
@@ -172,7 +171,7 @@ const SecondContent = () => {
             <textarea
               value={text}
               onChange={(e) => handleChange(e)}
-              onBlur={() => getHastags()}
+              onBlur={getHastags}
             />
           </VideoContent>
         </VideoContentWrapper>
