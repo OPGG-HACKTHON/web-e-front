@@ -5,11 +5,14 @@ const useSearch = () => {
   const [keywords, setKeywords] = useRecoilState(searchAreaAtom);
 
   const handleAddKeyword = (text) => {
-    const newKeyword = {
-      id: Date.now(),
-      keywords: text,
-    };
-    setKeywords([newKeyword, ...keywords]);
+    const keywordsArr = keywords.map((k) => k.keywords);
+    if (!keywordsArr.includes(text)) {
+      const newKeyword = {
+        id: Date.now(),
+        keywords: text,
+      };
+      setKeywords([newKeyword, ...keywords]);
+    }
   };
 
   const handleRemoveKeyword = (id) => {
