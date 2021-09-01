@@ -4,6 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { vListbySelectorState } from 'atom/videoListAtom';
 import MainWrapper from 'styles/mainStyles/videoComponents/MainWrapper';
 import VideoListMain from 'common/VideoList/Main';
+import VideoSelectBar from 'components/Main/VideoSelectBar';
 
 const Search = () => {
   const qs = window.location.search;
@@ -18,6 +19,7 @@ const Search = () => {
 
   return (
     <MainWrapper>
+      <VideoSelectBar />
       <VideoListMain videos={videos} isNeedDescription />
     </MainWrapper>
   );
