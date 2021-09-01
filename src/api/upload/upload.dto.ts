@@ -4,5 +4,5 @@ export type uploadDto = {
   category: string;
   videoIntro?: string;
   video: unknown;
-  hashtags?: RegExpMatchArray;
+  hashtags?: string;
 };

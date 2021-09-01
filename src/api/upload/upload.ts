@@ -6,7 +6,7 @@ const upload = async (dto: uploadDto) => {
   formData.append('userId', dto.userId);
   formData.append('videoName', dto.videoName);
   formData.append('category', dto.category);
-  formData.append('hashtags', JSON.stringify(dto.hashtags));
+  formData.append('hashtags', dto.hashtags as string);
   formData.append('videoIntro', dto.videoIntro as string);
   formData.append('video', dto.video as Blob);
 

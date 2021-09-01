@@ -51,7 +51,7 @@ const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
                 {word}
               </Hashtag>
             ) : (
-              <TextContent>{word}</TextContent>
+              <TextContent key={word}>{word}</TextContent>
             )
           )}
         </span>
