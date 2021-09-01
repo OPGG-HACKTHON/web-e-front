@@ -1,17 +1,23 @@
 import {
+  fetchProfileInfo,
   findFollower,
   findFollowing,
   myProfileInfo,
 } from 'api/profile/profile';
 import { myProfileAtom } from 'atom/profileAtom';
-import { useCallback, useState } from 'react';
+import { fetchUserInfoAtom } from 'atom/userAtom';
+import { useCallback, useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
 const useProfile = () => {
   const setMyProfile = useSetRecoilState(myProfileAtom);
-
+  const history = useHistory();
   const [followerCount, setFollowerCount] = useState<number>(0);
   const [followingCount, setFollowingCount] = useState<number>(0);
+  const [fetchUserId, setFetchUserId] = useState<string>('');
+
+  const setFetchUserInfoAtom = useSetRecoilState(fetchUserInfoAtom);
 
   const handleFindFollower = useCallback(async (userId: string) => {
     try {
@@ -38,6 +44,7 @@ const useProfile = () => {
   const handleMyProfile = useCallback(async () => {
     try {
       const { data } = await myProfileInfo();
+      setFetchUserId(data.id);
       setMyProfile(data);
       Promise.all([handleFindFollower(data.id), handleFindFollowing(data.id)]);
 
@@ -47,7 +54,30 @@ const useProfile = () => {
     }
   }, [handleFindFollower, handleFindFollowing, setMyProfile]);
 
-  return { handleMyProfile, followerCount, followingCount };
+  const handleFetchMyProfile = useCallback(async () => {
+    if (fetchUserId === '') {
+      return;
+    }
+
+    const { data } = await fetchProfileInfo(fetchUserId);
+
+    setFetchUserInfoAtom(data);
+  }, [fetchUserId, setFetchUserInfoAtom]);
+
+  const handleEditProfilePage = useCallback(() => {
+    return history.push('profileEdit');
+  }, [history]);
+
+  useEffect(() => {
+    handleFetchMyProfile();
+  }, [handleFetchMyProfile]);
+
+  return {
+    handleMyProfile,
+    followerCount,
+    followingCount,
+    handleEditProfilePage,
+  };
 };
 
 export default useProfile;

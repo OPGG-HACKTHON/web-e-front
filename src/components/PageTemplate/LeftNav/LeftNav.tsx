@@ -10,6 +10,7 @@ import { uploadModalPopState } from 'atom/uploadModalPopStateAtom';
 import { color, typography } from 'styles/theme';
 import { EGameList } from 'enum/game.enum';
 import { myProfileAtom } from 'atom/profileAtom';
+import { fetchUserInfoAtom } from 'atom/userAtom';
 
 import LolSvg from '../SvgElement/LolSvg';
 import PubgSvg from '../SvgElement/PubgSvg';
@@ -21,6 +22,10 @@ const LeftNav = () => {
   const myProfile = useRecoilValue(myProfileAtom);
   const [isUploadModalPoped, setUploadModalPopstate] =
     useRecoilState(uploadModalPopState);
+
+  const userInfo = useRecoilValue(fetchUserInfoAtom);
+  const { userPhotoURL, userName } = userInfo;
+
   const isSelectedGameArg = useCallback(
     (arg: EGameList) => {
       return arg === selectNavName;
@@ -44,9 +49,9 @@ const LeftNav = () => {
       <StickyWrapper>
         <UserWrapper>
           <UserInfoSection>
-            <UserProfileImg />
+            <UserProfileImg src={userPhotoURL} />
             <UserName>
-              {myProfile?.id === null ? '로그인을 해주세요.' : myProfile?.id}
+              {myProfile?.id === null ? '로그인을 해주세요.' : userName}
             </UserName>
           </UserInfoSection>
           <Button
@@ -175,7 +180,7 @@ const UserWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const UserProfileImg = styled.div`
+const UserProfileImg = styled.img`
   background-color: ${({ theme }) => theme.color.grayScale[50]};
   width: 40px;
   height: 40px;

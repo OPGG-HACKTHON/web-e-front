@@ -1,17 +1,37 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import unRankLOL from 'assets/svg/Tier/LOL/롤 - 언랭크티어.svg';
 import unRankPUBG from 'assets/svg/Tier/PUBG/배그 - 언랭크티어.svg';
 import unRankWATCH from 'assets/svg/Tier/WATCH/옵치 - 언랭크티어.svg';
+import {
+  lolTierImgConverter,
+  pubgTierImgConverter,
+  watchTierImgConverter,
+} from 'util/tierImgConverter';
 
-const Banner = () => {
+type Props = {
+  img: string;
+  lolTier: string;
+  pubgTier: string;
+  watchTier: string;
+};
+
+const Banner = ({ img, lolTier, pubgTier, watchTier }: Props) => {
+  const lolTierImg = useMemo(() => lolTierImgConverter(lolTier), [lolTier]);
+  const pubgTierImg = useMemo(() => pubgTierImgConverter(pubgTier), [pubgTier]);
+  const watchTierImg = useMemo(
+    () => watchTierImgConverter(watchTier),
+    [watchTier]
+  );
+
   return (
     <BannerWrapper>
-      <BannerImg />
+      {img === '' ? <BannerImg /> : <BannerImg src={img} />}
+
       <GameWrapper>
-        <img src={unRankLOL} alt="" />
-        <img src={unRankPUBG} alt="" />
-        <img src={unRankWATCH} alt="" />
+        <img src={lolTierImg} alt={lolTierImg} />
+        <img src={pubgTierImg} alt={pubgTierImg} />
+        <img src={watchTierImg} alt={watchTierImg} />
       </GameWrapper>
     </BannerWrapper>
   );
