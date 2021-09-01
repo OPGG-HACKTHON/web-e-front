@@ -15,7 +15,7 @@ const useUpload = () => {
     videoName: 'videoTitle',
     category: '',
     videoIntro: '',
-    hashtags: '',
+    tags: '',
     video: (selectedFile as string) || '',
   });
   const { handleMyProfile } = useProfile();

@@ -63,6 +63,7 @@ const Nav = () => {
             <SearchIconWrapper>
               <SearchIcon src={Search} alt={Search} />
             </SearchIconWrapper>
+            {/* TODO: Search */}
             <SearchInput placeholder="사용자 이름 또는 해시태그 검색" />
           </SearchWrapper>
           <ButtonWrapper>

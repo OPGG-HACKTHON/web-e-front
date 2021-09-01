@@ -14,6 +14,9 @@ const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
   const themeStyle = useContext(ThemeContext);
   const descArray = description.split(' ');
   const regexp = /#([가-힣a-zA-Z0-9]+)/g;
+  const hs = description.match(regexp);
+  const str = '';
+  console.log(hs, description);
   return (
     <InfoWrapper>
       <div className="poster_info">
@@ -43,8 +46,8 @@ const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
           />
         </div>
       </div>
-      <div className="desc_div">
-        <span className="description_span">
+      <DescriptionWrapper>
+        <DescriptionText>
           {descArray.map((word: string) =>
             word.match(regexp) ? (
               <Hashtag onClick={() => console.log(word)} key={word}>
@@ -54,8 +57,8 @@ const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
               <TextContent key={word}>{word}</TextContent>
             )
           )}
-        </span>
-      </div>
+        </DescriptionText>
+      </DescriptionWrapper>
     </InfoWrapper>
   );
 };
@@ -77,4 +80,18 @@ const PosterImgBtn = styled.div``;
 const PosterNameBtn = styled.div``;
 const InfoWrapper = styled.div`
   margin-top: ${({ theme }) => theme.margins.xs};
+`;
+
+const DescriptionWrapper = styled.div``;
+
+const DescriptionText = styled.p`
+  margin-top: 0.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* 라인수 */
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
+  line-height: 3em;
+  height: 3em;
 `;

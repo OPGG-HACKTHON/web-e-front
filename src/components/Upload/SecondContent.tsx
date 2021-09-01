@@ -48,10 +48,10 @@ const SecondContent = () => {
 
   const getHastags = () => {
     const matches = text.match(/#([가-힣a-zA-Z0-9]+)/g);
-    const hashtags = matches.join(',');
+    const tags = matches.join(',');
     setUploadObj({
       ...uploadObj,
-      hashtags,
+      tags,
     });
   };
 
