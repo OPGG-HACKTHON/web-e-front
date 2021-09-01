@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Search from 'assets/svg/Search.svg';
+import useSearch from 'hooks/useSearch/useSearch';
 
 const SearchBar = ({ onAddKeyword }: any) => {
   const [searchTxt, setSearchTxt] = useState('');
@@ -9,11 +10,11 @@ const SearchBar = ({ onAddKeyword }: any) => {
     setSearchTxt(e.target.value);
   };
 
+  const { goToLink } = useSearch();
+
   const onClick = (value) => {
-    // 실행할 함수
     onAddKeyword(value);
-    const reValue = value.replaceAll('#', '%23');
-    window.location.href = `/search?hashtags=${reValue}`;
+    goToLink(value);
   };
 
   const onKeyPress = (e) => {

@@ -1,5 +1,8 @@
+import { searchAreaAtom } from 'atom/searchAreaAtom';
 import Button from 'common/Button';
+import useSearch from 'hooks/useSearch/useSearch';
 import React, { useContext } from 'react';
+import { useRecoilState } from 'recoil';
 import styled, { ThemeContext } from 'styled-components';
 import { typography } from 'styles/theme';
 
@@ -18,8 +21,11 @@ const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
   const hs = description.match(regexp);
   console.log(hs, description);
 
+  const { handleAddKeyword } = useSearch();
+
   const onClick = (value) => {
     // 실행할 함수
+    handleAddKeyword(value);
     const reValue = value.replaceAll('#', '%23');
     window.location.href = `/search?hashtags=${reValue}`;
   };

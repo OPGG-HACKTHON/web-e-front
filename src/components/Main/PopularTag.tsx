@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useContext } from 'react';
@@ -8,27 +9,18 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { popTagsState } from 'atom/videoListAtom';
 import { searchAreaAtom } from 'atom/searchAreaAtom';
 import Close from 'assets/svg/tag_close.svg';
+import useSearch from 'hooks/useSearch/useSearch';
 
 const PopularTag = () => {
   const themeStyle = useContext(ThemeContext);
   const popularTags = useRecoilValue(popTagsState);
 
-  const [keywordsArr, setKeywordsArr] = useRecoilState(searchAreaAtom);
-  console.log(keywordsArr);
-
-  const handleRemoveKeyword = (id) => {
-    const nextKeyword = keywordsArr.filter((thisKeyword) => {
-      return thisKeyword.id !== id;
-    });
-    console.log(id);
-
-    setKeywordsArr(nextKeyword);
-  };
+  const { keywords, handleRemoveKeyword, goToLink } = useSearch();
 
   return (
     <TagWrapper>
-      {keywordsArr.map(({ id, keywords }) => (
-        <HistoryButton key={id} onClick={() => console.log(`${keywords}`)}>
+      {keywords.map(({ id, keywords }) => (
+        <HistoryButton key={id} onClick={() => goToLink(`${keywords}`)}>
           {keywords}
           <span onClick={() => handleRemoveKeyword(id)}>
             <img src={Close} alt="alt" />
@@ -39,7 +31,7 @@ const PopularTag = () => {
         <Button
           key={popularTags.indexOf(`${tag}`)}
           text={`#${tag}`}
-          onClick={() => console.log(`${tag}`)}
+          onClick={() => goToLink(`#${tag}`)}
           fontColor={themeStyle.color.blackScale[50]}
           bkgColor={themeStyle.color.grayScale[50]}
           padding="0.8rem 0.7rem"

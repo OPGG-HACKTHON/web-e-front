@@ -18,6 +18,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { myProfileAtom } from 'atom/profileAtom';
 import WATPL from 'assets/svg/WAPPLE_LOGO.svg';
 import { searchAreaAtom } from 'atom/searchAreaAtom';
+import useSearch from 'hooks/useSearch/useSearch';
 import UploadSvg from '../SvgElement/UploadSvg';
 import AlramSvg from '../SvgElement/AlarmSvg';
 import SearchBar from './SearchBar';
@@ -59,19 +60,7 @@ const Nav = () => {
 
   const { handleMyProfile } = useProfile();
 
-  const [keywords, setKeywords] = useRecoilState(searchAreaAtom);
-
-  // const setRKeword = useSetRecoilState(searchAreaAtom);
-  // setRKeword(keywords);
-
-  const handleAddKeyword = (text) => {
-    console.log('text', text);
-    const newKeyword = {
-      id: Date.now(),
-      keywords: text,
-    };
-    setKeywords([newKeyword, ...keywords]);
-  };
+  const { keywords, handleAddKeyword } = useSearch();
 
   useEffect(() => {
     handleMyProfile();
