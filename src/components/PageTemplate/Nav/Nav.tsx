@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import useNav from 'hooks/useNav';
 import Button from 'common/Button';
@@ -58,6 +58,27 @@ const Nav = () => {
 
   const { handleMyProfile } = useProfile();
 
+  // --------------- Search ----------------------
+
+  const [searchTxt, setSearchTxt] = useState('');
+
+  const searchSpace = (e: any) => {
+    setSearchTxt(e.target.value);
+  };
+
+  const onClick = (value) => {
+    // 실행할 함수
+    const reValue = value.replaceAll('#', '%23');
+    window.location.href = `/search?hashtags=${reValue}`;
+  };
+
+  const onKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      onClick(searchTxt);
+    }
+  };
+  // ---------------------------------------------
+
   useEffect(() => {
     handleMyProfile();
   }, [handleMyProfile]);
@@ -72,8 +93,12 @@ const Nav = () => {
             <SearchIconWrapper>
               <SearchIcon src={Search} alt={Search} />
             </SearchIconWrapper>
-            {/* TODO: Search */}
-            <SearchInput placeholder="사용자 이름 또는 해시태그 검색" />
+            <SearchInput
+              value={searchTxt}
+              placeholder="사용자 이름 또는 해시태그 검색"
+              onChange={(e) => searchSpace(e)}
+              onKeyPress={onKeyPress}
+            />
           </SearchWrapper>
           <ButtonWrapper>
             {isLogin ? (

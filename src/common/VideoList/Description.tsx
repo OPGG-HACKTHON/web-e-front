@@ -12,11 +12,18 @@ type Props = {
 
 const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
   const themeStyle = useContext(ThemeContext);
-  const descArray = description.split(' ');
+
+  const descArray = description.replace('\n', ' ').split(' ');
   const regexp = /#([가-힣a-zA-Z0-9]+)/g;
   const hs = description.match(regexp);
-  const str = '';
   console.log(hs, description);
+
+  const onClick = (value) => {
+    // 실행할 함수
+    const reValue = value.replaceAll('#', '%23');
+    window.location.href = `/search?hashtags=${reValue}`;
+  };
+
   return (
     <InfoWrapper>
       <div className="poster_info">
@@ -50,7 +57,7 @@ const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
         <DescriptionText>
           {descArray.map((word: string) =>
             word.match(regexp) ? (
-              <Hashtag onClick={() => console.log(word)} key={word}>
+              <Hashtag onClick={() => onClick(word)} key={word}>
                 {word}
               </Hashtag>
             ) : (
