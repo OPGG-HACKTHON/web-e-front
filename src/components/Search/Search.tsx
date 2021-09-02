@@ -1,21 +1,18 @@
 import React from 'react';
 import queryString from 'query-string';
-import { useRecoilValue } from 'recoil';
-import { vListbySelectorState } from 'atom/videoListAtom';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import MainWrapper from 'styles/mainStyles/videoComponents/MainWrapper';
 import VideoListMain from 'common/VideoList/Main';
 import VideoSelectBar from 'components/Main/VideoSelectBar';
+import { hListbySelectorState, searhUrl } from 'atom/searchAreaAtom';
 
 const Search = () => {
   const qs = window.location.search;
-  console.log(queryString);
   // ?fname=johnny&lname=depp
-  const urlParams = new URLSearchParams(qs);
-  const hashtags = urlParams.get('hashtags');
-  console.log(hashtags);
+  const [url, setUrl] = useRecoilState(searhUrl);
+  setUrl(`/tags/search${qs}`);
 
-  // TODO: Fix videos
-  const videos = useRecoilValue(vListbySelectorState);
+  const videos = useRecoilValue(hListbySelectorState);
 
   return (
     <MainWrapper>

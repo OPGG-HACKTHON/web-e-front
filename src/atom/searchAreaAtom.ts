@@ -13,13 +13,16 @@ export const searchAreaAtom = atom({
 // url 주소 아톰
 export const searhUrl = atom({
   key: 'searhUrl',
-  default: '',
+  default: 'tags/search?hashtags=',
 });
 
 export const getHashtagsList = selector({
   key: 'getHashtagsList',
   get: async ({ get }) => {
-    const url = get(searhUrl);
+    const preurl = get(searhUrl);
+    // /tags/search?hashtags=%23%ED%95%9C%EC%A1%B0
+    const url = `${preurl}`;
+
     const response = await getHashtagsVideos(url);
     return response;
   },

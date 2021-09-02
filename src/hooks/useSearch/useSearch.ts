@@ -30,7 +30,7 @@ const useSearch = () => {
     if (value.startsWith('#')) {
       const reValue = value.replaceAll('#', '%23');
       const getUrl = `/search?hashtags=${reValue}`;
-      setUrl(getUrl);
+      //   setUrl(getUrl);
       window.location.href = getUrl;
     }
   };
