@@ -19,10 +19,8 @@ export const searhUrl = atom({
 export const getHashtagsList = selector({
   key: 'getHashtagsList',
   get: async ({ get }) => {
-    const preurl = get(searhUrl);
+    const url = get(searhUrl);
     // /tags/search?hashtags=%23%ED%95%9C%EC%A1%B0
-    const url = `${preurl}`;
-
     const response = await getHashtagsVideos(url);
     return response;
   },
