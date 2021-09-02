@@ -9,6 +9,11 @@ export const userIdAtom = atom({
   default: '',
 });
 
+export const selectCategory = atom({
+  key: 'selectCategory',
+  default: 'all',
+});
+
 export const myVideoSelector = selector({
   key: 'myVideoSelector',
   get: async ({ get }) => {
