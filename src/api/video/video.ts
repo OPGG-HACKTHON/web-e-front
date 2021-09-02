@@ -1,10 +1,10 @@
-import axios from 'axios';
+import customAxios from 'lib/axios';
 
 // eslint-disable-next-line consistent-return
 const getVideos = async () => {
   // FIX: address
-  const data = await axios.get(`${process.env.REACT_APP_SERVER}/videos`);
-  return data;
+  const response = await customAxios.get(`/videos/all/middle`);
+  return response.data.datas;
 };
 
 export default getVideos;

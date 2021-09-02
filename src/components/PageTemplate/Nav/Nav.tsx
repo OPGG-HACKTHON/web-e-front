@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import useNav from 'hooks/useNav';
 import Button from 'common/Button';
@@ -14,12 +14,14 @@ import useProfile from 'hooks/useProfile/useProfile';
 import { fetchUserInfoAtom } from 'atom/userAtom';
 
 import { color, typography } from 'styles/theme';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { myProfileAtom } from 'atom/profileAtom';
 import WATPL from 'assets/svg/WAPPLE_LOGO.svg';
-import Search from 'assets/svg/Search.svg';
+import { searchAreaAtom } from 'atom/searchAreaAtom';
+import useSearch from 'hooks/useSearch/useSearch';
 import UploadSvg from '../SvgElement/UploadSvg';
 import AlramSvg from '../SvgElement/AlarmSvg';
+import SearchBar from './SearchBar';
 
 const Nav = () => {
   const themeStyle = useContext(ThemeContext);
@@ -58,9 +60,13 @@ const Nav = () => {
 
   const { handleMyProfile } = useProfile();
 
+  const { keywords, handleAddKeyword } = useSearch();
+
   useEffect(() => {
     handleMyProfile();
-  }, [handleMyProfile]);
+    localStorage.setItem('keywords', JSON.stringify(keywords));
+    // setRKeword(keywords);
+  }, [handleMyProfile, keywords]);
 
   const registerStatus = useRecoilValue(registerStatusAtom);
   return (
@@ -68,12 +74,7 @@ const Nav = () => {
       <NavWrapper>
         <NavInnerWrapper>
           <Logo src={WATPL} alt="WATPL" />
-          <SearchWrapper>
-            <SearchIconWrapper>
-              <SearchIcon src={Search} alt={Search} />
-            </SearchIconWrapper>
-            <SearchInput placeholder="사용자 이름 또는 해시태그 검색" />
-          </SearchWrapper>
+          <SearchBar onAddKeyword={handleAddKeyword} />
           <ButtonWrapper>
             {isLogin ? (
               <RightItemWrapper>
@@ -236,44 +237,6 @@ const NavInnerWrapper = styled.div`
 
 const Logo = styled.img`
   margin-left: 10px;
-`;
-
-const SearchWrapper = styled.div`
-  background-color: #f2f2f2;
-  width: 100%;
-  max-width: 210px;
-  height: 36px;
-  display: flex;
-  border-radius: 5px;
-`;
-
-const SearchIconWrapper = styled.div`
-  width: 100%;
-  max-width: 36px;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const SearchIcon = styled.img`
-  margin-left: 16px;
-  width: 12px;
-  height: 12px;
-`;
-
-const SearchInput = styled.input`
-  width: 100%;
-  border: none;
-  background-color: #f2f2f2;
-  border-radius: 0px 4px 4px 0px;
-  &::placeholder {
-    ${({ theme }) => theme.typography.bodySmRegular}
-  }
-
-  &:focus {
-    outline: none;
-  }
 `;
 
 export default Nav;

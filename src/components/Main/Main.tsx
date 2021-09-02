@@ -6,7 +6,11 @@ import MainWrapper from 'styles/mainStyles/videoComponents/MainWrapper';
 import Upload from 'components/Upload';
 import { uploadModalStep } from 'atom/uploadModalStepAtom';
 import { uploadModalPopState } from 'atom/uploadModalPopStateAtom';
-import { videoListState, vListbySelectorState } from 'atom/videoListAtom';
+import {
+  getVideoTrigger,
+  videoListState,
+  vListbySelectorState,
+} from 'atom/videoListAtom';
 import VideoListMain from 'common/VideoList/Main';
 import VideoSelectBar from './VideoSelectBar';
 
@@ -16,15 +20,24 @@ const Main = () => {
   const [isUploadModalPoped, setUploadModalPopState] =
     useRecoilState(uploadModalPopState);
   const refechVideoList = useSetRecoilState(videoListState);
-
+  const [refech, setRefetch] = useRecoilState(getVideoTrigger);
   const closeUploadModal = () => {
+    // setRefetch(0);
     refechVideoList(0);
+    // setRefetch((v) => {
+    //   // if (!v) {
+    //   //   console.log(`inone${v}`);
+    //   //   return 1000;
+    //   // }
+    //   return v + 1;
+    // });
+    console.log(refech);
+
     setUploadModalPopState(false);
     setUploadModalStep(EUploadStep.FIRST_STEP);
   };
-
   const videos = useRecoilValue(vListbySelectorState);
-  const isNeedDescription = true;
+
   return (
     <MainWrapper>
       <ModalContainer
@@ -36,7 +49,7 @@ const Main = () => {
         borderRadius={0.5}
       />
       <VideoSelectBar />
-      <VideoListMain videos={videos} isNeedDescription={isNeedDescription} />
+      <VideoListMain videos={videos} isNeedDescription />
     </MainWrapper>
   );
 };

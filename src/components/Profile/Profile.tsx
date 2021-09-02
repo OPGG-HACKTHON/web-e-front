@@ -3,6 +3,8 @@ import Banner from 'common/Banner';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import useProfile from 'hooks/useProfile/useProfile';
+import { myListbySelectorState } from 'atom/profileVideoAtom';
+import VideoListMain from 'common/VideoList/Main';
 import { fetchUserInfoAtom } from 'atom/userAtom';
 
 const Profile = () => {
@@ -23,6 +25,9 @@ const Profile = () => {
   useEffect(() => {
     handleMyProfile();
   }, [handleMyProfile]);
+
+  // const videos = useRecoilValue(myListbySelectorState);
+  // const isNeedDescription = true;
 
   return (
     <ProfileWrapper>
@@ -54,6 +59,7 @@ const Profile = () => {
           {userIntro === null ? '자기소개가 없습니다.' : userIntro}
         </Introdunction>
       </UserWrapperPosition>
+      {/* <VideoListMain videos={videos} isNeedDescription={isNeedDescription} /> */}
     </ProfileWrapper>
   );
 };

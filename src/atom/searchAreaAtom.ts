@@ -1,35 +1,36 @@
+/* eslint-disable import/prefer-default-export */
+import getHashtagsVideos from 'api/search/hashtags';
 import { atom, RecoilValue, selector } from 'recoil';
-import { datas } from 'data/main';
-import getVideos from 'api/video/video';
 import { leftNavItemState } from './pageAtom';
 import { selectorState } from './selectorAtom';
 
-export const getVideoTrigger = atom({
-  key: '_getVideoTrigger',
-  default: 1,
+// 검색창 input 아톰
+export const searchAreaAtom = atom({
+  key: 'searchAreaAtom',
+  default: JSON.parse(localStorage.getItem('keywords') || '[]'),
 });
 
-export const videoList = atom({
-  key: 'videoList',
-  default: [],
+// url 주소 아톰
+export const searhUrl = atom({
+  key: 'searhUrl',
+  default: 'tags/search?hashtags=',
 });
-export const videoListState = selector({
-  key: 'videoListState',
+
+export const getHashtagsList = selector({
+  key: 'getHashtagsList',
   get: async ({ get }) => {
-    get(getVideoTrigger);
-    const response = await getVideos();
+    const url = get(searhUrl);
+    // /tags/search?hashtags=%23%ED%95%9C%EC%A1%B0
+    const response = await getHashtagsVideos(url);
     return response;
   },
-  set: ({ set }) => {
-    set(getVideoTrigger, (v) => v + 1);
-  },
 });
 
-export const vListByCategoryState = selector({
-  key: 'vListByCategoryState',
+export const hListByCategoryState = selector({
+  key: 'hListByCategoryState',
   get: ({ get }) => {
     const selectNavName = get(leftNavItemState);
-    const videos = get(videoListState);
+    const videos = get(getHashtagsList);
     let returnArr: any[] | Promise<any[]> | RecoilValue<any[]> = [];
     if (selectNavName === 'lol') {
       returnArr = videos.filter(
@@ -48,11 +49,11 @@ export const vListByCategoryState = selector({
   },
 });
 
-export const vListbySelectorState = selector({
-  key: 'vListbySelectorState', // unique ID (with respect to other atoms/selectors)
+export const hListbySelectorState = selector({
+  key: 'hListbySelectorState', // unique ID (with respect to other atoms/selectors)
   get: ({ get }) => {
     const text = get(selectorState);
-    const list = get(vListByCategoryState);
+    const list = get(hListByCategoryState);
     const videoAr = list.slice();
     const lVideo: any[] = [];
     const rVideo: any[] = [];
@@ -77,21 +78,5 @@ export const vListbySelectorState = selector({
     }
 
     return [lVideo, rVideo];
-  },
-});
-
-export const popTagsState = selector({
-  key: 'popTagsState',
-  get: ({ get }) => {
-    const selectNavName = get(leftNavItemState);
-    let returnArr: any[] | Promise<any[]> | RecoilValue<any[]> = [];
-    if (selectNavName === 'lol') {
-      returnArr = datas.popularTags.lol;
-    } else if (selectNavName === 'pubg') {
-      returnArr = datas.popularTags.pubg;
-    } else if (selectNavName === 'overwatch') {
-      returnArr = datas.popularTags.overwatch;
-    }
-    return returnArr;
   },
 });
