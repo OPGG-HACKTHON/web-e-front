@@ -24,7 +24,7 @@ import OverWatchSvg from '../SvgElement/OverWatchSvg';
 const LeftNav = () => {
   const { handleSelectNavItem, isLocationProfile, isKeywordsItemExist } =
     useNav();
-  const [selectNavName, setSelectNameName] = useRecoilState(leftNavItemState);
+  const [selectNavName, setSelectName] = useRecoilState(leftNavItemState);
   const myProfile = useRecoilValue(myProfileAtom);
   const [isUploadModalPoped, setUploadModalPopstate] =
     useRecoilState(uploadModalPopState);
@@ -45,9 +45,10 @@ const LeftNav = () => {
 
   useEffect(() => {
     if (isLocationProfile) {
-      return setSelectNameName(EGameList.NONE);
+      return setSelectName(EGameList.NONE);
     }
-  }, [isLocationProfile, isSelectedGameArg, setSelectNameName]);
+  }, [isLocationProfile, isSelectedGameArg, setSelectName]);
+
   const onClickUpload = () => {
     if (myProfile?.id) setUploadModalPopstate(true);
     else alert('로그인이 필요한 기능입니다!');

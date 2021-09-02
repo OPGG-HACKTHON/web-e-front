@@ -1,15 +1,21 @@
 import React, { useEffect } from 'react';
 import Banner from 'common/Banner';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import useProfile from 'hooks/useProfile/useProfile';
 import { myListbySelectorState } from 'atom/profileVideoAtom';
 import VideoListMain from 'common/VideoList/Main';
 import { fetchUserInfoAtom } from 'atom/userAtom';
+import { useHistory } from 'react-router-dom';
+import { leftNavItemState } from 'atom/pageAtom';
+import { EGameList } from 'enum/game.enum';
 
 const Profile = () => {
   const { handleMyProfile, followingCount, handleEditProfilePage } =
     useProfile();
+  const history = useHistory();
+  const [selectNavName, setSelectName] = useRecoilState(leftNavItemState);
+
   const userInfo = useRecoilValue(fetchUserInfoAtom);
   const {
     userName,
@@ -25,6 +31,18 @@ const Profile = () => {
   useEffect(() => {
     handleMyProfile();
   }, [handleMyProfile]);
+
+  useEffect(() => {
+    return () => {
+      history.push('/');
+    };
+  }, [history]);
+
+  useEffect(() => {
+    return () => {
+      setSelectName(EGameList.LOL);
+    };
+  }, [setSelectName]);
 
   // const videos = useRecoilValue(myListbySelectorState);
   // const isNeedDescription = true;

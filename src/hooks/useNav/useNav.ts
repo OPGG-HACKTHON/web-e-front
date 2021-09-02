@@ -1,15 +1,15 @@
 /* eslint-disable consistent-return */
 import { leftNavItemState } from 'atom/pageAtom';
 import { EGameList } from 'enum/game.enum';
-import { useCallback, useState, useRef, useMemo } from 'react';
+import { useCallback, useState, useRef, useMemo, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { getBoundingRefObj } from 'types/underToggleLayer.types';
 import { searchAreaAtom, searhUrl } from 'atom/searchAreaAtom';
 
 const useNav = () => {
   const history = useHistory();
-  const keywordsItem = useRecoilValue(searchAreaAtom);
+  const [keywordsItem, setKeywordItem] = useRecoilState(searchAreaAtom);
 
   const setLeftNavItem = useSetRecoilState(leftNavItemState);
   const profileRef = useRef(document.createElement('img'));
@@ -65,6 +65,12 @@ const useNav = () => {
   const handleGoMyProfile = useCallback(() => {
     history.push('/profile');
   }, [history]);
+
+  useEffect(() => {
+    return () => {
+      setKeywordItem([]);
+    };
+  }, [setKeywordItem]);
 
   return {
     handleSelectNavItem,
