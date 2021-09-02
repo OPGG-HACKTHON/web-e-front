@@ -44,8 +44,7 @@ const Profile = () => {
     };
   }, [setSelectName]);
 
-  // const videos = useRecoilValue(myListbySelectorState);
-  // const isNeedDescription = true;
+  const videos = useRecoilValue(myListbySelectorState);
 
   return (
     <ProfileWrapper>
@@ -77,7 +76,7 @@ const Profile = () => {
           {userIntro === null ? '자기소개가 없습니다.' : userIntro}
         </Introdunction>
       </UserWrapperPosition>
-      {/* <VideoListMain videos={videos} isNeedDescription={isNeedDescription} /> */}
+      <VideoListMain videos={videos} isNeedDescription />
     </ProfileWrapper>
   );
 };

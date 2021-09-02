@@ -5,6 +5,7 @@ import {
   myProfileInfo,
 } from 'api/profile/profile';
 import { myProfileAtom } from 'atom/profileAtom';
+import { userIdAtom } from 'atom/profileVideoAtom';
 import { fetchUserInfoAtom } from 'atom/userAtom';
 import { useCallback, useState, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -17,6 +18,8 @@ const useProfile = () => {
   const [followerCount, setFollowerCount] = useState<number>(0);
   const [followingCount, setFollowingCount] = useState<number>(0);
   const [fetchUserId, setFetchUserId] = useState<string>('');
+  // set user id atom for video
+  const setUserId = useSetRecoilState(userIdAtom);
 
   const setFetchUserInfoAtom = useSetRecoilState(fetchUserInfoAtom);
 
@@ -47,6 +50,7 @@ const useProfile = () => {
     try {
       const { data } = await myProfileInfo();
       setFetchUserId(data.id);
+      setUserId(data.id);
       setMyProfile(data);
       Promise.all([handleFindFollower(data.id), handleFindFollowing(data.id)]);
 
@@ -54,7 +58,7 @@ const useProfile = () => {
     } catch (err) {
       return err;
     }
-  }, [handleFindFollower, handleFindFollowing, setMyProfile]);
+  }, [handleFindFollower, handleFindFollowing, setMyProfile, setUserId]);
 
   const handleFetchMyProfile = useCallback(async () => {
     if (fetchUserId === '') {
