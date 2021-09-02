@@ -3,12 +3,14 @@ import { leftNavItemState } from 'atom/pageAtom';
 import { EGameList } from 'enum/game.enum';
 import { useCallback, useState, useRef, useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { getBoundingRefObj } from 'types/underToggleLayer.types';
+import { searchAreaAtom, searhUrl } from 'atom/searchAreaAtom';
 
 const useNav = () => {
   const history = useHistory();
-  // console.log(history.)
+  const keywordsItem = useRecoilValue(searchAreaAtom);
+
   const setLeftNavItem = useSetRecoilState(leftNavItemState);
   const profileRef = useRef(document.createElement('img'));
   const [isClickProfile, setIsClickProfile] = useState(false);
@@ -22,19 +24,28 @@ const useNav = () => {
   const [clickAlramPosition, setClickAlramPosition] =
     useState<getBoundingRefObj>();
 
+  const isKeywordsItemExist = useMemo(
+    () => keywordsItem.length > 0,
+    [keywordsItem.length]
+  );
+
   const isLocationProfile = useMemo(() => {
     return location.pathname === '/profile';
   }, [location]);
 
   const handleSelectNavItem = useCallback(
     (arg: EGameList) => {
+      if (isKeywordsItemExist) {
+        return;
+      }
+
       if (isLocationProfile) {
         return setLeftNavItem(EGameList.NONE);
       }
 
       setLeftNavItem(arg);
     },
-    [isLocationProfile, setLeftNavItem]
+    [isKeywordsItemExist, isLocationProfile, setLeftNavItem]
   );
 
   const handleClickProfile = useCallback(() => {
@@ -67,6 +78,7 @@ const useNav = () => {
     clickAlramPosition,
     handleGoMyProfile,
     isLocationProfile,
+    isKeywordsItemExist,
   };
 };
 

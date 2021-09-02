@@ -1,5 +1,8 @@
+/* eslint-disable indent */
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable consistent-return */
+
 import React, { useCallback, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import useNav from 'hooks/useNav';
@@ -19,7 +22,8 @@ import PubgSvg from '../SvgElement/PubgSvg';
 import OverWatchSvg from '../SvgElement/OverWatchSvg';
 
 const LeftNav = () => {
-  const { handleSelectNavItem, isLocationProfile } = useNav();
+  const { handleSelectNavItem, isLocationProfile, isKeywordsItemExist } =
+    useNav();
   const [selectNavName, setSelectNameName] = useRecoilState(leftNavItemState);
   const myProfile = useRecoilValue(myProfileAtom);
   const [isUploadModalPoped, setUploadModalPopstate] =
@@ -43,8 +47,7 @@ const LeftNav = () => {
     if (isLocationProfile) {
       return setSelectNameName(EGameList.NONE);
     }
-  }, [isLocationProfile, setSelectNameName]);
-
+  }, [isLocationProfile, isSelectedGameArg, setSelectNameName]);
   const onClickUpload = () => {
     if (myProfile?.id) setUploadModalPopstate(true);
     else alert('로그인이 필요한 기능입니다!');
@@ -89,58 +92,94 @@ const LeftNav = () => {
         <GameListWrapper isNoneClick={isLocationProfile}>
           <GameList
             onClick={() => handleSelectNavItem(EGameList.LOL)}
-            isSelected={isSelectedGameArg(EGameList.LOL)}
+            isSelected={
+              isKeywordsItemExist
+                ? isSelectedGameArg(EGameList.NONE)
+                : isSelectedGameArg(EGameList.LOL)
+            }
           >
             <IconWrapper>
               <LolSvg
                 width={32}
                 height={34.16}
                 color={
-                  selectNavName === EGameList.LOL
+                  isKeywordsItemExist
+                    ? color.grayScale[100]
+                    : selectNavName === EGameList.LOL
                     ? color.brown
                     : color.grayScale[100]
                 }
               />
             </IconWrapper>
-            <GameName isSelected={isSelectedGameArg(EGameList.LOL)}>
+            <GameName
+              isSelected={
+                isKeywordsItemExist
+                  ? isSelectedGameArg(EGameList.NONE)
+                  : isSelectedGameArg(EGameList.LOL)
+              }
+            >
               리그오브레전드
             </GameName>
           </GameList>
           <GameList
             onClick={() => handleSelectNavItem(EGameList.PUBG)}
-            isSelected={isSelectedGameArg(EGameList.PUBG)}
+            isSelected={
+              isKeywordsItemExist
+                ? isSelectedGameArg(EGameList.NONE)
+                : isSelectedGameArg(EGameList.PUBG)
+            }
           >
             <IconWrapper>
               <PubgSvg
                 width={43}
                 height={27}
                 color={
-                  selectNavName === EGameList.PUBG
+                  isKeywordsItemExist
+                    ? color.grayScale[100]
+                    : selectNavName === EGameList.PUBG
                     ? color.brown
                     : color.grayScale[100]
                 }
               />
             </IconWrapper>
-            <GameName isSelected={isSelectedGameArg(EGameList.PUBG)}>
+            <GameName
+              isSelected={
+                isKeywordsItemExist
+                  ? isSelectedGameArg(EGameList.NONE)
+                  : isSelectedGameArg(EGameList.PUBG)
+              }
+            >
               배틀그라운드
             </GameName>
           </GameList>
           <GameList
             onClick={() => handleSelectNavItem(EGameList.OVERWATCH)}
-            isSelected={isSelectedGameArg(EGameList.OVERWATCH)}
+            isSelected={
+              isKeywordsItemExist
+                ? isSelectedGameArg(EGameList.NONE)
+                : isSelectedGameArg(EGameList.OVERWATCH)
+            }
           >
             <IconWrapper>
               <OverWatchSvg
                 width={32}
                 height={32}
                 color={
-                  selectNavName === EGameList.OVERWATCH
+                  isKeywordsItemExist
+                    ? color.grayScale[100]
+                    : selectNavName === EGameList.OVERWATCH
                     ? color.brown
                     : color.grayScale[100]
                 }
               />
             </IconWrapper>
-            <GameName isSelected={isSelectedGameArg(EGameList.OVERWATCH)}>
+            <GameName
+              isSelected={
+                isKeywordsItemExist
+                  ? isSelectedGameArg(EGameList.NONE)
+                  : isSelectedGameArg(EGameList.OVERWATCH)
+              }
+            >
               오버워치
             </GameName>
           </GameList>
