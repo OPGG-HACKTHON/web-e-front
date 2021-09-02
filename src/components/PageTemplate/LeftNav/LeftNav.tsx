@@ -1,4 +1,9 @@
-import React, { useCallback, useEffect } from 'react';
+/* eslint-disable indent */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable consistent-return */
+
+import React, { useCallback, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import useNav from 'hooks/useNav';
 import useProfile from 'hooks/useProfile/useProfile';
@@ -17,8 +22,9 @@ import PubgSvg from '../SvgElement/PubgSvg';
 import OverWatchSvg from '../SvgElement/OverWatchSvg';
 
 const LeftNav = () => {
-  const { handleSelectNavItem } = useNav();
-  const selectNavName = useRecoilValue(leftNavItemState);
+  const { handleSelectNavItem, isLocationProfile, isKeywordsItemExist } =
+    useNav();
+  const [selectNavName, setSelectName] = useRecoilState(leftNavItemState);
   const myProfile = useRecoilValue(myProfileAtom);
   const [isUploadModalPoped, setUploadModalPopstate] =
     useRecoilState(uploadModalPopState);
@@ -36,18 +42,36 @@ const LeftNav = () => {
   useEffect(() => {
     handleMyProfile();
   }, [handleMyProfile]);
-  // console.log(myProfile);
+
+  useEffect(() => {
+    if (isLocationProfile) {
+      return setSelectName(EGameList.NONE);
+    }
+  }, [isLocationProfile, isSelectedGameArg, setSelectName]);
 
   const onClickUpload = () => {
     if (myProfile?.id) setUploadModalPopstate(true);
     else alert('로그인이 필요한 기능입니다!');
   };
 
-  // TODO: 일단 컴포넌트 다 만들고 생각해야겠당 잠와..
+  const ButtonStyle = useMemo(() => {
+    if (isLocationProfile) {
+      return {
+        fontColor: color.yellow,
+        bkgColor: color.white,
+        hoverBkgColor: color.white,
+      };
+    }
+    return {
+      fontColor: color.white,
+      bkgColor: color.yellow,
+    };
+  }, [isLocationProfile]);
+
   return (
     <LeftNavWrapper>
       <StickyWrapper>
-        <UserWrapper>
+        <UserWrapper isProfile={isLocationProfile && myProfile?.id !== null}>
           <UserInfoSection>
             <UserProfileImg src={userPhotoURL} />
             <UserName>
@@ -57,8 +81,7 @@ const LeftNav = () => {
           <Button
             text="업로드"
             onClick={onClickUpload}
-            fontColor={color.white}
-            bkgColor={color.yellow}
+            {...ButtonStyle}
             padding=""
             width={6.9}
             height={3.6}
@@ -66,61 +89,98 @@ const LeftNav = () => {
             fontStyle={typography.bodyRgBold}
           />
         </UserWrapper>
-        <GameListWrapper>
+        <Line />
+        <GameListWrapper isNoneClick={isLocationProfile}>
           <GameList
             onClick={() => handleSelectNavItem(EGameList.LOL)}
-            isSelected={isSelectedGameArg(EGameList.LOL)}
+            isSelected={
+              isKeywordsItemExist
+                ? isSelectedGameArg(EGameList.NONE)
+                : isSelectedGameArg(EGameList.LOL)
+            }
           >
             <IconWrapper>
               <LolSvg
                 width={32}
                 height={34.16}
                 color={
-                  selectNavName === EGameList.LOL
+                  isKeywordsItemExist
+                    ? color.grayScale[100]
+                    : selectNavName === EGameList.LOL
                     ? color.brown
                     : color.grayScale[100]
                 }
               />
             </IconWrapper>
-            <GameName isSelected={isSelectedGameArg(EGameList.LOL)}>
+            <GameName
+              isSelected={
+                isKeywordsItemExist
+                  ? isSelectedGameArg(EGameList.NONE)
+                  : isSelectedGameArg(EGameList.LOL)
+              }
+            >
               리그오브레전드
             </GameName>
           </GameList>
           <GameList
             onClick={() => handleSelectNavItem(EGameList.PUBG)}
-            isSelected={isSelectedGameArg(EGameList.PUBG)}
+            isSelected={
+              isKeywordsItemExist
+                ? isSelectedGameArg(EGameList.NONE)
+                : isSelectedGameArg(EGameList.PUBG)
+            }
           >
             <IconWrapper>
               <PubgSvg
                 width={43}
                 height={27}
                 color={
-                  selectNavName === EGameList.PUBG
+                  isKeywordsItemExist
+                    ? color.grayScale[100]
+                    : selectNavName === EGameList.PUBG
                     ? color.brown
                     : color.grayScale[100]
                 }
               />
             </IconWrapper>
-            <GameName isSelected={isSelectedGameArg(EGameList.PUBG)}>
+            <GameName
+              isSelected={
+                isKeywordsItemExist
+                  ? isSelectedGameArg(EGameList.NONE)
+                  : isSelectedGameArg(EGameList.PUBG)
+              }
+            >
               배틀그라운드
             </GameName>
           </GameList>
           <GameList
             onClick={() => handleSelectNavItem(EGameList.OVERWATCH)}
-            isSelected={isSelectedGameArg(EGameList.OVERWATCH)}
+            isSelected={
+              isKeywordsItemExist
+                ? isSelectedGameArg(EGameList.NONE)
+                : isSelectedGameArg(EGameList.OVERWATCH)
+            }
           >
             <IconWrapper>
               <OverWatchSvg
                 width={32}
                 height={32}
                 color={
-                  selectNavName === EGameList.OVERWATCH
+                  isKeywordsItemExist
+                    ? color.grayScale[100]
+                    : selectNavName === EGameList.OVERWATCH
                     ? color.brown
                     : color.grayScale[100]
                 }
               />
             </IconWrapper>
-            <GameName isSelected={isSelectedGameArg(EGameList.OVERWATCH)}>
+            <GameName
+              isSelected={
+                isKeywordsItemExist
+                  ? isSelectedGameArg(EGameList.NONE)
+                  : isSelectedGameArg(EGameList.OVERWATCH)
+              }
+            >
               오버워치
             </GameName>
           </GameList>
@@ -142,6 +202,13 @@ const LeftNav = () => {
 
 export default LeftNav;
 
+const Line = styled.div`
+  width: 290px;
+  height: 1px;
+  background-color: ${({ theme }) => theme.color.grayScale[500]};
+  margin-top: 14px;
+`;
+
 const UserInfoSection = styled.div`
   display: flex;
   align-items: center;
@@ -154,7 +221,7 @@ const UserInfoSection = styled.div`
 
 const LeftNavWrapper = styled.div`
   width: 100%;
-  margin-top: 33px;
+  margin-top: 27px;
   max-width: 300px;
   display: flex;
   flex-direction: column;
@@ -170,13 +237,17 @@ const StickyWrapper = styled.div`
   align-items: flex-end;
 `;
 
-const UserWrapper = styled.div`
+const UserWrapper = styled.div<{ isProfile: boolean }>`
   display: flex;
   align-items: center;
+  background-color: ${({ isProfile, theme }) =>
+    isProfile ? theme.color.yellow : ''};
   width: 100%;
-  max-width: 290px;
-  padding-bottom: 26px;
-  border-bottom: 1px solid ${({ theme }) => theme.color.grayScale[500]};
+  max-width: 300px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  padding: 9px;
+  /* padding-bottom: 26px; */
   justify-content: space-between;
 `;
 
@@ -192,7 +263,8 @@ const UserName = styled.div`
   color: ${({ theme }) => theme.color.blackScale[500]};
 `;
 
-const GameListWrapper = styled.div`
+const GameListWrapper = styled.div<{ isNoneClick: boolean }>`
+  cursor: ${({ isNoneClick }) => (isNoneClick ? 'default' : 'pointer')};
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -206,7 +278,6 @@ const GameList = styled.div<{ isSelected: boolean }>`
   height: 50px;
   padding-left: 10px;
   transition: all 0.2s ease;
-  cursor: pointer;
   background-color: ${({ theme, isSelected }) =>
     isSelected ? theme.color.yellow : theme.color.white};
   border-top-left-radius: 5px;
