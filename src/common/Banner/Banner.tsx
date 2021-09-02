@@ -1,8 +1,6 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
-import unRankLOL from 'assets/svg/Tier/LOL/롤 - 언랭크티어.svg';
-import unRankPUBG from 'assets/svg/Tier/PUBG/배그 - 언랭크티어.svg';
-import unRankWATCH from 'assets/svg/Tier/WATCH/옵치 - 언랭크티어.svg';
+
 import {
   lolTierImgConverter,
   pubgTierImgConverter,

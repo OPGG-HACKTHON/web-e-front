@@ -39,6 +39,7 @@ const Nav = () => {
     handleClickAlram,
     isClickAlram,
     clickAlramPosition,
+    handleGoMyProfile,
   } = useNav();
 
   const {
@@ -170,7 +171,7 @@ const Nav = () => {
         isClick={isClickProfile}
         renderPosition={clickProfilePosition}
       >
-        <ItemStyle>프로필 설정</ItemStyle>
+        <ItemStyle onClick={handleGoMyProfile}>내 프로필</ItemStyle>
         <ItemStyle onClick={handleLogout}>로그아웃</ItemStyle>
       </UnderToggleLayer>
 

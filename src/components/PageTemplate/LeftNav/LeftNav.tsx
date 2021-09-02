@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect } from 'react';
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable consistent-return */
+import React, { useCallback, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import useNav from 'hooks/useNav';
 import useProfile from 'hooks/useProfile/useProfile';
@@ -17,8 +19,8 @@ import PubgSvg from '../SvgElement/PubgSvg';
 import OverWatchSvg from '../SvgElement/OverWatchSvg';
 
 const LeftNav = () => {
-  const { handleSelectNavItem } = useNav();
-  const selectNavName = useRecoilValue(leftNavItemState);
+  const { handleSelectNavItem, isLocationProfile } = useNav();
+  const [selectNavName, setSelectNameName] = useRecoilState(leftNavItemState);
   const myProfile = useRecoilValue(myProfileAtom);
   const [isUploadModalPoped, setUploadModalPopstate] =
     useRecoilState(uploadModalPopState);
@@ -36,18 +38,36 @@ const LeftNav = () => {
   useEffect(() => {
     handleMyProfile();
   }, [handleMyProfile]);
-  // console.log(myProfile);
+
+  useEffect(() => {
+    if (isLocationProfile) {
+      return setSelectNameName(EGameList.NONE);
+    }
+  }, [isLocationProfile, setSelectNameName]);
 
   const onClickUpload = () => {
     if (myProfile?.id) setUploadModalPopstate(true);
     else alert('로그인이 필요한 기능입니다!');
   };
 
-  // TODO: 일단 컴포넌트 다 만들고 생각해야겠당 잠와..
+  const ButtonStyle = useMemo(() => {
+    if (isLocationProfile) {
+      return {
+        fontColor: color.yellow,
+        bkgColor: color.white,
+        hoverBkgColor: color.white,
+      };
+    }
+    return {
+      fontColor: color.white,
+      bkgColor: color.yellow,
+    };
+  }, [isLocationProfile]);
+
   return (
     <LeftNavWrapper>
       <StickyWrapper>
-        <UserWrapper>
+        <UserWrapper isProfile={isLocationProfile && myProfile?.id !== null}>
           <UserInfoSection>
             <UserProfileImg src={userPhotoURL} />
             <UserName>
@@ -57,8 +77,7 @@ const LeftNav = () => {
           <Button
             text="업로드"
             onClick={onClickUpload}
-            fontColor={color.white}
-            bkgColor={color.yellow}
+            {...ButtonStyle}
             padding=""
             width={6.9}
             height={3.6}
@@ -66,7 +85,8 @@ const LeftNav = () => {
             fontStyle={typography.bodyRgBold}
           />
         </UserWrapper>
-        <GameListWrapper>
+        <Line />
+        <GameListWrapper isNoneClick={isLocationProfile}>
           <GameList
             onClick={() => handleSelectNavItem(EGameList.LOL)}
             isSelected={isSelectedGameArg(EGameList.LOL)}
@@ -142,6 +162,13 @@ const LeftNav = () => {
 
 export default LeftNav;
 
+const Line = styled.div`
+  width: 290px;
+  height: 1px;
+  background-color: ${({ theme }) => theme.color.grayScale[500]};
+  margin-top: 14px;
+`;
+
 const UserInfoSection = styled.div`
   display: flex;
   align-items: center;
@@ -154,7 +181,7 @@ const UserInfoSection = styled.div`
 
 const LeftNavWrapper = styled.div`
   width: 100%;
-  margin-top: 33px;
+  margin-top: 27px;
   max-width: 300px;
   display: flex;
   flex-direction: column;
@@ -170,13 +197,17 @@ const StickyWrapper = styled.div`
   align-items: flex-end;
 `;
 
-const UserWrapper = styled.div`
+const UserWrapper = styled.div<{ isProfile: boolean }>`
   display: flex;
   align-items: center;
+  background-color: ${({ isProfile, theme }) =>
+    isProfile ? theme.color.yellow : ''};
   width: 100%;
-  max-width: 290px;
-  padding-bottom: 26px;
-  border-bottom: 1px solid ${({ theme }) => theme.color.grayScale[500]};
+  max-width: 300px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  padding: 9px;
+  /* padding-bottom: 26px; */
   justify-content: space-between;
 `;
 
@@ -192,7 +223,8 @@ const UserName = styled.div`
   color: ${({ theme }) => theme.color.blackScale[500]};
 `;
 
-const GameListWrapper = styled.div`
+const GameListWrapper = styled.div<{ isNoneClick: boolean }>`
+  cursor: ${({ isNoneClick }) => (isNoneClick ? 'default' : 'pointer')};
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -206,7 +238,6 @@ const GameList = styled.div<{ isSelected: boolean }>`
   height: 50px;
   padding-left: 10px;
   transition: all 0.2s ease;
-  cursor: pointer;
   background-color: ${({ theme, isSelected }) =>
     isSelected ? theme.color.yellow : theme.color.white};
   border-top-left-radius: 5px;

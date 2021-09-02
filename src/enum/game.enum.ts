@@ -3,4 +3,5 @@ export enum EGameList {
   LOL = 'lol',
   PUBG = 'pubg',
   OVERWATCH = 'overwatch',
+  NONE = 'none',
 }

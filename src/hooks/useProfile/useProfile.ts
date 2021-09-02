@@ -6,13 +6,14 @@ import {
 } from 'api/profile/profile';
 import { myProfileAtom } from 'atom/profileAtom';
 import { fetchUserInfoAtom } from 'atom/userAtom';
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
 const useProfile = () => {
   const setMyProfile = useSetRecoilState(myProfileAtom);
   const history = useHistory();
+
   const [followerCount, setFollowerCount] = useState<number>(0);
   const [followingCount, setFollowingCount] = useState<number>(0);
   const [fetchUserId, setFetchUserId] = useState<string>('');
@@ -33,6 +34,7 @@ const useProfile = () => {
   const handleFindFollowing = useCallback(async (userId: string) => {
     try {
       const { data } = await findFollowing(userId);
+
       setFollowingCount(data.followingsCounts);
 
       return data;

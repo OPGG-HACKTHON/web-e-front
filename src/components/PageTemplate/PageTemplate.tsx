@@ -10,7 +10,6 @@ type Props = {
 
 const PageTemplate = ({ children, isProfile = false }: Props) => {
   const differBackColor = useMemo(() => isProfile, [isProfile]);
-  console.log(differBackColor);
   return (
     <PageTemplateWrapper differColor={differBackColor}>
       <PageTemplateInnerWrapper>
