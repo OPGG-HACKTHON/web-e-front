@@ -21,13 +21,12 @@ const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
   const hs = description.match(regexp);
   console.log(hs, description);
 
-  const { handleAddKeyword } = useSearch();
+  const { goToLink, handleAddKeyword } = useSearch();
 
   const onClick = (value) => {
     // 실행할 함수
     handleAddKeyword(value);
-    const reValue = value.replaceAll('#', '%23');
-    window.location.href = `/search?hashtags=${reValue}`;
+    goToLink(value);
   };
 
   return (
