@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import VideoListMain from 'common/VideoList/Main';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { selectCategory, myListByCategoryState } from 'atom/profileVideoAtom';
