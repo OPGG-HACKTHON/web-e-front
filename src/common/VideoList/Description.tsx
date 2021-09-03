@@ -29,6 +29,7 @@ const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
 
   return (
     <InfoWrapper>
+      {/* TODO: className */}
       <div className="poster_info">
         <PosterImgBtn
           className="poster_img"

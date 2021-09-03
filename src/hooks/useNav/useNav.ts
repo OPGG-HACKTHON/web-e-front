@@ -5,7 +5,7 @@ import { useCallback, useState, useRef, useMemo, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { getBoundingRefObj } from 'types/underToggleLayer.types';
-import { searchAreaAtom, searhUrl } from 'atom/searchAreaAtom';
+import { searchAreaAtom } from 'atom/searchAreaAtom';
 
 const useNav = () => {
   const history = useHistory();
