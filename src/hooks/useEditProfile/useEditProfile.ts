@@ -19,6 +19,8 @@ import {
   useEffect,
 } from 'react';
 import { useHistory } from 'react-router-dom';
+import { fetchUserInfoAtom } from 'atom/userAtom';
+import { useSetRecoilState } from 'recoil';
 
 type imgHandlerType = {
   event: any;
@@ -33,6 +35,7 @@ export enum ECancledItem {
 
 const useEditProfile = () => {
   const history = useHistory();
+  const setFetchjUserInfo = useSetRecoilState(fetchUserInfoAtom);
   const [isEditProfileSetting, setIsEditProfileSetting] =
     useState<boolean>(true);
   const [userId, setUserId] = useState<string>('');
@@ -82,6 +85,7 @@ const useEditProfile = () => {
 
   const handleChangeFile = useCallback(
     ({ event, setImgBase64, setImgFile }: imgHandlerType) => {
+      setImgFile(null);
       const reader = new FileReader();
 
       reader.onloadend = () => {
@@ -163,11 +167,14 @@ const useEditProfile = () => {
           temp = {
             userPhotoURL: '',
           };
+          setProfileImg(null);
+          setFetchjUserInfo((prev) => ({ ...prev, userPhotoURL: '' }));
         } else {
           temp = {
             userCoverURL: '',
             userColor: '',
           };
+          setBannerFile(null);
         }
 
         const data = await modifyProfile(temp, userId);
@@ -180,39 +187,35 @@ const useEditProfile = () => {
         return err;
       }
     },
-    [handleFetchMyProfile, handleMyProfile, userId]
+    [handleFetchMyProfile, handleMyProfile, setFetchjUserInfo, userId]
   );
 
   const handleModifyProfileEdit = useCallback(async () => {
     try {
       const profileUrl = await handleUploadImg(profileImg);
       const bannerUrl = await handleUploadImg(bannerFile);
+      let dataTemp = {};
 
       if (profileUserName === editProfileInputObj.userName) {
-        const temp = {
+        dataTemp = {
           userIntro: editProfileInputObj.intro,
           userPhotoURL: profileUrl.location,
           userCoverURL: bannerUrl.location,
         };
-
-        const data = await modifyProfile(temp, userId);
-
-        if (data.statusCode === 200) {
-          setIsDone(true);
-        }
       } else {
-        const temp = {
+        dataTemp = {
           userName: editProfileInputObj.userName,
           userIntro: editProfileInputObj.intro,
           userPhotoURL: profileUrl.location,
           userCoverURL: bannerUrl.location,
         };
+      }
 
-        const data = await modifyProfile(temp, userId);
+      const data = await modifyProfile(dataTemp, userId);
+      setFetchjUserInfo((prev) => ({ ...prev, ...data.data }));
 
-        if (data.statusCode === 200) {
-          setIsDone(true);
-        }
+      if (data.statusCode === 200) {
+        setIsDone(true);
       }
       await handleMyProfile();
       await handleFetchMyProfile();
@@ -228,6 +231,7 @@ const useEditProfile = () => {
     handleUploadImg,
     profileImg,
     profileUserName,
+    setFetchjUserInfo,
     userId,
   ]);
 
