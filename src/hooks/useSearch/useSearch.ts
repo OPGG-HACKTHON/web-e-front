@@ -1,13 +1,13 @@
-import { searchAreaAtom, searhUrl } from 'atom/searchAreaAtom';
+import { searchAreaAtom, searhHashtagsAtom } from 'atom/searchAreaAtom';
 import { useRecoilState } from 'recoil';
 
 const useSearch = () => {
   const [keywords, setKeywords] = useRecoilState(searchAreaAtom);
-  const [url, setUrl] = useRecoilState(searhUrl);
+  const [url, setUrl] = useRecoilState(searhHashtagsAtom);
 
   const handleAddKeyword = (text) => {
     const keywordsArr = keywords.map((k) => k.keywords);
-    if (!keywordsArr.includes(text)) {
+    if (!keywordsArr.includes(text) && text.includes('#')) {
       const newKeyword = {
         id: Date.now(),
         keywords: text,
@@ -27,12 +27,19 @@ const useSearch = () => {
 
   const goToLink = (value) => {
     // 실행할 함수
+    const plusValue = value.replaceAll(' ', '%2B');
     if (value.startsWith('#')) {
-      const reValue = value.replaceAll('#', '%23');
+      const reValue = plusValue.replaceAll('#', '%23');
       const getUrl = `/search?hashtags=${reValue}`;
-      //   setUrl(getUrl);
       window.location.href = getUrl;
+    } else if (value.startsWith('@')) {
+      const reValue = value.replaceAll('@', '%40');
+      // TODO: api 주소
+      const getUrl = `/search?user=${reValue}`;
+      window.location.href = getUrl;
+      setUrl(getUrl);
     }
+    // TODO: 다른 검색어 입력시
   };
 
   return {
