@@ -4,6 +4,10 @@ import useSearch from 'hooks/useSearch/useSearch';
 import React, { useContext } from 'react';
 import { useRecoilState } from 'recoil';
 import styled, { ThemeContext } from 'styled-components';
+import {
+  FollowBtnDiv,
+  PosterInfo,
+} from 'styles/mainStyles/videoComponents/VideoItem';
 import { typography } from 'styles/theme';
 
 type Props = {
@@ -30,18 +34,15 @@ const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
   return (
     <InfoWrapper>
       {/* TODO: className */}
-      <div className="poster_info">
-        <PosterImgBtn
-          className="poster_img"
-          onClick={() => console.log('posteruserspage')}
-        >
-          <img src={pPic} alt="alt" className="userPicImg" />
+      <PosterInfo>
+        <PosterImgBtn onClick={() => console.log('posteruserspage')}>
+          <UserPicImg src={pPic} alt="alt" />
         </PosterImgBtn>
         <PosterNameBtn onClick={() => console.log('posteruserspage')}>
-          <div className="poster_name">{pName}</div>
-          <div className="poster_followers">팔로워 {pFollowNum}</div>
+          <div>{pName}</div>
+          <div>팔로워 {pFollowNum}</div>
         </PosterNameBtn>
-        <div className="follow_btn_div">
+        <FollowBtnDiv>
           <Button
             text="팔로우"
             onClick={() => console.log('팔로우')}
@@ -55,8 +56,8 @@ const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
             hoverBkgColor={themeStyle.color.white}
             hoverFontColor={themeStyle.color.yellow}
           />
-        </div>
-      </div>
+        </FollowBtnDiv>
+      </PosterInfo>
       <DescriptionWrapper>
         <DescriptionText>
           {descArray.map((word: string) =>
@@ -87,7 +88,9 @@ const TextContent = styled.span`
   margin: 0 2px;
 `;
 
-const PosterImgBtn = styled.div``;
+const PosterImgBtn = styled.div`
+  width: 5rem;
+`;
 const PosterNameBtn = styled.div``;
 const InfoWrapper = styled.div`
   margin-top: ${({ theme }) => theme.margins.xs};
@@ -105,4 +108,10 @@ const DescriptionText = styled.p`
   word-wrap: break-word;
   line-height: 3em;
   height: 3em;
+`;
+
+const UserPicImg = styled.img`
+  width: 90%;
+  border-radius: 5px;
+  cursor: pointer;
 `;

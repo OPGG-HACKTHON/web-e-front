@@ -94,7 +94,7 @@ export const getUsersList = selector({
   key: 'getUsersList',
   get: async ({ get }) => {
     const url = get(searchUserAtom);
-    // /tags/search?hashtags=%23%ED%95%9C%EC%A1%B0
+    // `user/search?user=${reValue}`
     const response = await getUsersList(url);
     return response;
   },

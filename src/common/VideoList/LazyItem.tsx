@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 import styled from 'styled-components';
-import VideoItem from 'styles/mainStyles/videoComponents/VideoItem';
+import { VideoItem } from 'styles/mainStyles/videoComponents/VideoItem';
 import { IVideoModalAtom } from 'atom/videoModalAtom';
 import Description from './Description';
 
