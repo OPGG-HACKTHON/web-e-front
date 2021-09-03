@@ -18,8 +18,6 @@ const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
 
   const descArray = description.replace('\n', ' ').split(' ');
   const regexp = /#([가-힣a-zA-Z0-9]+)/g;
-  const hs = description.match(regexp);
-  console.log(hs, description);
 
   const { goToLink, handleAddKeyword } = useSearch();
 

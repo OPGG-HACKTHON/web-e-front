@@ -3,12 +3,11 @@ import Banner from 'common/Banner';
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import useProfile from 'hooks/useProfile/useProfile';
-import { myListbySelectorState } from 'atom/profileVideoAtom';
-import VideoListMain from 'common/VideoList/Main';
 import { fetchUserInfoAtom } from 'atom/userAtom';
 import { useHistory } from 'react-router-dom';
 import { leftNavItemState } from 'atom/pageAtom';
 import { EGameList } from 'enum/game.enum';
+import ProfileVideo from './ProfileVideo';
 
 const Profile = () => {
   const { handleMyProfile, followingCount, handleEditProfilePage } =
@@ -44,9 +43,6 @@ const Profile = () => {
     };
   }, [setSelectName]);
 
-  // const videos = useRecoilValue(myListbySelectorState);
-  // const isNeedDescription = true;
-
   return (
     <ProfileWrapper>
       <Banner
@@ -77,7 +73,7 @@ const Profile = () => {
           {userIntro === null ? '자기소개가 없습니다.' : userIntro}
         </Introdunction>
       </UserWrapperPosition>
-      {/* <VideoListMain videos={videos} isNeedDescription={isNeedDescription} /> */}
+      <ProfileVideo />
     </ProfileWrapper>
   );
 };
