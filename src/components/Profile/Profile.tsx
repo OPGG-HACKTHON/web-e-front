@@ -34,12 +34,6 @@ const Profile = () => {
 
   useEffect(() => {
     return () => {
-      history.push('/');
-    };
-  }, [history]);
-
-  useEffect(() => {
-    return () => {
       setSelectName(EGameList.LOL);
     };
   }, [setSelectName]);
