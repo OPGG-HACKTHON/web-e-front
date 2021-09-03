@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import {
   fetchProfileInfo,
   modifyProfile,
@@ -25,6 +26,11 @@ type imgHandlerType = {
   setImgFile: Dispatch<SetStateAction<File>>;
 };
 
+export enum ECancledItem {
+  USER_PROFILE,
+  USER_COVER_WITH_COLOR,
+}
+
 const useEditProfile = () => {
   const history = useHistory();
   const [isEditProfileSetting, setIsEditProfileSetting] =
@@ -48,6 +54,8 @@ const useEditProfile = () => {
     pubg: '',
   });
 
+  const [isSelectColorModal, setIsSelectColorModal] = useState<boolean>(false);
+
   const { handleMyProfile } = useProfile();
 
   const hiddenProfileInputRef = useRef(null);
@@ -55,6 +63,10 @@ const useEditProfile = () => {
 
   const [editProfileInputObj, setEditProfileInputObj] =
     useState<editProfileUserInputType>({ userName: '', intro: '' });
+
+  const handleUserSelectColor = useCallback(() => {
+    setIsSelectColorModal((prev) => !prev);
+  }, []);
 
   const handleHiddenProfileInput = useCallback(() => {
     hiddenProfileInputRef.current.click();
@@ -143,7 +155,34 @@ const useEditProfile = () => {
     }
   }, []);
 
-  // eslint-disable-next-line consistent-return
+  const handleCancledImgWithColor = useCallback(
+    async (type: ECancledItem) => {
+      try {
+        let temp = {};
+        if (type === ECancledItem.USER_PROFILE) {
+          temp = {
+            userPhotoURL: '',
+          };
+        } else {
+          temp = {
+            userCoverURL: '',
+            userColor: '',
+          };
+        }
+
+        const data = await modifyProfile(temp, userId);
+        if (data.statusCode === 200) {
+          setIsDone(true);
+        }
+        await handleMyProfile();
+        await handleFetchMyProfile();
+      } catch (err) {
+        return err;
+      }
+    },
+    [handleFetchMyProfile, handleMyProfile, userId]
+  );
+
   const handleModifyProfileEdit = useCallback(async () => {
     try {
       const profileUrl = await handleUploadImg(profileImg);
@@ -260,6 +299,8 @@ const useEditProfile = () => {
     handleModifyGameTier,
     isDone,
     handleDonePopup,
+    handleUserSelectColor,
+    handleCancledImgWithColor,
   };
 };
 

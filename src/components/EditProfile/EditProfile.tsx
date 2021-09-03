@@ -2,7 +2,9 @@
 
 import React, { useState, useMemo } from 'react';
 import Button from 'common/Button';
-import useEditProfile from 'hooks/useEditProfile/useEditProfile';
+import useEditProfile, {
+  ECancledItem,
+} from 'hooks/useEditProfile/useEditProfile';
 import styled from 'styled-components';
 import { color, typography } from 'styles/theme';
 import Input from 'common/Input';
@@ -46,6 +48,8 @@ const EditProfile = () => {
     handleModifyGameTier,
     isDone,
     handleDonePopup,
+    handleUserSelectColor,
+    handleCancledImgWithColor,
   } = useEditProfile();
   const commonButtonProps = useMemo(
     () => ({
@@ -58,6 +62,37 @@ const EditProfile = () => {
     }),
     []
   );
+
+  const profileCancleButtonStyleProps = useMemo(() => {
+    if (profileBanner64.length <= 0) {
+      return {
+        ...commonButtonProps,
+        fontColor: color.grayScale[500],
+        onClick: () => '',
+        hoverBkgColor: color.grayScale[50],
+      };
+    }
+    return {
+      ...commonButtonProps,
+      onClick: () => handleCancledImgWithColor(ECancledItem.USER_PROFILE),
+    };
+  }, [commonButtonProps, handleCancledImgWithColor, profileBanner64.length]);
+
+  const bannerCancledButtonStyleProps = useMemo(() => {
+    if (bannerBase64.length <= 0) {
+      return {
+        ...commonButtonProps,
+        fontColor: color.grayScale[500],
+        onClick: () => '',
+        hoverBkgColor: color.grayScale[50],
+      };
+    }
+    return {
+      ...commonButtonProps,
+      onClick: () =>
+        handleCancledImgWithColor(ECancledItem.USER_COVER_WITH_COLOR),
+    };
+  }, [bannerBase64.length, commonButtonProps, handleCancledImgWithColor]);
 
   const commonInputStyle = useMemo(() => {
     return {
@@ -127,12 +162,19 @@ const EditProfile = () => {
                         multiple
                         onChange={handleProfileImgReader}
                       />
-                      <Button
-                        {...commonButtonProps}
-                        text="사진업로드"
-                        width={7.6}
-                        onClick={handleHiddenProfileInput}
-                      />
+                      <ButtonElementWrapper>
+                        <Button
+                          {...commonButtonProps}
+                          text="사진업로드"
+                          width={7.6}
+                          onClick={handleHiddenProfileInput}
+                        />
+                        <Button
+                          {...profileCancleButtonStyleProps}
+                          text="취소"
+                          width={7.6}
+                        />
+                      </ButtonElementWrapper>
                     </UploadWrapper>
                   </div>
                 </ProfileUploadWrapper>
@@ -156,12 +198,29 @@ const EditProfile = () => {
                         multiple
                         onChange={handleCoverImgReader}
                       />
-                      <Button
-                        {...commonButtonProps}
-                        text="사진업로드"
-                        width={7.6}
-                        onClick={handleHiddenCoverInput}
-                      />
+                      <ButtonElementWrapper>
+                        {bannerBase64.length <= 0 ? (
+                          <Button
+                            {...commonButtonProps}
+                            text="색상변경"
+                            width={7.6}
+                            onClick={handleHiddenCoverInput}
+                          />
+                        ) : (
+                          ''
+                        )}
+                        <Button
+                          {...commonButtonProps}
+                          text="사진업로드"
+                          width={7.6}
+                          onClick={handleHiddenCoverInput}
+                        />
+                        <Button
+                          {...bannerCancledButtonStyleProps}
+                          text="취소"
+                          width={7.6}
+                        />
+                      </ButtonElementWrapper>
                     </UploadWrapper>
                   </div>
                 </CoverImgWarpper>
@@ -495,4 +554,11 @@ const EditTierInputWrapper = styled.div`
   margin-left: 5px;
   justify-content: space-between;
   width: 100%;
+`;
+
+const ButtonElementWrapper = styled.div`
+  display: flex;
+  & > * + * {
+    margin-left: 11px;
+  }
 `;

@@ -17,7 +17,6 @@ const useProfile = () => {
   const [followerCount, setFollowerCount] = useState<number>(0);
   const [followingCount, setFollowingCount] = useState<number>(0);
   const [fetchUserId, setFetchUserId] = useState<string>('');
-
   const setFetchUserInfoAtom = useSetRecoilState(fetchUserInfoAtom);
 
   const handleFindFollower = useCallback(async (userId: string) => {
