@@ -5,6 +5,10 @@ import styled, { ThemeContext } from 'styled-components';
 const SearchUser = () => {
   const themeStyle = useContext(ThemeContext);
 
+  const gotoLink = (userId) => {
+    window.location.href = `profile/${userId}`;
+  };
+
   const users = [
     {
       userId: 'user1',
@@ -50,31 +54,29 @@ const SearchUser = () => {
   return (
     <>
       {users.map((user) => (
-        <>
-          <UserWrapper>
-            <UserContent>
-              <UserPhotoWrapper>
-                <UserPhoto src={user.userPhotoURL} alt="alt" />
-              </UserPhotoWrapper>
-              <UserIdWrapper>{user.userId}</UserIdWrapper>
-            </UserContent>
-            <FollowBtnWrapper>
-              <Button
-                text="팔로우"
-                onClick={() => console.log('팔로우')}
-                fontColor={themeStyle.color.white}
-                bkgColor={themeStyle.color.yellow}
-                padding="0.8rem 0.7rem"
-                width={7}
-                height={3.6}
-                borderRadius={0.5}
-                fontStyle={themeStyle.typography.bodyRgBold}
-                hoverBkgColor={themeStyle.color.white}
-                hoverFontColor={themeStyle.color.yellow}
-              />
-            </FollowBtnWrapper>
-          </UserWrapper>
-        </>
+        <UserWrapper key={user.userId}>
+          <UserContent onClick={() => gotoLink(user.userId)}>
+            <UserPhotoWrapper>
+              <UserPhoto src={user.userPhotoURL} alt="alt" />
+            </UserPhotoWrapper>
+            <UserIdWrapper>{user.userId}</UserIdWrapper>
+          </UserContent>
+          <FollowBtnWrapper>
+            <Button
+              text="팔로우"
+              onClick={() => console.log('팔로우')}
+              fontColor={themeStyle.color.white}
+              bkgColor={themeStyle.color.yellow}
+              padding="0.8rem 0.7rem"
+              width={7}
+              height={3.6}
+              borderRadius={0.5}
+              fontStyle={themeStyle.typography.bodyRgBold}
+              hoverBkgColor={themeStyle.color.white}
+              hoverFontColor={themeStyle.color.yellow}
+            />
+          </FollowBtnWrapper>
+        </UserWrapper>
       ))}
     </>
   );
@@ -89,6 +91,7 @@ const UserWrapper = styled.div`
 `;
 const UserContent = styled.div`
   display: flex;
+  cursor: pointer;
 `;
 const UserPhotoWrapper = styled.div`
   margin: 2rem 0;
