@@ -113,7 +113,7 @@ const UnderToggleLayerWrapper = styled.div<{
   top: ${({ bottom }) => `${bottom - 2}px`};
   left: ${({ center, width, isLeft }) =>
     isLeft
-      ? `${center - 10}px`
+      ? `${center + 17}px`
       : `${center - (width < 100 ? width - 1 : width - 6.1)}px`};
   background-color: ${({ theme }) => theme.color.white};
   width: ${({ width }) => `${width}px`};

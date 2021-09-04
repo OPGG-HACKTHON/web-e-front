@@ -12,9 +12,10 @@ type Props = {
   lolTier: string;
   pubgTier: string;
   watchTier: string;
+  userColor: string;
 };
 
-const Banner = ({ img, lolTier, pubgTier, watchTier }: Props) => {
+const Banner = ({ img, lolTier, pubgTier, watchTier, userColor }: Props) => {
   const lolTierImg = useMemo(() => lolTierImgConverter(lolTier), [lolTier]);
   const pubgTierImg = useMemo(() => pubgTierImgConverter(pubgTier), [pubgTier]);
   const watchTierImg = useMemo(
@@ -24,7 +25,11 @@ const Banner = ({ img, lolTier, pubgTier, watchTier }: Props) => {
 
   return (
     <BannerWrapper>
-      {img === '' ? <BannerImg /> : <BannerImg src={img} />}
+      {img === '' ? (
+        <BannerUserColor backgroundColor={userColor} />
+      ) : (
+        <BannerImg src={img} />
+      )}
 
       <GameWrapper>
         <img src={lolTierImg} alt={lolTierImg} />
@@ -43,10 +48,16 @@ const BannerWrapper = styled.div`
   position: relative;
 `;
 
+const BannerUserColor = styled.div<{ backgroundColor: string }>`
+  width: 100%;
+  height: 100px;
+  background-color: ${({ theme, backgroundColor }) =>
+    backgroundColor === '' ? theme.color.grayScale[500] : backgroundColor};
+`;
+
 const BannerImg = styled.img`
   width: 100%;
   height: 100px;
-  background-color: ${({ theme }) => theme.color.grayScale[500]};
 `;
 
 const GameWrapper = styled.div`

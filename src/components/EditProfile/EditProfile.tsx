@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Button from 'common/Button';
 import useEditProfile, {
   ECancledItem,
@@ -13,10 +13,11 @@ import {
   editProfileUserInputType,
   gameNickNameType,
 } from 'api/profile/profile.type';
+import userCoverColorList from 'model/colorModel';
 import UnderToggleLayer from 'common/UnderToggleLayer';
-import { darken } from 'polished';
-
 import SelectBox from 'common/SelectBox';
+
+import { darken } from 'polished';
 import { LOL_TIER, OVERWATCH_TIER, PUBG_TIER } from 'model/authModel';
 import ModalContainer from 'common/ModalContainer';
 import DonePopUp from './DonePopUp';
@@ -55,9 +56,12 @@ const EditProfile = () => {
     handleSelectColorChange,
     changeColorRef,
     chnageColorPosition,
-    isSelectColorModal,
+    handleSelectUserColor,
     isSelectChangeColor,
+    userCoverColor,
+    setIsSelectChangeColor,
   } = useEditProfile();
+
   const commonButtonProps = useMemo(
     () => ({
       height: 2.3,
@@ -86,6 +90,14 @@ const EditProfile = () => {
   }, [commonButtonProps, handleCancledImgWithColor, profileBanner64.length]);
 
   const bannerCancledButtonStyleProps = useMemo(() => {
+    console.log(userCoverColor);
+
+    if (userCoverColor !== '') {
+      return {
+        ...commonButtonProps,
+      };
+    }
+
     if (bannerBase64.length <= 0) {
       return {
         ...commonButtonProps,
@@ -96,10 +108,8 @@ const EditProfile = () => {
     }
     return {
       ...commonButtonProps,
-      onClick: () =>
-        handleCancledImgWithColor(ECancledItem.USER_COVER_WITH_COLOR),
     };
-  }, [bannerBase64.length, commonButtonProps, handleCancledImgWithColor]);
+  }, [bannerBase64.length, commonButtonProps, userCoverColor]);
 
   const commonInputStyle = useMemo(() => {
     return {
@@ -126,6 +136,12 @@ const EditProfile = () => {
     }),
     []
   );
+
+  useEffect(() => {
+    if (userCoverColor !== '') {
+      setIsSelectChangeColor(false);
+    }
+  }, [setIsSelectChangeColor, userCoverColor]);
 
   return (
     <>
@@ -180,6 +196,9 @@ const EditProfile = () => {
                           {...profileCancleButtonStyleProps}
                           text="취소"
                           width={7.6}
+                          onClick={() =>
+                            handleCancledImgWithColor(ECancledItem.USER_PROFILE)
+                          }
                         />
                       </ButtonElementWrapper>
                     </UploadWrapper>
@@ -192,7 +211,7 @@ const EditProfile = () => {
                   </TitleWrapper>
                   <div>
                     {bannerBase64.length <= 0 ? (
-                      <CoverSectionMock />
+                      <CoverSectionMock backgroundColor={userCoverColor} />
                     ) : (
                       <CoverSection src={bannerBase64} />
                     )}
@@ -206,12 +225,9 @@ const EditProfile = () => {
                         onChange={handleCoverImgReader}
                       />
                       <ButtonElementWrapper>
-                        {bannerBase64.length <= 0 ? (
+                        {bannerBase64.length <= 0 && userCoverColor === '' ? (
                           <ChangeColorButton
                             ref={changeColorRef}
-                            // {...commonButtonProps}
-                            // text="색상변경"
-                            // width={7.6}
                             onClick={handleSelectColorChange}
                           >
                             색상변경
@@ -229,6 +245,11 @@ const EditProfile = () => {
                           {...bannerCancledButtonStyleProps}
                           text="취소"
                           width={7.6}
+                          onClick={() =>
+                            handleCancledImgWithColor(
+                              ECancledItem.USER_COVER_WITH_COLOR
+                            )
+                          }
                         />
                       </ButtonElementWrapper>
                     </UploadWrapper>
@@ -390,16 +411,32 @@ const EditProfile = () => {
         isClick={isSelectChangeColor}
         isLeft
       >
-        <div>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis,
-          perspiciatis?
-        </div>
+        <ColorWrapper>
+          {userCoverColorList.map((data) => {
+            return (
+              <ColorCircle
+                onClick={() => handleSelectUserColor(data)}
+                backgroundColor={data}
+              />
+            );
+          })}
+        </ColorWrapper>
       </UnderToggleLayer>
     </>
   );
 };
 
 export default EditProfile;
+
+const ColorWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  flex-wrap: wrap;
+  padding: 10px;
+  align-items: center;
+  justify-items: center;
+  grid-gap: 10px 0px;
+`;
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -531,11 +568,12 @@ const CoverSection = styled.img`
   border-radius: 5px;
 `;
 
-const CoverSectionMock = styled.div`
+const CoverSectionMock = styled.div<{ backgroundColor: string }>`
   width: 498px;
   height: 78px;
   border-radius: 5px;
-  background-color: ${({ theme }) => theme.color.grayScale[500]};
+  background-color: ${({ theme, backgroundColor }) =>
+    backgroundColor === '' ? theme.color.grayScale[500] : backgroundColor};
 `;
 //
 
@@ -600,4 +638,11 @@ const ChangeColorButton = styled.div`
   &:hover {
     background-color: ${({ theme }) => darken(0.1, theme.color.grayScale[50])};
   }
+`;
+
+const ColorCircle = styled.div<{ backgroundColor: string }>`
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: ${({ backgroundColor }) => backgroundColor};
 `;

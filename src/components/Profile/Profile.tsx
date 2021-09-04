@@ -17,6 +17,7 @@ const Profile = () => {
   const [selectNavName, setSelectName] = useRecoilState(leftNavItemState);
 
   const userInfo = useRecoilValue(fetchUserInfoAtom);
+
   const {
     userName,
     userIntro,
@@ -26,6 +27,7 @@ const Profile = () => {
     lolTier,
     pubgTier,
     watchTier,
+    userColor,
   } = userInfo;
 
   useEffect(() => {
@@ -44,6 +46,7 @@ const Profile = () => {
   return (
     <ProfileWrapper>
       <Banner
+        userColor={userColor}
         img={userCoverURL}
         lolTier={lolTier}
         pubgTier={pubgTier}

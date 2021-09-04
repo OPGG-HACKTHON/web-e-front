@@ -64,8 +64,6 @@ const useEditProfile = () => {
     pubg: '',
   });
 
-  const [isSelectColorModal, setIsSelectColorModal] = useState<boolean>(false);
-
   const { handleMyProfile } = useProfile();
 
   const hiddenProfileInputRef = useRef(null);
@@ -141,12 +139,14 @@ const useEditProfile = () => {
     try {
       const myProfileId = await myProfileInfo();
       const { data } = await fetchProfileInfo(myProfileId.data.id);
+
       setUserId(data.userId);
       setProfileUserName(data.userName);
       setEditProfileInputObj({
         userName: data.userName || '',
         intro: data.userIntro || '',
       });
+      setUserCoverColor(data.userColor);
       setSelectLol(data.lolTier);
       setSelectPubg(data.pubgTier);
       setSelectWatch(data.watchTier);
@@ -156,6 +156,7 @@ const useEditProfile = () => {
         lol: data.userLolId,
         pubg: data.userPubgId,
       });
+
       return data;
     } catch (err) {
       return err;
@@ -188,7 +189,10 @@ const useEditProfile = () => {
             userColor: '',
           };
           setBannerFile(null);
+          setUserCoverColor('');
         }
+
+        console.log(temp);
 
         const data = await modifyProfile(temp, userId);
         if (data.statusCode === 200) {
@@ -214,6 +218,7 @@ const useEditProfile = () => {
           userIntro: editProfileInputObj.intro,
           userPhotoURL: profileUrl.location,
           userCoverURL: bannerUrl.location,
+          userColor: userCoverColor,
         };
       } else {
         dataTemp = {
@@ -221,6 +226,7 @@ const useEditProfile = () => {
           userIntro: editProfileInputObj.intro,
           userPhotoURL: profileUrl.location,
           userCoverURL: bannerUrl.location,
+          userColor: userCoverColor,
         };
       }
 
@@ -245,6 +251,7 @@ const useEditProfile = () => {
     profileImg,
     profileUserName,
     setFetchjUserInfo,
+    userCoverColor,
     userId,
   ]);
 
@@ -323,7 +330,7 @@ const useEditProfile = () => {
     handleSelectColorChange,
     changeColorRef,
     chnageColorPosition,
-    isSelectColorModal,
+    setIsSelectChangeColor,
   };
 };
 
