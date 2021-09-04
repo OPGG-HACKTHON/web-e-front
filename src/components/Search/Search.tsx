@@ -9,6 +9,7 @@ import SearchHashtags from './SearchHashtags';
 const Search = () => {
   const location = useLocation();
   const qs = location.search;
+  console.log(qs);
 
   // ?fname=johnny&lname=depp
   const [hashtagsUrl, setHashtagsUrl] = useRecoilState(searhHashtagsAtom);

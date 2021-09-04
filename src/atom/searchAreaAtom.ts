@@ -88,7 +88,7 @@ export const hListbySelectorState = selector({
 
 export const searchUserAtom = atom({
   key: 'searchUserAtom',
-  default: '/users/search?user=%40',
+  default: '/users/search?user=',
 });
 
 export const getUsersList = selector({

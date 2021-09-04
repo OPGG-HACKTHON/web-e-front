@@ -1,28 +1,23 @@
-import {
-  searchAreaAtom,
-  searchUserAtom,
-  searhHashtagsAtom,
-} from 'atom/searchAreaAtom';
+import { searchAreaAtom } from 'atom/searchAreaAtom';
 import { fetchUserInfoAtom } from 'atom/userAtom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 const useSearch = () => {
   const [keywords, setKeywords] = useRecoilState(searchAreaAtom);
-  const [url, setUrl] = useRecoilState(searchUserAtom);
   const userInfo = useRecoilValue(fetchUserInfoAtom);
   const { userId } = userInfo;
 
   const handleAddKeyword = (text: string | string[]) => {
     const keywordsArr = keywords.map((k: { keywords: any }) => k.keywords);
-    if (userId) {
-      if (!keywordsArr.includes(text) && text.includes('#')) {
-        const newKeyword = {
-          id: Date.now(),
-          keywords: text,
-          user: userId,
-        };
-        setKeywords([newKeyword, ...keywords]);
-      }
+    if (!keywordsArr.includes(text) && text.includes('#') && userId) {
+      console.log(userId);
+
+      const newKeyword = {
+        id: Date.now(),
+        keywords: text,
+        user: userId,
+      };
+      setKeywords([...keywords, newKeyword]);
     }
   };
 
@@ -40,7 +35,6 @@ const useSearch = () => {
   };
 
   const goToLink = (value: string) => {
-    // 실행할 함수
     const plusValue = value.replaceAll(' ', '%2B');
     let getUrl = '';
     if (value.startsWith('#')) {

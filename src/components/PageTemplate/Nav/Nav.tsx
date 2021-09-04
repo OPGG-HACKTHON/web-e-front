@@ -75,7 +75,7 @@ const Nav = () => {
       <NavWrapper>
         <NavInnerWrapper>
           <Logo src={WATPL} alt="WATPL" />
-          <SearchBar onAddKeyword={handleAddKeyword} />
+          <SearchBar />
           <ButtonWrapper>
             {isLogin ? (
               <RightItemWrapper>
