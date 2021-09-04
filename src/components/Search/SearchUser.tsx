@@ -1,14 +1,15 @@
 import { getUsersList } from 'atom/searchAreaAtom';
 import Button from 'common/Button';
 import React, { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled, { ThemeContext } from 'styled-components';
 
 const SearchUser = () => {
   const themeStyle = useContext(ThemeContext);
-
+  const history = useHistory();
   const gotoLink = (userId) => {
-    window.location.href = `profile/${userId}`;
+    history.push(`profile/${userId}`);
   };
   const users = useRecoilValue(getUsersList);
   console.log(users);

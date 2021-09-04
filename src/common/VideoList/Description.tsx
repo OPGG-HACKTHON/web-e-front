@@ -7,6 +7,7 @@ import {
   PosterInfo,
 } from 'styles/mainStyles/videoComponents/VideoItem';
 import { typography } from 'styles/theme';
+import { useHistory } from 'react-router-dom';
 
 type Props = {
   description: string;
@@ -20,13 +21,15 @@ const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
 
   const descArray = description.replace('\n', ' ').split(' ');
   const regexp = /#([가-힣a-zA-Z0-9]+)/g;
+  const history = useHistory();
 
   const { goToLink, handleAddKeyword } = useSearch();
 
   const onClick = (value) => {
     // 실행할 함수
     handleAddKeyword(value);
-    goToLink(value);
+    const url = goToLink(value);
+    history.push(url);
   };
 
   return (

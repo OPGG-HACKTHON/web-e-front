@@ -2,11 +2,13 @@ import React from 'react';
 import { useRecoilState } from 'recoil';
 import MainWrapper from 'styles/mainStyles/videoComponents/MainWrapper';
 import { searchUserAtom, searhHashtagsAtom } from 'atom/searchAreaAtom';
+import { useLocation } from 'react-router-dom';
 import SearchUser from './SearchUser';
 import SearchHashtags from './SearchHashtags';
 
 const Search = () => {
-  const qs = window.location.search;
+  const location = useLocation();
+  const qs = location.search;
 
   // ?fname=johnny&lname=depp
   const [hashtagsUrl, setHashtagsUrl] = useRecoilState(searhHashtagsAtom);
