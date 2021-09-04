@@ -42,8 +42,9 @@ const useSearch = () => {
       const reValue = value.replaceAll('@', '');
       const getUrl = `/search?user=${reValue}`;
       window.location.href = getUrl;
+    } else {
+      alert(`@유저 혹은 #해시태그로 검색해주세요!`);
     }
-    // TODO: 다른 검색어 입력시
   };
 
   return {
