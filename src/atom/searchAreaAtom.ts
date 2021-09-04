@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import getHashtagsVideos from 'api/search/hashtags';
+import getUsers from 'api/search/users';
 import { atom, RecoilValue, selector } from 'recoil';
 import { leftNavItemState } from './pageAtom';
 import { selectorState } from './selectorAtom';
@@ -87,15 +88,15 @@ export const hListbySelectorState = selector({
 
 export const searchUserAtom = atom({
   key: 'searchUserAtom',
-  default: '/',
+  default: '/users/search?user=%40',
 });
 
 export const getUsersList = selector({
   key: 'getUsersList',
   get: async ({ get }) => {
     const url = get(searchUserAtom);
-    // `user/search?user=${reValue}`
-    const response = await getUsersList(url);
+    // `users/search?user=${reValue}`
+    const response = await getUsers(url);
     return response;
   },
 });

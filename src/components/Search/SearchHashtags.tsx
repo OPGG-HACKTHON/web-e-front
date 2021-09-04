@@ -6,7 +6,6 @@ import { hListbySelectorState } from 'atom/searchAreaAtom';
 
 const SearchHashtags = () => {
   const videos = useRecoilValue(hListbySelectorState);
-
   return (
     <>
       <VideoSelectBar />

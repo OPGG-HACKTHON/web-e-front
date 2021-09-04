@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import React from 'react';
+import { useRecoilState } from 'recoil';
 import MainWrapper from 'styles/mainStyles/videoComponents/MainWrapper';
-import { hListbySelectorState, searhHashtagsAtom } from 'atom/searchAreaAtom';
-import VideoListMain from 'common/VideoList/Main';
-import VideoSelectBar from 'components/Main/VideoSelectBar';
+import { searchUserAtom, searhHashtagsAtom } from 'atom/searchAreaAtom';
 import SearchUser from './SearchUser';
 import SearchHashtags from './SearchHashtags';
 
@@ -11,15 +9,13 @@ const Search = () => {
   const qs = window.location.search;
 
   // ?fname=johnny&lname=depp
-  const [url, setUrl] = useRecoilState(searhHashtagsAtom);
+  const [hashtagsUrl, setHashtagsUrl] = useRecoilState(searhHashtagsAtom);
+  const [userUrl, setUserUrl] = useRecoilState(searchUserAtom);
   if (qs.includes('hashtags')) {
-    setUrl(`/tags/search${qs}`);
-    console.log(qs);
+    setHashtagsUrl(`/tags/search${qs}`);
+  } else {
+    setUserUrl(`/users/search${qs}`);
   }
-  // else if (qs.includes('user')) {
-  //   console.log(qs);
-  // setUrl(`/user/search${qs}`);
-  // }
   return (
     <MainWrapper>
       {qs.includes('hashtags') ? <SearchHashtags /> : <SearchUser />}

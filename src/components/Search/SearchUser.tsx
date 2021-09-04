@@ -1,5 +1,7 @@
+import { getUsersList } from 'atom/searchAreaAtom';
 import Button from 'common/Button';
 import React, { useContext } from 'react';
+import { useRecoilValue } from 'recoil';
 import styled, { ThemeContext } from 'styled-components';
 
 const SearchUser = () => {
@@ -8,49 +10,9 @@ const SearchUser = () => {
   const gotoLink = (userId) => {
     window.location.href = `profile/${userId}`;
   };
+  const users = useRecoilValue(getUsersList);
+  console.log(users);
 
-  const users = [
-    {
-      userId: 'user1',
-      userName: 'user1',
-      userPhotoURL: 'users/profile_image_dummy.svg',
-      userIntro: null,
-      isPro: false,
-      relation: {
-        isFollow: false,
-      },
-    },
-    {
-      userId: 'user2',
-      userName: 'user2',
-      userPhotoURL: 'users/profile_image_dummy.svg',
-      userIntro: null,
-      isPro: false,
-      relation: {
-        isFollow: false,
-      },
-    },
-    {
-      userId: 'user22',
-      userName: 'user22',
-      userPhotoURL: 'users/profile_image_dummy.svg',
-      userIntro: null,
-      isPro: false,
-      relation: {
-        isFollow: false,
-      },
-    },
-    {
-      userId: 'test',
-      userName: 'test',
-      userPhotoURL: 'users/profile_image_dummy.svg',
-      userIntro: null,
-      isPro: false,
-      relation: {
-        isFollow: false,
-      },
-    },
-  ];
   return (
     <>
       {users.map((user) => (
@@ -59,7 +21,7 @@ const SearchUser = () => {
             <UserPhotoWrapper>
               <UserPhoto src={user.userPhotoURL} alt="alt" />
             </UserPhotoWrapper>
-            <UserIdWrapper>{user.userId}</UserIdWrapper>
+            <UserIdWrapper>{user.userName}</UserIdWrapper>
           </UserContent>
           <FollowBtnWrapper>
             <Button
