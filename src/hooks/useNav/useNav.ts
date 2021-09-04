@@ -30,7 +30,9 @@ const useNav = () => {
   );
 
   const isLocationProfile = useMemo(() => {
-    return location.pathname === '/profile';
+    return (
+      location.pathname === '/profile' || location.pathname.includes('/profile')
+    );
   }, [location]);
 
   const handleSelectNavItem = useCallback(

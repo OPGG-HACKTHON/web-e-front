@@ -18,3 +18,8 @@ export const myProfileAtom = atom<myProfileType>({
   key: 'myProfileAtom',
   default: initData,
 });
+
+export const findUser = atom<string>({
+  key: 'findUser',
+  default: undefined,
+});

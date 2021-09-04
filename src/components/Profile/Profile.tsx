@@ -6,14 +6,12 @@ import useProfile from 'hooks/useProfile/useProfile';
 import { myListbySelectorState } from 'atom/profileVideoAtom';
 import VideoListMain from 'common/VideoList/Main';
 import { fetchUserInfoAtom } from 'atom/userAtom';
-import { useHistory } from 'react-router-dom';
 import { leftNavItemState } from 'atom/pageAtom';
 import { EGameList } from 'enum/game.enum';
 
 const Profile = () => {
   const { handleMyProfile, followingCount, handleEditProfilePage } =
     useProfile();
-  const history = useHistory();
   const [selectNavName, setSelectName] = useRecoilState(leftNavItemState);
 
   const userInfo = useRecoilValue(fetchUserInfoAtom);

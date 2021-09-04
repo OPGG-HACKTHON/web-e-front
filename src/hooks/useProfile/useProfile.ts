@@ -4,16 +4,17 @@ import {
   findFollowing,
   myProfileInfo,
 } from 'api/profile/profile';
-import { myProfileAtom } from 'atom/profileAtom';
+import { findUser, myProfileAtom } from 'atom/profileAtom';
 import { fetchUserInfoAtom } from 'atom/userAtom';
-import { useCallback, useState, useEffect, useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useCallback, useState, useEffect } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
 const useProfile = () => {
   const setMyProfile = useSetRecoilState(myProfileAtom);
   const history = useHistory();
-
+  const { id }: { id: string } = useParams();
+  const setUserId = useSetRecoilState(findUser);
   const [followerCount, setFollowerCount] = useState<number>(0);
   const [followingCount, setFollowingCount] = useState<number>(0);
   const [fetchUserId, setFetchUserId] = useState<string>('');
@@ -60,11 +61,17 @@ const useProfile = () => {
     if (fetchUserId === '') {
       return;
     }
+    if (id === undefined) {
+      const { data } = await fetchProfileInfo(fetchUserId);
 
-    const { data } = await fetchProfileInfo(fetchUserId);
+      setFetchUserInfoAtom(data);
+    } else {
+      const { data } = await fetchProfileInfo(id);
+      setUserId(id);
 
-    setFetchUserInfoAtom(data);
-  }, [fetchUserId, setFetchUserInfoAtom]);
+      setFetchUserInfoAtom(data);
+    }
+  }, [fetchUserId, id, setFetchUserInfoAtom, setUserId]);
 
   const handleEditProfilePage = useCallback(() => {
     return history.push('profileEdit');

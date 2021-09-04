@@ -14,7 +14,7 @@ import { leftNavItemState } from 'atom/pageAtom';
 import { uploadModalPopState } from 'atom/uploadModalPopStateAtom';
 import { color, typography } from 'styles/theme';
 import { EGameList } from 'enum/game.enum';
-import { myProfileAtom } from 'atom/profileAtom';
+import { findUser, myProfileAtom } from 'atom/profileAtom';
 import { fetchUserInfoAtom } from 'atom/userAtom';
 
 import LolSvg from '../SvgElement/LolSvg';
@@ -24,11 +24,12 @@ import OverWatchSvg from '../SvgElement/OverWatchSvg';
 const LeftNav = () => {
   const { handleSelectNavItem, isLocationProfile, isKeywordsItemExist } =
     useNav();
+  const findUserProfileId = useRecoilValue(findUser);
   const [selectNavName, setSelectName] = useRecoilState(leftNavItemState);
   const myProfile = useRecoilValue(myProfileAtom);
   const [isUploadModalPoped, setUploadModalPopstate] =
     useRecoilState(uploadModalPopState);
-
+  console.log(findUserProfileId);
   const userInfo = useRecoilValue(fetchUserInfoAtom);
   const { userPhotoURL, userName } = userInfo;
 
@@ -78,16 +79,29 @@ const LeftNav = () => {
               {myProfile?.id === null ? '로그인을 해주세요.' : userName}
             </UserName>
           </UserInfoSection>
-          <Button
-            text="업로드"
-            onClick={onClickUpload}
-            {...ButtonStyle}
-            padding=""
-            width={6.9}
-            height={3.6}
-            borderRadius={0.5}
-            fontStyle={typography.bodyRgBold}
-          />
+          {findUserProfileId !== undefined ? (
+            <Button
+              text="팔로우"
+              onClick={() => ''}
+              {...ButtonStyle}
+              padding=""
+              width={6.9}
+              height={3.6}
+              borderRadius={0.5}
+              fontStyle={typography.bodyRgBold}
+            />
+          ) : (
+            <Button
+              text="업로드"
+              onClick={onClickUpload}
+              {...ButtonStyle}
+              padding=""
+              width={6.9}
+              height={3.6}
+              borderRadius={0.5}
+              fontStyle={typography.bodyRgBold}
+            />
+          )}
         </UserWrapper>
         <Line />
         <GameListWrapper isNoneClick={isLocationProfile}>
