@@ -90,9 +90,7 @@ const EditProfile = () => {
   }, [commonButtonProps, handleCancledImgWithColor, profileBanner64.length]);
 
   const bannerCancledButtonStyleProps = useMemo(() => {
-    console.log(userCoverColor);
-
-    if (userCoverColor !== '') {
+    if (userCoverColor !== null) {
       return {
         ...commonButtonProps,
       };
@@ -225,7 +223,7 @@ const EditProfile = () => {
                         onChange={handleCoverImgReader}
                       />
                       <ButtonElementWrapper>
-                        {bannerBase64.length <= 0 && userCoverColor === '' ? (
+                        {bannerBase64.length <= 0 && userCoverColor === null ? (
                           <ChangeColorButton
                             ref={changeColorRef}
                             onClick={handleSelectColorChange}
@@ -568,12 +566,12 @@ const CoverSection = styled.img`
   border-radius: 5px;
 `;
 
-const CoverSectionMock = styled.div<{ backgroundColor: string }>`
+const CoverSectionMock = styled.div<{ backgroundColor: string | null }>`
   width: 498px;
   height: 78px;
   border-radius: 5px;
   background-color: ${({ theme, backgroundColor }) =>
-    backgroundColor === '' ? theme.color.grayScale[500] : backgroundColor};
+    backgroundColor === null ? theme.color.grayScale[500] : backgroundColor};
 `;
 //
 

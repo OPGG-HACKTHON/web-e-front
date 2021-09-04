@@ -179,20 +179,18 @@ const useEditProfile = () => {
         let temp = {};
         if (type === ECancledItem.USER_PROFILE) {
           temp = {
-            userPhotoURL: '',
+            userPhotoURL: null,
           };
           setProfileImg(null);
           setFetchjUserInfo((prev) => ({ ...prev, userPhotoURL: '' }));
         } else {
           temp = {
-            userCoverURL: '',
-            userColor: '',
+            userCoverURL: null,
+            userColor: null,
           };
           setBannerFile(null);
           setUserCoverColor('');
         }
-
-        console.log(temp);
 
         const data = await modifyProfile(temp, userId);
         if (data.statusCode === 200) {

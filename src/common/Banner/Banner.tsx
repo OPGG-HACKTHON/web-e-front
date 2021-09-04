@@ -25,7 +25,7 @@ const Banner = ({ img, lolTier, pubgTier, watchTier, userColor }: Props) => {
 
   return (
     <BannerWrapper>
-      {img === '' ? (
+      {img === '' || img === null ? (
         <BannerUserColor backgroundColor={userColor} />
       ) : (
         <BannerImg src={img} />
@@ -52,7 +52,9 @@ const BannerUserColor = styled.div<{ backgroundColor: string }>`
   width: 100%;
   height: 100px;
   background-color: ${({ theme, backgroundColor }) =>
-    backgroundColor === '' ? theme.color.grayScale[500] : backgroundColor};
+    backgroundColor === '' || backgroundColor === null
+      ? theme.color.grayScale[500]
+      : backgroundColor};
 `;
 
 const BannerImg = styled.img`

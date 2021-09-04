@@ -47,6 +47,7 @@ const useProfile = () => {
       const { data } = await myProfileInfo();
       setFetchUserId(data.id);
       setMyProfile(data);
+
       Promise.all([handleFindFollower(data.id), handleFindFollowing(data.id)]);
 
       return data;
