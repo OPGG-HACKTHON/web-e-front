@@ -1,8 +1,6 @@
-import { searchAreaAtom } from 'atom/searchAreaAtom';
 import Button from 'common/Button';
 import useSearch from 'hooks/useSearch/useSearch';
 import React, { useContext } from 'react';
-import { useRecoilState } from 'recoil';
 import styled, { ThemeContext } from 'styled-components';
 import {
   FollowBtnDiv,
