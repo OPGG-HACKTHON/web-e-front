@@ -13,6 +13,9 @@ import {
   editProfileUserInputType,
   gameNickNameType,
 } from 'api/profile/profile.type';
+import UnderToggleLayer from 'common/UnderToggleLayer';
+import { darken } from 'polished';
+
 import SelectBox from 'common/SelectBox';
 import { LOL_TIER, OVERWATCH_TIER, PUBG_TIER } from 'model/authModel';
 import ModalContainer from 'common/ModalContainer';
@@ -48,8 +51,12 @@ const EditProfile = () => {
     handleModifyGameTier,
     isDone,
     handleDonePopup,
-    handleUserSelectColor,
     handleCancledImgWithColor,
+    handleSelectColorChange,
+    changeColorRef,
+    chnageColorPosition,
+    isSelectColorModal,
+    isSelectChangeColor,
   } = useEditProfile();
   const commonButtonProps = useMemo(
     () => ({
@@ -200,12 +207,15 @@ const EditProfile = () => {
                       />
                       <ButtonElementWrapper>
                         {bannerBase64.length <= 0 ? (
-                          <Button
-                            {...commonButtonProps}
-                            text="색상변경"
-                            width={7.6}
-                            onClick={handleHiddenCoverInput}
-                          />
+                          <ChangeColorButton
+                            ref={changeColorRef}
+                            // {...commonButtonProps}
+                            // text="색상변경"
+                            // width={7.6}
+                            onClick={handleSelectColorChange}
+                          >
+                            색상변경
+                          </ChangeColorButton>
                         ) : (
                           ''
                         )}
@@ -374,6 +384,17 @@ const EditProfile = () => {
           contentComponent={<DonePopUp onClick={handleDonePopup} />}
         />
       )}
+      <UnderToggleLayer
+        width={316}
+        renderPosition={chnageColorPosition}
+        isClick={isSelectChangeColor}
+        isLeft
+      >
+        <div>
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis,
+          perspiciatis?
+        </div>
+      </UnderToggleLayer>
     </>
   );
 };
@@ -560,5 +581,23 @@ const ButtonElementWrapper = styled.div`
   display: flex;
   & > * + * {
     margin-left: 11px;
+  }
+`;
+
+const ChangeColorButton = styled.div`
+  cursor: pointer;
+  width: 7rem;
+  height: 2.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ${({ theme }) => theme.typography.bodySmBold};
+  border-radius: 0.5rem;
+  text-align: center;
+  background-color: ${({ theme }) => theme.color.grayScale[50]};
+  transition: all 0.1s ease-out;
+
+  &:hover {
+    background-color: ${({ theme }) => darken(0.1, theme.color.grayScale[50])};
   }
 `;

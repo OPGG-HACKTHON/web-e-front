@@ -21,6 +21,7 @@ import {
 import { useHistory } from 'react-router-dom';
 import { fetchUserInfoAtom } from 'atom/userAtom';
 import { useSetRecoilState } from 'recoil';
+import { getBoundingRefObj } from 'types/underToggleLayer.types';
 
 type imgHandlerType = {
   event: any;
@@ -52,6 +53,12 @@ const useEditProfile = () => {
 
   const [isDone, setIsDone] = useState<boolean>(false);
 
+  const [isSelectChangeColor, setIsSelectChangeColor] =
+    useState<boolean>(false);
+  const [userCoverColor, setUserCoverColor] = useState('');
+  const [chnageColorPosition, setChangeColorPosition] =
+    useState<getBoundingRefObj>();
+
   const [gameNickName, setGameNickName] = useState<gameNickNameType>({
     lol: '',
     pubg: '',
@@ -63,12 +70,14 @@ const useEditProfile = () => {
 
   const hiddenProfileInputRef = useRef(null);
   const hiddenCoverInputRef = useRef(null);
+  const changeColorRef = useRef(document.createElement('div'));
 
   const [editProfileInputObj, setEditProfileInputObj] =
     useState<editProfileUserInputType>({ userName: '', intro: '' });
 
-  const handleUserSelectColor = useCallback(() => {
-    setIsSelectColorModal((prev) => !prev);
+  const handleSelectColorChange = useCallback(() => {
+    setIsSelectChangeColor((prev) => !prev);
+    setChangeColorPosition(changeColorRef.current.getBoundingClientRect());
   }, []);
 
   const handleHiddenProfileInput = useCallback(() => {
@@ -81,6 +90,10 @@ const useEditProfile = () => {
 
   const handleEditProfileSetting = useCallback((isProfile: boolean) => {
     setIsEditProfileSetting(isProfile);
+  }, []);
+
+  const handleSelectUserColor = useCallback((color: string) => {
+    setUserCoverColor(color);
   }, []);
 
   const handleChangeFile = useCallback(
@@ -303,8 +316,14 @@ const useEditProfile = () => {
     handleModifyGameTier,
     isDone,
     handleDonePopup,
-    handleUserSelectColor,
     handleCancledImgWithColor,
+    handleSelectUserColor,
+    userCoverColor,
+    isSelectChangeColor,
+    handleSelectColorChange,
+    changeColorRef,
+    chnageColorPosition,
+    isSelectColorModal,
   };
 };
 

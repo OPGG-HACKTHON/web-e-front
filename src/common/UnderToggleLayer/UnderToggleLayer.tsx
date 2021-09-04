@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { getBoundingRefObj } from 'types/underToggleLayer.types';
@@ -7,6 +8,7 @@ type Props = {
   renderPosition: getBoundingRefObj | undefined;
   width: number;
   children: React.ReactNode;
+  isLeft?: boolean;
 };
 
 const UnderToggleLayer = ({
@@ -14,6 +16,7 @@ const UnderToggleLayer = ({
   renderPosition,
   width,
   children,
+  isLeft = false,
 }: Props) => {
   const bottom = useMemo(() => {
     if (renderPosition !== undefined) {
@@ -24,16 +27,24 @@ const UnderToggleLayer = ({
 
   const center = useMemo(() => {
     if (renderPosition !== undefined) {
+      if (isLeft) {
+        return renderPosition.left;
+      }
       return renderPosition.right;
     }
     return 0;
-  }, [renderPosition]);
+  }, [isLeft, renderPosition]);
 
   return (
     <>
       {isClick && (
-        <UnderToggleLayerWrapper bottom={bottom} center={center} width={width}>
-          <Vertex />
+        <UnderToggleLayerWrapper
+          bottom={bottom}
+          center={center}
+          width={width}
+          isLeft={isLeft}
+        >
+          <Vertex isLeft={isLeft} />
           <ItemWrapper>{children}</ItemWrapper>
         </UnderToggleLayerWrapper>
       )}
@@ -43,10 +54,11 @@ const UnderToggleLayer = ({
 
 export default UnderToggleLayer;
 
-const Vertex = styled.div`
+const Vertex = styled.div<{ isLeft: boolean }>`
   position: absolute;
   top: -6px;
-  right: 10px;
+  ${({ isLeft }) => (isLeft ? 'left:10px;' : 'right: 10px;')}
+
   width: 14px;
   height: 14px;
   transform: rotate(45deg);
@@ -95,11 +107,14 @@ const UnderToggleLayerWrapper = styled.div<{
   bottom: number;
   center: number;
   width: number;
+  isLeft: boolean;
 }>`
   position: absolute;
   top: ${({ bottom }) => `${bottom - 2}px`};
-  left: ${({ center, width }) =>
-    `${center - (width < 100 ? width - 1 : width - 6.1)}px`};
+  left: ${({ center, width, isLeft }) =>
+    isLeft
+      ? `${center - 10}px`
+      : `${center - (width < 100 ? width - 1 : width - 6.1)}px`};
   background-color: ${({ theme }) => theme.color.white};
   width: ${({ width }) => `${width}px`};
   margin-top: 14px;
