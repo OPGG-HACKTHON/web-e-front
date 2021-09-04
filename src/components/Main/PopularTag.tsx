@@ -1,3 +1,4 @@
+/* eslint-disable no-self-compare */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -5,33 +6,59 @@ import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import Button from 'common/Button';
 import { typography } from 'styles/theme';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { popTagsState } from 'atom/videoListAtom';
-import { searchAreaAtom } from 'atom/searchAreaAtom';
 import Close from 'assets/svg/tag_close.svg';
 import useSearch from 'hooks/useSearch/useSearch';
+import { useHistory } from 'react-router-dom';
+import { userInfo } from 'atom/authAtom';
+import { fetchUserInfoAtom } from 'atom/userAtom';
 
 const PopularTag = () => {
   const themeStyle = useContext(ThemeContext);
   const popularTags = useRecoilValue(popTagsState);
 
   const { keywords, handleRemoveKeyword, goToLink } = useSearch();
+  const userInfo = useRecoilValue(fetchUserInfoAtom);
+  const { userId } = userInfo;
+
+  const history = useHistory();
+  const onClick = (tag) => {
+    const url = goToLink(tag);
+    history.push(url);
+  };
+
+  // TODO:
+  // const query = new URLSearchParams(useLocation().search);
+  // const removeKeywords = (id, keywords) => {
+  //   const hashtagsQeury = query.get('hashtags').replaceAll('+', ' ');
+  //   console.log(keywords, hashtagsQeury);
+  //   handleRemoveKeyword(id);
+
+  //   if (keywords === hashtagsQeury) {
+  //     history.push('/');
+  //   }
+  // };
 
   return (
     <TagWrapper>
-      {keywords.map(({ id, keywords }) => (
-        <HistoryButton key={id} onClick={() => goToLink(`${keywords}`)}>
-          {keywords}
-          <span onClick={() => handleRemoveKeyword(id)}>
-            <img src={Close} alt="alt" />
-          </span>
-        </HistoryButton>
-      ))}
+      {keywords.map(
+        ({ id, keywords, user }) =>
+          user === userId && (
+            <HistoryButton key={id} onClick={() => onClick(`${keywords}`)}>
+              {keywords}
+              <span onClick={() => handleRemoveKeyword(id)}>
+                <img src={Close} alt="alt" />
+              </span>
+            </HistoryButton>
+          )
+      )}
+
       {popularTags.map((tag) => (
         <Button
           key={popularTags.indexOf(`${tag}`)}
           text={`#${tag}`}
-          onClick={() => goToLink(`#${tag}`)}
+          onClick={() => onClick(`#${tag}`)}
           fontColor={themeStyle.color.blackScale[50]}
           bkgColor={themeStyle.color.grayScale[50]}
           padding="0.8rem 0.7rem"
