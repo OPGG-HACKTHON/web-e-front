@@ -102,6 +102,7 @@ const useProfile = () => {
     try {
       const { data } = await myProfileInfo();
       setFetchUserId(data.id);
+      setUserId(data.id);
       setMyProfile(data);
 
       Promise.all([handleFindFollower(data.id), handleFindFollowing(data.id)]);
@@ -110,7 +111,7 @@ const useProfile = () => {
     } catch (err) {
       return err;
     }
-  }, [handleFindFollower, handleFindFollowing, setMyProfile]);
+  }, [handleFindFollower, handleFindFollowing, setMyProfile, setUserId]);
 
   const handleFetchMyProfile = useCallback(async () => {
     if (fetchUserId === '') {

@@ -12,6 +12,7 @@ import { EGameList } from 'enum/game.enum';
 import { followerCountAtom, followingCountAtom } from 'atom/followAtom';
 import ModalContainer from 'common/ModalContainer';
 import FollowType, { EFollow } from './FollowTypeList/FollowType';
+import ProfileVideo from './ProfileVideo';
 
 const Profile = () => {
   const {
@@ -48,9 +49,6 @@ const Profile = () => {
       setSelectName(EGameList.LOL);
     };
   }, [setSelectName]);
-
-  // const videos = useRecoilValue(myListbySelectorState);
-  // const isNeedDescription = true;
 
   return (
     <>
