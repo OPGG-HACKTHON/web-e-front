@@ -9,6 +9,7 @@ import useNav from 'hooks/useNav';
 import useProfile from 'hooks/useProfile/useProfile';
 import Button from 'common/Button';
 import useFollow from 'hooks/useFollow';
+import { useParams } from 'react-router-dom';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { leftNavItemState } from 'atom/pageAtom';
@@ -38,7 +39,7 @@ const LeftNav = () => {
     useRecoilState(uploadModalPopState);
   const userInfo = useRecoilValue(fetchUserInfoAtom);
   const { userPhotoURL, userName, userId } = userInfo;
-
+  const { id }: { id: string } = useParams();
   const isSelectedGameArg = useCallback(
     (arg: EGameList) => {
       return arg === selectNavName;
@@ -81,7 +82,7 @@ const LeftNav = () => {
       bkgColor: color.yellow,
     };
   }, [isLocationProfile]);
-
+  console.log(findUserProfileId);
   return (
     <LeftNavWrapper>
       <StickyWrapper>
@@ -93,7 +94,7 @@ const LeftNav = () => {
             </UserName>
           </UserInfoSection>
 
-          {findUserProfileId !== undefined ? (
+          {id !== undefined ? (
             myFollowingList &&
             myFollowingList.some((args) => {
               return args.userId === userId;

@@ -3,7 +3,7 @@ import Banner from 'common/Banner';
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import useProfile from 'hooks/useProfile/useProfile';
-import { myListbySelectorState } from 'atom/profileVideoAtom';
+// import { myListbySelectorState } from 'atom/profileVideoAtom';
 import VideoListMain from 'common/VideoList/Main';
 import { useParams } from 'react-router-dom';
 import { fetchUserInfoAtom } from 'atom/userAtom';
