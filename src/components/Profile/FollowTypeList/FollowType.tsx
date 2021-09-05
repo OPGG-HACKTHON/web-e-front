@@ -64,7 +64,7 @@ const FollowType = ({ followType, close }: props) => {
     <Wrapper>
       <TopSection>
         <TopTitlte>
-          {followType === EFollow.FOLLOWER ? '팔로워' : '팔로우'}{' '}
+          {followType === EFollow.FOLLOWER ? '팔로워' : '팔로우'}
         </TopTitlte>
         <ExitButton src={CLOSE_BUTTON} alt="close_button" onClick={close} />
       </TopSection>

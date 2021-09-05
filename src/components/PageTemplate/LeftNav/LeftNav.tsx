@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import useNav from 'hooks/useNav';
 import useProfile from 'hooks/useProfile/useProfile';
 import Button from 'common/Button';
+import useFollow from 'hooks/useFollow';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { leftNavItemState } from 'atom/pageAtom';
@@ -16,6 +17,7 @@ import { color, typography } from 'styles/theme';
 import { EGameList } from 'enum/game.enum';
 import { findUser, myProfileAtom } from 'atom/profileAtom';
 import { fetchUserInfoAtom } from 'atom/userAtom';
+import { myFollowingListAtom } from 'atom/followAtom';
 
 import LolSvg from '../SvgElement/LolSvg';
 import PubgSvg from '../SvgElement/PubgSvg';
@@ -27,10 +29,15 @@ const LeftNav = () => {
   const findUserProfileId = useRecoilValue(findUser);
   const [selectNavName, setSelectName] = useRecoilState(leftNavItemState);
   const myProfile = useRecoilValue(myProfileAtom);
+  const myFollowingList = useRecoilValue(myFollowingListAtom);
+
+  const { handleMyProfile, fetchUserId } = useProfile();
+  const { handleFollow, setFollowObj, handleUnFollow } = useFollow();
+
   const [isUploadModalPoped, setUploadModalPopstate] =
     useRecoilState(uploadModalPopState);
   const userInfo = useRecoilValue(fetchUserInfoAtom);
-  const { userPhotoURL, userName } = userInfo;
+  const { userPhotoURL, userName, userId } = userInfo;
 
   const isSelectedGameArg = useCallback(
     (arg: EGameList) => {
@@ -38,7 +45,14 @@ const LeftNav = () => {
     },
     [selectNavName]
   );
-  const { handleMyProfile } = useProfile();
+
+  useEffect(() => {
+    setFollowObj((prev) => ({
+      ...prev,
+      userId: fetchUserId,
+    }));
+  }, [fetchUserId, setFollowObj]);
+
   useEffect(() => {
     handleMyProfile();
   }, [handleMyProfile]);
@@ -78,17 +92,34 @@ const LeftNav = () => {
               {myProfile?.id === null ? '로그인을 해주세요.' : userName}
             </UserName>
           </UserInfoSection>
+
           {findUserProfileId !== undefined ? (
-            <Button
-              text="팔로우"
-              onClick={() => ''}
-              {...ButtonStyle}
-              padding=""
-              width={6.9}
-              height={3.6}
-              borderRadius={0.5}
-              fontStyle={typography.bodyRgBold}
-            />
+            myFollowingList &&
+            myFollowingList.some((args) => {
+              return args.userId === userId;
+            }) ? (
+              <Button
+                text="언팔로우"
+                onClick={() => handleUnFollow(userId)}
+                {...ButtonStyle}
+                padding=""
+                width={6.9}
+                height={3.6}
+                borderRadius={0.5}
+                fontStyle={typography.bodyRgBold}
+              />
+            ) : (
+              <Button
+                text="팔로우"
+                onClick={() => handleFollow(userId)}
+                {...ButtonStyle}
+                padding=""
+                width={6.9}
+                height={3.6}
+                borderRadius={0.5}
+                fontStyle={typography.bodyRgBold}
+              />
+            )
           ) : (
             <Button
               text="업로드"

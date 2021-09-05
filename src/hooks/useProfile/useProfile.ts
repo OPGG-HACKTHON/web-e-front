@@ -148,6 +148,7 @@ const useProfile = () => {
     handleFindFollowing,
     isSelectFollowingModal,
     fetchUserId,
+    myFollowList,
     handleFelectFollowerModal,
     isSelectFollowerModal,
   };
