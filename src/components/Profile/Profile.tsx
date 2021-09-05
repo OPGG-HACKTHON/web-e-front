@@ -5,6 +5,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import useProfile from 'hooks/useProfile/useProfile';
 import { myListbySelectorState } from 'atom/profileVideoAtom';
 import VideoListMain from 'common/VideoList/Main';
+import { useParams } from 'react-router-dom';
 import { fetchUserInfoAtom } from 'atom/userAtom';
 import { leftNavItemState } from 'atom/pageAtom';
 import { EGameList } from 'enum/game.enum';
@@ -24,10 +25,9 @@ const Profile = () => {
 
   const [selectNavName, setSelectName] = useRecoilState(leftNavItemState);
   const userInfo = useRecoilValue(fetchUserInfoAtom);
-
+  const { id }: { id: string } = useParams();
   const followerCount = useRecoilValue(followerCountAtom);
   const followingCount = useRecoilValue(followingCountAtom);
-
   const {
     userName,
     userIntro,
@@ -68,9 +68,11 @@ const Profile = () => {
             <InfoWrapper>
               <UserNameWrapper>
                 <UserName>{userName}</UserName>
-                <EditProfile onClick={handleEditProfilePage}>
-                  프로필 편집
-                </EditProfile>
+                {id === undefined && (
+                  <EditProfile onClick={handleEditProfilePage}>
+                    프로필 편집
+                  </EditProfile>
+                )}
               </UserNameWrapper>
               <FollowWrapper>
                 <FollowTypeWrapper onClick={handleSelectFollowingModal}>
@@ -188,4 +190,6 @@ const Introdunction = styled.div`
   ${({ theme }) => theme.typography.bodyRg}
 `;
 
-const FollowTypeWrapper = styled.div``;
+const FollowTypeWrapper = styled.div`
+  cursor: pointer;
+`;

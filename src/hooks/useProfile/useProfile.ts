@@ -129,7 +129,7 @@ const useProfile = () => {
   }, [fetchUserId, id, setFetchUserInfoAtom, setUserId]);
 
   const handleEditProfilePage = useCallback(() => {
-    return history.push('profileEdit');
+    return history.push('/profileEdit');
   }, [history]);
 
   useEffect(() => {
