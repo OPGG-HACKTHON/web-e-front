@@ -18,7 +18,7 @@ export type follwerType = {
 
 export type follwingType = {
   followings: [];
-  followingsCounts: number;
+  followingsCount: number;
 };
 
 export type editProfileUserInputType = {
@@ -71,4 +71,18 @@ export type patchProfileDto = {
 export type gameNickNameType = {
   lol: string;
   pubg: string;
+};
+
+export type follwerListType = {
+  userId: string;
+  userIntro: null | string;
+  userName: string;
+  userPhotoURL: null | string;
+};
+
+export type followingListType = {
+  userId: string;
+  userIntro: null | string;
+  userName: string;
+  userPhotoURL: null | string;
 };

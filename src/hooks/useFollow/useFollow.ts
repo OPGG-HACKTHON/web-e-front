@@ -7,7 +7,8 @@ import { myProfileAtom } from 'atom/profileAtom';
 
 const useFollow = () => {
   const myProfile = useRecoilValue(myProfileAtom);
-  const { handleMyProfile } = useProfile();
+  const { handleMyProfile, handleFindFollower, handleFindFollowing } =
+    useProfile();
 
   const [followObj, setFollowObj] = useState<followDto>({
     userId: myProfile?.id,
@@ -21,7 +22,10 @@ const useFollow = () => {
         userId: followObj.userId,
         followingId,
       });
+
       const { data, status } = res;
+      await handleMyProfile();
+
       return data;
     } catch (err) {
       const { status } = err.response;
@@ -36,7 +40,10 @@ const useFollow = () => {
         userId: followObj.userId,
         followingId,
       });
+
       const { data, status } = res;
+      await handleMyProfile();
+
       return data;
     } catch (err) {
       const { status } = err.response;

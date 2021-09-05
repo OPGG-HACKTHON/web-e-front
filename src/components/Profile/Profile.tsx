@@ -8,19 +8,30 @@ import VideoListMain from 'common/VideoList/Main';
 import { fetchUserInfoAtom } from 'atom/userAtom';
 import { leftNavItemState } from 'atom/pageAtom';
 import { EGameList } from 'enum/game.enum';
+import { followerCountAtom, followingCountAtom } from 'atom/followAtom';
+import ModalContainer from 'common/ModalContainer';
+import FollowType, { EFollow } from './FollowTypeList/FollowType';
 
 const Profile = () => {
-  const { handleMyProfile, followingCount, handleEditProfilePage } =
-    useProfile();
-  const [selectNavName, setSelectName] = useRecoilState(leftNavItemState);
+  const {
+    handleMyProfile,
+    handleEditProfilePage,
+    handleSelectFollowingModal,
+    isSelectFollowingModal,
+    isSelectFollowerModal,
+    handleFelectFollowerModal,
+  } = useProfile();
 
+  const [selectNavName, setSelectName] = useRecoilState(leftNavItemState);
   const userInfo = useRecoilValue(fetchUserInfoAtom);
+
+  const followerCount = useRecoilValue(followerCountAtom);
+  const followingCount = useRecoilValue(followingCountAtom);
 
   const {
     userName,
     userIntro,
     userPhotoURL,
-    followerCount,
     userCoverURL,
     lolTier,
     pubgTier,
@@ -42,38 +53,64 @@ const Profile = () => {
   // const isNeedDescription = true;
 
   return (
-    <ProfileWrapper>
-      <Banner
-        userColor={userColor}
-        img={userCoverURL}
-        lolTier={lolTier}
-        pubgTier={pubgTier}
-        watchTier={watchTier}
+    <>
+      <ProfileWrapper>
+        <Banner
+          userColor={userColor}
+          img={userCoverURL}
+          lolTier={lolTier}
+          pubgTier={pubgTier}
+          watchTier={watchTier}
+        />
+        <UserWrapperPosition>
+          <UserInfoWrapper>
+            <UserImg src={userPhotoURL} />
+            <InfoWrapper>
+              <UserNameWrapper>
+                <UserName>{userName}</UserName>
+                <EditProfile onClick={handleEditProfilePage}>
+                  프로필 편집
+                </EditProfile>
+              </UserNameWrapper>
+              <FollowWrapper>
+                <FollowTypeWrapper onClick={handleSelectFollowingModal}>
+                  {followerCount} 팔로워
+                </FollowTypeWrapper>
+                <FollowTypeWrapper onClick={handleFelectFollowerModal}>
+                  {followingCount === undefined ? 0 : followingCount} 팔로우
+                </FollowTypeWrapper>
+              </FollowWrapper>
+            </InfoWrapper>
+          </UserInfoWrapper>
+          <Introdunction>
+            {userIntro === null ? '자기소개가 없습니다.' : userIntro}
+          </Introdunction>
+        </UserWrapperPosition>
+        {/* <VideoListMain videos={videos} isNeedDescription={isNeedDescription} /> */}
+      </ProfileWrapper>
+      <ModalContainer
+        isPopup={isSelectFollowingModal}
+        contentComponent={
+          <FollowType
+            followType={EFollow.FOLLOWER}
+            close={handleSelectFollowingModal}
+          />
+        }
+        onClickOverlay={handleSelectFollowingModal}
+        borderRadius={0.5}
       />
-      <UserWrapperPosition>
-        <UserInfoWrapper>
-          <UserImg src={userPhotoURL} />
-          <InfoWrapper>
-            <UserNameWrapper>
-              <UserName>{userName}</UserName>
-              <EditProfile onClick={handleEditProfilePage}>
-                프로필 편집
-              </EditProfile>
-            </UserNameWrapper>
-            <FollowWrapper>
-              <div>{followerCount} 팔로워</div>
-              <div>
-                {followingCount === undefined ? 0 : followingCount} 팔로우
-              </div>
-            </FollowWrapper>
-          </InfoWrapper>
-        </UserInfoWrapper>
-        <Introdunction>
-          {userIntro === null ? '자기소개가 없습니다.' : userIntro}
-        </Introdunction>
-      </UserWrapperPosition>
-      {/* <VideoListMain videos={videos} isNeedDescription={isNeedDescription} /> */}
-    </ProfileWrapper>
+      <ModalContainer
+        isPopup={isSelectFollowerModal}
+        contentComponent={
+          <FollowType
+            followType={EFollow.FOLLOWING}
+            close={handleFelectFollowerModal}
+          />
+        }
+        onClickOverlay={handleFelectFollowerModal}
+        borderRadius={0.5}
+      />
+    </>
   );
 };
 
@@ -150,3 +187,5 @@ const Introdunction = styled.div`
 
   ${({ theme }) => theme.typography.bodyRg}
 `;
+
+const FollowTypeWrapper = styled.div``;

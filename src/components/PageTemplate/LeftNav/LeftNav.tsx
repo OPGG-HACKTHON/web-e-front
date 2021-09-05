@@ -29,7 +29,6 @@ const LeftNav = () => {
   const myProfile = useRecoilValue(myProfileAtom);
   const [isUploadModalPoped, setUploadModalPopstate] =
     useRecoilState(uploadModalPopState);
-  console.log(findUserProfileId);
   const userInfo = useRecoilValue(fetchUserInfoAtom);
   const { userPhotoURL, userName } = userInfo;
 
