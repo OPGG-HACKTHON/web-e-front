@@ -82,7 +82,7 @@ const LeftNav = () => {
       bkgColor: color.yellow,
     };
   }, [isLocationProfile]);
-  console.log(findUserProfileId);
+
   return (
     <LeftNavWrapper>
       <StickyWrapper>
