@@ -163,7 +163,8 @@ const useAuth = () => {
   const closeWelcomModalGoToLoginModal = useCallback(() => {
     setIsLoginModal(true);
     setIsRegisterSuccess(false);
-  }, [setIsLoginModal]);
+    setRegisterStatus(0);
+  }, [setIsLoginModal, setRegisterStatus]);
 
   const handleCheckAllAgree = useCallback(() => {
     setAllAgree((prev) => !prev);
