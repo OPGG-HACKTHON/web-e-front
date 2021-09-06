@@ -49,7 +49,9 @@ const Banner = ({
           <img src={lolTierImg} alt={lolTierImg} />
         </Href>
         <Href
-          href={`https://pubg.op.gg/user/${userPubgId.trim()}`}
+          href={`https://pubg.op.gg/user/${
+            (userPubgId !== null || userPubgId === '') && userPubgId.trim()
+          }`}
           target="_blank"
         >
           <img src={pubgTierImg} alt={pubgTierImg} />
