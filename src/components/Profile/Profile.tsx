@@ -38,6 +38,8 @@ const Profile = () => {
     pubgTier,
     watchTier,
     userColor,
+    userLolId,
+    userPubgId,
   } = userInfo;
 
   useEffect(() => {
@@ -59,6 +61,8 @@ const Profile = () => {
           lolTier={lolTier}
           pubgTier={pubgTier}
           watchTier={watchTier}
+          userLolId={userLolId}
+          userPubgId={userPubgId}
         />
         <UserWrapperPosition>
           <UserInfoWrapper>

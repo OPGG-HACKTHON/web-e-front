@@ -13,9 +13,19 @@ type Props = {
   pubgTier: string;
   watchTier: string;
   userColor: string;
+  userLolId: string;
+  userPubgId: string;
 };
 
-const Banner = ({ img, lolTier, pubgTier, watchTier, userColor }: Props) => {
+const Banner = ({
+  img,
+  lolTier,
+  pubgTier,
+  watchTier,
+  userColor,
+  userLolId,
+  userPubgId,
+}: Props) => {
   const lolTierImg = useMemo(() => lolTierImgConverter(lolTier), [lolTier]);
   const pubgTierImg = useMemo(() => pubgTierImgConverter(pubgTier), [pubgTier]);
   const watchTierImg = useMemo(
@@ -32,8 +42,18 @@ const Banner = ({ img, lolTier, pubgTier, watchTier, userColor }: Props) => {
       )}
 
       <GameWrapper>
-        <img src={lolTierImg} alt={lolTierImg} />
-        <img src={pubgTierImg} alt={pubgTierImg} />
+        <Href
+          href={`https://www.op.gg/summoner/userName=${userLolId}`}
+          target="_blank"
+        >
+          <img src={lolTierImg} alt={lolTierImg} />
+        </Href>
+        <Href
+          href={`https://pubg.op.gg/user/${userPubgId.trim()}`}
+          target="_blank"
+        >
+          <img src={pubgTierImg} alt={pubgTierImg} />
+        </Href>
         <img src={watchTierImg} alt={watchTierImg} />
       </GameWrapper>
     </BannerWrapper>
@@ -71,3 +91,5 @@ const GameWrapper = styled.div`
     margin-left: 8px;
   }
 `;
+
+const Href = styled.a``;
