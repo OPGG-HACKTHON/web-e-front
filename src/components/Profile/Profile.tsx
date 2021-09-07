@@ -3,28 +3,43 @@ import Banner from 'common/Banner';
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import useProfile from 'hooks/useProfile/useProfile';
+// import { myListbySelectorState } from 'atom/profileVideoAtom';
+import VideoListMain from 'common/VideoList/Main';
+import { useParams } from 'react-router-dom';
 import { fetchUserInfoAtom } from 'atom/userAtom';
-import { useHistory } from 'react-router-dom';
 import { leftNavItemState } from 'atom/pageAtom';
 import { EGameList } from 'enum/game.enum';
+import { followerCountAtom, followingCountAtom } from 'atom/followAtom';
+import ModalContainer from 'common/ModalContainer';
+import FollowType, { EFollow } from './FollowTypeList/FollowType';
 import ProfileVideo from './ProfileVideo';
 
 const Profile = () => {
-  const { handleMyProfile, followingCount, handleEditProfilePage } =
-    useProfile();
-  const history = useHistory();
-  const [selectNavName, setSelectName] = useRecoilState(leftNavItemState);
+  const {
+    handleMyProfile,
+    handleEditProfilePage,
+    handleSelectFollowingModal,
+    isSelectFollowingModal,
+    isSelectFollowerModal,
+    handleFelectFollowerModal,
+  } = useProfile();
 
+  const [selectNavName, setSelectName] = useRecoilState(leftNavItemState);
   const userInfo = useRecoilValue(fetchUserInfoAtom);
+  const { id }: { id: string } = useParams();
+  const followerCount = useRecoilValue(followerCountAtom);
+  const followingCount = useRecoilValue(followingCountAtom);
   const {
     userName,
     userIntro,
     userPhotoURL,
-    followerCount,
     userCoverURL,
     lolTier,
     pubgTier,
     watchTier,
+    userColor,
+    userLolId,
+    userPubgId,
   } = userInfo;
 
   useEffect(() => {
@@ -33,48 +48,73 @@ const Profile = () => {
 
   useEffect(() => {
     return () => {
-      history.push('/');
-    };
-  }, [history]);
-
-  useEffect(() => {
-    return () => {
       setSelectName(EGameList.LOL);
     };
   }, [setSelectName]);
 
   return (
-    <ProfileWrapper>
-      <Banner
-        img={userCoverURL}
-        lolTier={lolTier}
-        pubgTier={pubgTier}
-        watchTier={watchTier}
+    <>
+      <ProfileWrapper>
+        <Banner
+          userColor={userColor}
+          img={userCoverURL}
+          lolTier={lolTier}
+          pubgTier={pubgTier}
+          watchTier={watchTier}
+          userLolId={userLolId}
+          userPubgId={userPubgId}
+        />
+        <UserWrapperPosition>
+          <UserInfoWrapper>
+            <UserImg src={userPhotoURL} />
+            <InfoWrapper>
+              <UserNameWrapper>
+                <UserName>{userName}</UserName>
+                {id === undefined && (
+                  <EditProfile onClick={handleEditProfilePage}>
+                    프로필 편집
+                  </EditProfile>
+                )}
+              </UserNameWrapper>
+              <FollowWrapper>
+                <FollowTypeWrapper onClick={handleSelectFollowingModal}>
+                  {followerCount} 팔로워
+                </FollowTypeWrapper>
+                <FollowTypeWrapper onClick={handleFelectFollowerModal}>
+                  {followingCount === undefined ? 0 : followingCount} 팔로우
+                </FollowTypeWrapper>
+              </FollowWrapper>
+            </InfoWrapper>
+          </UserInfoWrapper>
+          <Introdunction>
+            {userIntro === null ? '자기소개가 없습니다.' : userIntro}
+          </Introdunction>
+        </UserWrapperPosition>
+        {/* <VideoListMain videos={videos} isNeedDescription={isNeedDescription} /> */}
+      </ProfileWrapper>
+      <ModalContainer
+        isPopup={isSelectFollowingModal}
+        contentComponent={
+          <FollowType
+            followType={EFollow.FOLLOWER}
+            close={handleSelectFollowingModal}
+          />
+        }
+        onClickOverlay={handleSelectFollowingModal}
+        borderRadius={0.5}
       />
-      <UserWrapperPosition>
-        <UserInfoWrapper>
-          <UserImg src={userPhotoURL} />
-          <InfoWrapper>
-            <UserNameWrapper>
-              <UserName>{userName}</UserName>
-              <EditProfile onClick={handleEditProfilePage}>
-                프로필 편집
-              </EditProfile>
-            </UserNameWrapper>
-            <FollowWrapper>
-              <div>{followerCount} 팔로워</div>
-              <div>
-                {followingCount === undefined ? 0 : followingCount} 팔로우
-              </div>
-            </FollowWrapper>
-          </InfoWrapper>
-        </UserInfoWrapper>
-        <Introdunction>
-          {userIntro === null ? '자기소개가 없습니다.' : userIntro}
-        </Introdunction>
-      </UserWrapperPosition>
-      <ProfileVideo />
-    </ProfileWrapper>
+      <ModalContainer
+        isPopup={isSelectFollowerModal}
+        contentComponent={
+          <FollowType
+            followType={EFollow.FOLLOWING}
+            close={handleFelectFollowerModal}
+          />
+        }
+        onClickOverlay={handleFelectFollowerModal}
+        borderRadius={0.5}
+      />
+    </>
   );
 };
 
@@ -150,4 +190,8 @@ const Introdunction = styled.div`
   color: ${({ theme }) => theme.color.grayScale[500]};
 
   ${({ theme }) => theme.typography.bodyRg}
+`;
+
+const FollowTypeWrapper = styled.div`
+  cursor: pointer;
 `;

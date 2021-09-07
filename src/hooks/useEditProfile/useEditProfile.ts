@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import {
   fetchProfileInfo,
   modifyProfile,
@@ -18,6 +19,9 @@ import {
   useEffect,
 } from 'react';
 import { useHistory } from 'react-router-dom';
+import { fetchUserInfoAtom } from 'atom/userAtom';
+import { useSetRecoilState } from 'recoil';
+import { getBoundingRefObj } from 'types/underToggleLayer.types';
 
 type imgHandlerType = {
   event: any;
@@ -25,8 +29,14 @@ type imgHandlerType = {
   setImgFile: Dispatch<SetStateAction<File>>;
 };
 
+export enum ECancledItem {
+  USER_PROFILE,
+  USER_COVER_WITH_COLOR,
+}
+
 const useEditProfile = () => {
   const history = useHistory();
+  const setFetchjUserInfo = useSetRecoilState(fetchUserInfoAtom);
   const [isEditProfileSetting, setIsEditProfileSetting] =
     useState<boolean>(true);
   const [userId, setUserId] = useState<string>('');
@@ -43,6 +53,12 @@ const useEditProfile = () => {
 
   const [isDone, setIsDone] = useState<boolean>(false);
 
+  const [isSelectChangeColor, setIsSelectChangeColor] =
+    useState<boolean>(false);
+  const [userCoverColor, setUserCoverColor] = useState('');
+  const [chnageColorPosition, setChangeColorPosition] =
+    useState<getBoundingRefObj>();
+
   const [gameNickName, setGameNickName] = useState<gameNickNameType>({
     lol: '',
     pubg: '',
@@ -52,9 +68,15 @@ const useEditProfile = () => {
 
   const hiddenProfileInputRef = useRef(null);
   const hiddenCoverInputRef = useRef(null);
+  const changeColorRef = useRef(document.createElement('div'));
 
   const [editProfileInputObj, setEditProfileInputObj] =
     useState<editProfileUserInputType>({ userName: '', intro: '' });
+
+  const handleSelectColorChange = useCallback(() => {
+    setIsSelectChangeColor((prev) => !prev);
+    setChangeColorPosition(changeColorRef.current.getBoundingClientRect());
+  }, []);
 
   const handleHiddenProfileInput = useCallback(() => {
     hiddenProfileInputRef.current.click();
@@ -68,8 +90,13 @@ const useEditProfile = () => {
     setIsEditProfileSetting(isProfile);
   }, []);
 
+  const handleSelectUserColor = useCallback((color: string) => {
+    setUserCoverColor(color);
+  }, []);
+
   const handleChangeFile = useCallback(
     ({ event, setImgBase64, setImgFile }: imgHandlerType) => {
+      setImgFile(null);
       const reader = new FileReader();
 
       reader.onloadend = () => {
@@ -112,12 +139,14 @@ const useEditProfile = () => {
     try {
       const myProfileId = await myProfileInfo();
       const { data } = await fetchProfileInfo(myProfileId.data.id);
+
       setUserId(data.userId);
       setProfileUserName(data.userName);
       setEditProfileInputObj({
         userName: data.userName || '',
         intro: data.userIntro || '',
       });
+      setUserCoverColor(data.userColor);
       setSelectLol(data.lolTier);
       setSelectPubg(data.pubgTier);
       setSelectWatch(data.watchTier);
@@ -127,6 +156,7 @@ const useEditProfile = () => {
         lol: data.userLolId,
         pubg: data.userPubgId,
       });
+
       return data;
     } catch (err) {
       return err;
@@ -143,37 +173,66 @@ const useEditProfile = () => {
     }
   }, []);
 
-  // eslint-disable-next-line consistent-return
+  const handleCancledImgWithColor = useCallback(
+    async (type: ECancledItem) => {
+      try {
+        let temp = {};
+        if (type === ECancledItem.USER_PROFILE) {
+          temp = {
+            userPhotoURL: null,
+          };
+          setProfileImg(null);
+          setFetchjUserInfo((prev) => ({ ...prev, userPhotoURL: '' }));
+        } else {
+          temp = {
+            userCoverURL: null,
+            userColor: null,
+          };
+          setBannerFile(null);
+          setUserCoverColor('');
+        }
+
+        const data = await modifyProfile(temp, userId);
+        if (data.statusCode === 200) {
+          setIsDone(true);
+        }
+        await handleMyProfile();
+        await handleFetchMyProfile();
+      } catch (err) {
+        return err;
+      }
+    },
+    [handleFetchMyProfile, handleMyProfile, setFetchjUserInfo, userId]
+  );
+
   const handleModifyProfileEdit = useCallback(async () => {
     try {
       const profileUrl = await handleUploadImg(profileImg);
       const bannerUrl = await handleUploadImg(bannerFile);
+      let dataTemp = {};
 
       if (profileUserName === editProfileInputObj.userName) {
-        const temp = {
+        dataTemp = {
           userIntro: editProfileInputObj.intro,
           userPhotoURL: profileUrl.location,
           userCoverURL: bannerUrl.location,
+          userColor: userCoverColor,
         };
-
-        const data = await modifyProfile(temp, userId);
-
-        if (data.statusCode === 200) {
-          setIsDone(true);
-        }
       } else {
-        const temp = {
+        dataTemp = {
           userName: editProfileInputObj.userName,
           userIntro: editProfileInputObj.intro,
           userPhotoURL: profileUrl.location,
           userCoverURL: bannerUrl.location,
+          userColor: userCoverColor,
         };
+      }
 
-        const data = await modifyProfile(temp, userId);
+      const data = await modifyProfile(dataTemp, userId);
+      setFetchjUserInfo((prev) => ({ ...prev, ...data.data }));
 
-        if (data.statusCode === 200) {
-          setIsDone(true);
-        }
+      if (data.statusCode === 200) {
+        setIsDone(true);
       }
       await handleMyProfile();
       await handleFetchMyProfile();
@@ -189,6 +248,8 @@ const useEditProfile = () => {
     handleUploadImg,
     profileImg,
     profileUserName,
+    setFetchjUserInfo,
+    userCoverColor,
     userId,
   ]);
 
@@ -260,6 +321,14 @@ const useEditProfile = () => {
     handleModifyGameTier,
     isDone,
     handleDonePopup,
+    handleCancledImgWithColor,
+    handleSelectUserColor,
+    userCoverColor,
+    isSelectChangeColor,
+    handleSelectColorChange,
+    changeColorRef,
+    chnageColorPosition,
+    setIsSelectChangeColor,
   };
 };
 

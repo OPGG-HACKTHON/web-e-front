@@ -8,14 +8,17 @@ import styled from 'styled-components';
 import useNav from 'hooks/useNav';
 import useProfile from 'hooks/useProfile/useProfile';
 import Button from 'common/Button';
+import useFollow from 'hooks/useFollow';
+import { useParams } from 'react-router-dom';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { leftNavItemState } from 'atom/pageAtom';
 import { uploadModalPopState } from 'atom/uploadModalPopStateAtom';
 import { color, typography } from 'styles/theme';
 import { EGameList } from 'enum/game.enum';
-import { myProfileAtom } from 'atom/profileAtom';
+import { findUser, myProfileAtom } from 'atom/profileAtom';
 import { fetchUserInfoAtom } from 'atom/userAtom';
+import { myFollowingListAtom } from 'atom/followAtom';
 
 import LolSvg from '../SvgElement/LolSvg';
 import PubgSvg from '../SvgElement/PubgSvg';
@@ -24,21 +27,33 @@ import OverWatchSvg from '../SvgElement/OverWatchSvg';
 const LeftNav = () => {
   const { handleSelectNavItem, isLocationProfile, isKeywordsItemExist } =
     useNav();
+  const findUserProfileId = useRecoilValue(findUser);
   const [selectNavName, setSelectName] = useRecoilState(leftNavItemState);
   const myProfile = useRecoilValue(myProfileAtom);
+  const myFollowingList = useRecoilValue(myFollowingListAtom);
+
+  const { handleMyProfile, fetchUserId } = useProfile();
+  const { handleFollow, setFollowObj, handleUnFollow } = useFollow();
+
   const [isUploadModalPoped, setUploadModalPopstate] =
     useRecoilState(uploadModalPopState);
-
   const userInfo = useRecoilValue(fetchUserInfoAtom);
-  const { userPhotoURL, userName } = userInfo;
-
+  const { userPhotoURL, userName, userId } = userInfo;
+  const { id }: { id: string } = useParams();
   const isSelectedGameArg = useCallback(
     (arg: EGameList) => {
       return arg === selectNavName;
     },
     [selectNavName]
   );
-  const { handleMyProfile } = useProfile();
+
+  useEffect(() => {
+    setFollowObj((prev) => ({
+      ...prev,
+      userId: fetchUserId,
+    }));
+  }, [fetchUserId, setFollowObj]);
+
   useEffect(() => {
     handleMyProfile();
   }, [handleMyProfile]);
@@ -78,16 +93,46 @@ const LeftNav = () => {
               {myProfile?.id === null ? '로그인을 해주세요.' : userName}
             </UserName>
           </UserInfoSection>
-          <Button
-            text="업로드"
-            onClick={onClickUpload}
-            {...ButtonStyle}
-            padding=""
-            width={6.9}
-            height={3.6}
-            borderRadius={0.5}
-            fontStyle={typography.bodyRgBold}
-          />
+
+          {id !== undefined ? (
+            myFollowingList &&
+            myFollowingList.some((args) => {
+              return args.userId === userId;
+            }) ? (
+              <Button
+                text="언팔로우"
+                onClick={() => handleUnFollow(userId)}
+                {...ButtonStyle}
+                padding=""
+                width={6.9}
+                height={3.6}
+                borderRadius={0.5}
+                fontStyle={typography.bodyRgBold}
+              />
+            ) : (
+              <Button
+                text="팔로우"
+                onClick={() => handleFollow(userId)}
+                {...ButtonStyle}
+                padding=""
+                width={6.9}
+                height={3.6}
+                borderRadius={0.5}
+                fontStyle={typography.bodyRgBold}
+              />
+            )
+          ) : (
+            <Button
+              text="업로드"
+              onClick={onClickUpload}
+              {...ButtonStyle}
+              padding=""
+              width={6.9}
+              height={3.6}
+              borderRadius={0.5}
+              fontStyle={typography.bodyRgBold}
+            />
+          )}
         </UserWrapper>
         <Line />
         <GameListWrapper isNoneClick={isLocationProfile}>

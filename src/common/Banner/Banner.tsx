@@ -12,9 +12,20 @@ type Props = {
   lolTier: string;
   pubgTier: string;
   watchTier: string;
+  userColor: string;
+  userLolId: string;
+  userPubgId: string;
 };
 
-const Banner = ({ img, lolTier, pubgTier, watchTier }: Props) => {
+const Banner = ({
+  img,
+  lolTier,
+  pubgTier,
+  watchTier,
+  userColor,
+  userLolId,
+  userPubgId,
+}: Props) => {
   const lolTierImg = useMemo(() => lolTierImgConverter(lolTier), [lolTier]);
   const pubgTierImg = useMemo(() => pubgTierImgConverter(pubgTier), [pubgTier]);
   const watchTierImg = useMemo(
@@ -24,11 +35,27 @@ const Banner = ({ img, lolTier, pubgTier, watchTier }: Props) => {
 
   return (
     <BannerWrapper>
-      {img === '' ? <BannerImg /> : <BannerImg src={img} />}
+      {img === '' || img === null ? (
+        <BannerUserColor backgroundColor={userColor} />
+      ) : (
+        <BannerImg src={img} />
+      )}
 
       <GameWrapper>
-        <img src={lolTierImg} alt={lolTierImg} />
-        <img src={pubgTierImg} alt={pubgTierImg} />
+        <Href
+          href={`https://www.op.gg/summoner/userName=${userLolId}`}
+          target="_blank"
+        >
+          <img src={lolTierImg} alt={lolTierImg} />
+        </Href>
+        <Href
+          href={`https://pubg.op.gg/user/${
+            (userPubgId !== null || userPubgId === '') && userPubgId.trim()
+          }`}
+          target="_blank"
+        >
+          <img src={pubgTierImg} alt={pubgTierImg} />
+        </Href>
         <img src={watchTierImg} alt={watchTierImg} />
       </GameWrapper>
     </BannerWrapper>
@@ -43,10 +70,18 @@ const BannerWrapper = styled.div`
   position: relative;
 `;
 
+const BannerUserColor = styled.div<{ backgroundColor: string }>`
+  width: 100%;
+  height: 100px;
+  background-color: ${({ theme, backgroundColor }) =>
+    backgroundColor === '' || backgroundColor === null
+      ? theme.color.grayScale[500]
+      : backgroundColor};
+`;
+
 const BannerImg = styled.img`
   width: 100%;
   height: 100px;
-  background-color: ${({ theme }) => theme.color.grayScale[500]};
 `;
 
 const GameWrapper = styled.div`
@@ -58,3 +93,5 @@ const GameWrapper = styled.div`
     margin-left: 8px;
   }
 `;
+
+const Href = styled.a``;
