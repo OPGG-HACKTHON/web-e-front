@@ -17,3 +17,9 @@ export const cancleLike = async (dto: likeDto) => {
   const data = await customAxios.delete(targetUrl, wrappedParam);
   return data;
 };
+
+export const newLike = async (userId: string) => {
+  const { data } = await customAxios.get(`${COMMON_URL}/${userId}/newList`);
+
+  return data;
+};
