@@ -20,6 +20,7 @@ import { findUser, myProfileAtom } from 'atom/profileAtom';
 import { fetchUserInfoAtom } from 'atom/userAtom';
 import { myFollowingListAtom } from 'atom/followAtom';
 
+import DefaultProfile40 from 'assets/svg/defaultProfile/profile_40.svg';
 import LolSvg from '../SvgElement/LolSvg';
 import PubgSvg from '../SvgElement/PubgSvg';
 import OverWatchSvg from '../SvgElement/OverWatchSvg';
@@ -88,7 +89,7 @@ const LeftNav = () => {
       <StickyWrapper>
         <UserWrapper isProfile={isLocationProfile && myProfile?.id !== null}>
           <UserInfoSection>
-            <UserProfileImg src={userPhotoURL} />
+            <UserProfileImg src={userPhotoURL || DefaultProfile40} />
             <UserName>
               {myProfile?.id === null ? '로그인을 해주세요.' : userName}
             </UserName>

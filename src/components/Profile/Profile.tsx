@@ -1,3 +1,4 @@
+import DefaultProfile80 from 'assets/svg/defaultProfile/profile_80.svg';
 import React, { useEffect } from 'react';
 import Banner from 'common/Banner';
 import styled from 'styled-components';
@@ -66,7 +67,7 @@ const Profile = () => {
         />
         <UserWrapperPosition>
           <UserInfoWrapper>
-            <UserImg src={userPhotoURL} />
+            <UserImg src={userPhotoURL || DefaultProfile80} />
             <InfoWrapper>
               <UserNameWrapper>
                 <UserName>{userName}</UserName>
