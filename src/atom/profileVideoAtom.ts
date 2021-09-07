@@ -1,13 +1,6 @@
 import getProfileVideo from 'api/profile/profileVideo';
-import { atom, RecoilValue, selector } from 'recoil';
-import { leftNavItemState } from './pageAtom';
-import { myProfileAtom } from './profileAtom';
-import { videoListState } from './videoListAtom';
-
-export const userIdAtom = atom({
-  key: 'userIdAtom',
-  default: '',
-});
+import { atom, selector } from 'recoil';
+import { findUser } from './profileAtom';
 
 export const selectCategory = atom({
   key: 'selectCategory',
@@ -17,7 +10,7 @@ export const selectCategory = atom({
 export const myVideoSelector = selector({
   key: 'myVideoSelector',
   get: async ({ get }) => {
-    const userId = get(userIdAtom);
+    const userId = get(findUser);
     const data = await getProfileVideo(userId);
     return data;
   },
