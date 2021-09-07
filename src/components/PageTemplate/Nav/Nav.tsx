@@ -40,6 +40,7 @@ const Nav = () => {
     isClickAlram,
     clickAlramPosition,
     handleGoMyProfile,
+    handleGoMain,
   } = useNav();
 
   const {
@@ -74,7 +75,7 @@ const Nav = () => {
     <>
       <NavWrapper>
         <NavInnerWrapper>
-          <Logo src={WATPL} alt="WATPL" />
+          <Logo src={WATPL} alt="WATPL" onClick={handleGoMain} />
           <SearchBar />
           <ButtonWrapper>
             {isLogin ? (
@@ -238,6 +239,7 @@ const NavInnerWrapper = styled.div`
 
 const Logo = styled.img`
   margin-left: 10px;
+  cursor: pointer;
 `;
 
 export default Nav;
