@@ -6,6 +6,7 @@ const COMMON_URL = '/follow';
 export const follow = async (dto: followDto) => {
   const targetUrl = `${COMMON_URL}/subscribe`;
   const data = await customAxios.post(targetUrl, dto);
+
   return data;
 };
 
@@ -15,5 +16,12 @@ export const unfollow = async (dto: followDto) => {
     data: dto,
   };
   const data = await customAxios.delete(targetUrl, wrappedParam);
+
+  return data;
+};
+
+export const newFollower = async (userId: string) => {
+  const { data } = await customAxios.get(`${COMMON_URL}/${userId}/newFollower`);
+
   return data;
 };

@@ -1,3 +1,6 @@
+import DefaultProfile32 from 'assets/svg/defaultProfile/profile_32.svg';
+import WATPL from 'assets/svg/WAPPLE_LOGO.svg';
+
 import React, { useContext, useEffect, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import useNav from 'hooks/useNav';
@@ -12,11 +15,9 @@ import { registerStatusAtom } from 'atom/authAtom';
 import Welcome from 'components/Auth/Welcome';
 import useProfile from 'hooks/useProfile/useProfile';
 import { fetchUserInfoAtom } from 'atom/userAtom';
-
 import { color, typography } from 'styles/theme';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { myProfileAtom } from 'atom/profileAtom';
-import WATPL from 'assets/svg/WAPPLE_LOGO.svg';
 import { searchAreaAtom } from 'atom/searchAreaAtom';
 import useSearch from 'hooks/useSearch/useSearch';
 import UploadSvg from '../SvgElement/UploadSvg';
@@ -40,6 +41,7 @@ const Nav = () => {
     isClickAlram,
     clickAlramPosition,
     handleGoMyProfile,
+    handleGoMain,
   } = useNav();
 
   const {
@@ -74,7 +76,7 @@ const Nav = () => {
     <>
       <NavWrapper>
         <NavInnerWrapper>
-          <Logo src={WATPL} alt="WATPL" />
+          <Logo src={WATPL} alt="WATPL" onClick={handleGoMain} />
           <SearchBar />
           <ButtonWrapper>
             {isLogin ? (
@@ -93,7 +95,7 @@ const Nav = () => {
                 </AlramWrapper>
                 <ProfileImg
                   ref={profileRef}
-                  src={userPhotoURL}
+                  src={userPhotoURL || DefaultProfile32}
                   alt=""
                   onClick={handleClickProfile}
                 />
@@ -191,7 +193,6 @@ const AlramWrapper = styled.div``;
 const ProfileImg = styled.img`
   width: 32px;
   height: 32px;
-  background-color: ${({ theme }) => theme.color.grayScale[500]};
   border-radius: 5px;
 `;
 
@@ -238,6 +239,7 @@ const NavInnerWrapper = styled.div`
 
 const Logo = styled.img`
   margin-left: 10px;
+  cursor: pointer;
 `;
 
 export default Nav;

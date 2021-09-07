@@ -114,20 +114,27 @@ const useProfile = () => {
   }, [handleFindFollower, handleFindFollowing, setMyProfile, setUserId]);
 
   const handleFetchMyProfile = useCallback(async () => {
-    if (fetchUserId === '') {
-      return;
-    }
-    if (id === undefined) {
-      const { data } = await fetchProfileInfo(fetchUserId);
+    try {
+      if (fetchUserId === '') {
+        return;
+      }
+      if (id === undefined) {
+        const { data } = await fetchProfileInfo(fetchUserId);
 
-      setFetchUserInfoAtom(data);
-    } else {
-      const { data } = await fetchProfileInfo(id);
-      setUserId(id);
+        setFetchUserInfoAtom(data);
+      } else {
+        const { data } = await fetchProfileInfo(id);
+        setUserId(id);
 
-      setFetchUserInfoAtom(data);
+        setFetchUserInfoAtom(data);
+      }
+    } catch (err) {
+      if (err.response.status === 404) {
+        history.push('/');
+      }
+      return err;
     }
-  }, [fetchUserId, id, setFetchUserInfoAtom, setUserId]);
+  }, [fetchUserId, history, id, setFetchUserInfoAtom, setUserId]);
 
   const handleEditProfilePage = useCallback(() => {
     return history.push('/profileEdit');

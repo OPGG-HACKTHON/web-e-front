@@ -6,11 +6,14 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { getBoundingRefObj } from 'types/underToggleLayer.types';
 import { searchAreaAtom } from 'atom/searchAreaAtom';
+import { myProfileAtom } from 'atom/profileAtom';
+import { newLike } from 'api/like/like';
+import { newFollower } from 'api/follow/follow';
 
 const useNav = () => {
   const history = useHistory();
   const [keywordsItem, setKeywordItem] = useRecoilState(searchAreaAtom);
-
+  const myProfile = useRecoilValue(myProfileAtom);
   const setLeftNavItem = useSetRecoilState(leftNavItemState);
   const profileRef = useRef(document.createElement('img'));
   const [isClickProfile, setIsClickProfile] = useState(false);
@@ -64,8 +67,30 @@ const useNav = () => {
     setClickAlramPosition(alramRef.current.getBoundingClientRect());
   }, []);
 
+  const handleNewLike = useCallback(async () => {
+    if (myProfile.id === null) {
+      return;
+    }
+
+    const data = await newLike(myProfile.id);
+    console.log(data);
+  }, [myProfile.id]);
+
+  const handleNewFollowerList = useCallback(async () => {
+    if (myProfile.id === null) {
+      return;
+    }
+
+    const data = await newFollower(myProfile.id);
+    console.log(data);
+  }, [myProfile.id]);
+
   const handleGoMyProfile = useCallback(() => {
     history.push('/profile');
+  }, [history]);
+
+  const handleGoMain = useCallback(() => {
+    history.push('/');
   }, [history]);
 
   useEffect(() => {
@@ -73,6 +98,10 @@ const useNav = () => {
       setKeywordItem([]);
     };
   }, [setKeywordItem]);
+
+  useEffect(() => {
+    Promise.all([handleNewLike(), handleNewFollowerList()]);
+  }, [handleNewFollowerList, handleNewLike]);
 
   return {
     handleSelectNavItem,
@@ -87,6 +116,7 @@ const useNav = () => {
     handleGoMyProfile,
     isLocationProfile,
     isKeywordsItemExist,
+    handleGoMain,
   };
 };
 
