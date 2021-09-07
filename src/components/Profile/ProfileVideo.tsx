@@ -25,14 +25,16 @@ const ProfileVideo = () => {
           </SelectorContent>
         ))}
       </SelectorWrapper>
-      <VideoListMain videos={videos} isNeedDescription />
+      <VideoListMain videos={videos} isNeedDescription={false} />
     </VideoWrapper>
   );
 };
 
 export default ProfileVideo;
 
-const VideoWrapper = styled.div``;
+const VideoWrapper = styled.div`
+  margin-left: 3rem;
+`;
 const SelectorWrapper = styled.div`
   display: flex;
   border-bottom: 1px solid ${({ theme }) => `${theme.color.grayScale[250]}`};

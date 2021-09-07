@@ -1,9 +1,11 @@
 /* eslint-disable import/prefer-default-export */
 import getHashtagsVideos from 'api/search/hashtags';
+import getUsers from 'api/search/users';
 import { atom, RecoilValue, selector } from 'recoil';
 import { leftNavItemState } from './pageAtom';
 import { selectorState } from './selectorAtom';
 
+// ------------해시태그-------------------
 // 검색창 input 아톰
 export const searchAreaAtom = atom({
   key: 'searchAreaAtom',
@@ -11,15 +13,15 @@ export const searchAreaAtom = atom({
 });
 
 // url 주소 아톰
-export const searhUrl = atom({
-  key: 'searhUrl',
-  default: 'tags/search?hashtags=',
+export const searhHashtagsAtom = atom({
+  key: 'searhHashtagsAtom',
+  default: '/tags/search?hashtags=%23',
 });
 
 export const getHashtagsList = selector({
   key: 'getHashtagsList',
   get: async ({ get }) => {
-    const url = get(searhUrl);
+    const url = get(searhHashtagsAtom);
     // /tags/search?hashtags=%23%ED%95%9C%EC%A1%B0
     const response = await getHashtagsVideos(url);
     return response;
@@ -80,3 +82,22 @@ export const hListbySelectorState = selector({
     return [lVideo, rVideo];
   },
 });
+// ------------해시태그-------------------
+
+// ------------유저-------------------
+
+export const searchUserAtom = atom({
+  key: 'searchUserAtom',
+  default: '/users/search?user=',
+});
+
+export const getUsersList = selector({
+  key: 'getUsersList',
+  get: async ({ get }) => {
+    const url = get(searchUserAtom);
+    // `users/search?user=${reValue}`
+    const response = await getUsers(url);
+    return response;
+  },
+});
+// ------------유저-------------------

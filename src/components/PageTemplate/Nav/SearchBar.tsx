@@ -2,19 +2,21 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Search from 'assets/svg/Search.svg';
 import useSearch from 'hooks/useSearch/useSearch';
+import { useHistory } from 'react-router-dom';
 
-const SearchBar = ({ onAddKeyword }: any) => {
+const SearchBar = () => {
   const [searchTxt, setSearchTxt] = useState('');
 
   const searchSpace = (e: any) => {
     setSearchTxt(e.target.value);
   };
 
-  const { goToLink } = useSearch();
-
+  const { goToLink, handleAddKeyword } = useSearch();
+  const history = useHistory();
   const onClick = (value) => {
-    onAddKeyword(value);
-    goToLink(value);
+    handleAddKeyword(value);
+    const url = goToLink(value);
+    history.push(url);
   };
 
   const onKeyPress = (e) => {

@@ -1,23 +1,27 @@
 import React from 'react';
-import queryString from 'query-string';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import MainWrapper from 'styles/mainStyles/videoComponents/MainWrapper';
-import VideoListMain from 'common/VideoList/Main';
-import VideoSelectBar from 'components/Main/VideoSelectBar';
-import { hListbySelectorState, searhUrl } from 'atom/searchAreaAtom';
+import { searchUserAtom, searhHashtagsAtom } from 'atom/searchAreaAtom';
+import { useLocation } from 'react-router-dom';
+import SearchUser from './SearchUser';
+import SearchHashtags from './SearchHashtags';
 
 const Search = () => {
-  const qs = window.location.search;
+  const location = useLocation();
+  const qs = location.search;
+  console.log(qs);
+
   // ?fname=johnny&lname=depp
-  const [url, setUrl] = useRecoilState(searhUrl);
-  setUrl(`/tags/search${qs}`);
-
-  const videos = useRecoilValue(hListbySelectorState);
-
+  const [hashtagsUrl, setHashtagsUrl] = useRecoilState(searhHashtagsAtom);
+  const [userUrl, setUserUrl] = useRecoilState(searchUserAtom);
+  if (qs.includes('hashtags')) {
+    setHashtagsUrl(`/tags/search${qs}`);
+  } else {
+    setUserUrl(`/users/search${qs}`);
+  }
   return (
     <MainWrapper>
-      <VideoSelectBar />
-      <VideoListMain videos={videos} isNeedDescription />
+      {qs.includes('hashtags') ? <SearchHashtags /> : <SearchUser />}
     </MainWrapper>
   );
 };

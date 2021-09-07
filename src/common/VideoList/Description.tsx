@@ -1,10 +1,13 @@
-import { searchAreaAtom } from 'atom/searchAreaAtom';
 import Button from 'common/Button';
 import useSearch from 'hooks/useSearch/useSearch';
 import React, { useContext } from 'react';
-import { useRecoilState } from 'recoil';
 import styled, { ThemeContext } from 'styled-components';
+import {
+  FollowBtnDiv,
+  PosterInfo,
+} from 'styles/mainStyles/videoComponents/VideoItem';
 import { typography } from 'styles/theme';
+import { useHistory } from 'react-router-dom';
 
 type Props = {
   description: string;
@@ -18,29 +21,29 @@ const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
 
   const descArray = description.replace('\n', ' ').split(' ');
   const regexp = /#([가-힣a-zA-Z0-9]+)/g;
+  const history = useHistory();
 
   const { goToLink, handleAddKeyword } = useSearch();
 
   const onClick = (value) => {
     // 실행할 함수
     handleAddKeyword(value);
-    goToLink(value);
+    const url = goToLink(value);
+    history.push(url);
   };
 
   return (
     <InfoWrapper>
-      <div className="poster_info">
-        <PosterImgBtn
-          className="poster_img"
-          onClick={() => console.log('posteruserspage')}
-        >
-          <img src={pPic} alt="alt" className="userPicImg" />
+      {/* TODO: className */}
+      <PosterInfo>
+        <PosterImgBtn onClick={() => console.log('posteruserspage')}>
+          <UserPicImg src={pPic} alt="alt" />
         </PosterImgBtn>
         <PosterNameBtn onClick={() => console.log('posteruserspage')}>
-          <div className="poster_name">{pName}</div>
-          <div className="poster_followers">팔로워 {pFollowNum}</div>
+          <div>{pName}</div>
+          <div>팔로워 {pFollowNum}</div>
         </PosterNameBtn>
-        <div className="follow_btn_div">
+        <FollowBtnDiv>
           <Button
             text="팔로우"
             onClick={() => console.log('팔로우')}
@@ -54,8 +57,8 @@ const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
             hoverBkgColor={themeStyle.color.white}
             hoverFontColor={themeStyle.color.yellow}
           />
-        </div>
-      </div>
+        </FollowBtnDiv>
+      </PosterInfo>
       <DescriptionWrapper>
         <DescriptionText>
           {descArray.map((word: string) =>
@@ -86,7 +89,9 @@ const TextContent = styled.span`
   margin: 0 2px;
 `;
 
-const PosterImgBtn = styled.div``;
+const PosterImgBtn = styled.div`
+  width: 5rem;
+`;
 const PosterNameBtn = styled.div``;
 const InfoWrapper = styled.div`
   margin-top: ${({ theme }) => theme.margins.xs};
@@ -104,4 +109,10 @@ const DescriptionText = styled.p`
   word-wrap: break-word;
   line-height: 3em;
   height: 3em;
+`;
+
+const UserPicImg = styled.img`
+  width: 90%;
+  border-radius: 5px;
+  cursor: pointer;
 `;
