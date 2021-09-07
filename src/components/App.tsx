@@ -5,15 +5,16 @@ import GlobalStyle from 'styles/GlobalStyle';
 import ProfilePage from 'pages/ProfilePage';
 import EditProfilePage from 'pages/EditProfilePage';
 import SearchPage from 'pages/SearchPage';
+import RestrictRoute from 'lib/RestrictRoute/RestrictRoute';
 
 const App = () => {
   return (
     <>
       <Switch>
         <Route exact path="/" component={GreetingPage} />
-        <Route exact path="/profile" component={ProfilePage} />
+        <RestrictRoute exact path="/profile" component={ProfilePage} />
         <Route exact path="/profile/:id" component={ProfilePage} />
-        <Route exact path="/profileEdit" component={EditProfilePage} />
+        <RestrictRoute exact path="/profileEdit" component={EditProfilePage} />
         <Route exact path="/search" component={SearchPage} />
       </Switch>
       <GlobalStyle />
