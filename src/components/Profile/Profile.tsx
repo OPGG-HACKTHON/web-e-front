@@ -90,7 +90,7 @@ const Profile = () => {
             {userIntro === null ? '자기소개가 없습니다.' : userIntro}
           </Introdunction>
         </UserWrapperPosition>
-        {/* <VideoListMain videos={videos} isNeedDescription={isNeedDescription} /> */}
+        <ProfileVideo />
       </ProfileWrapper>
       <ModalContainer
         isPopup={isSelectFollowingModal}
