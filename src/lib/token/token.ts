@@ -16,6 +16,10 @@ class Token {
   public static removeToken(tokenKey: string) {
     return Cookie.removeCookie(tokenKey);
   }
+
+  public static clearToken(tokenKey: string): void {
+    Cookie.removeCookie(tokenKey);
+  }
 }
 
 export default Token;
