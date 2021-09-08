@@ -172,6 +172,7 @@ const Nav = () => {
         width={84}
         isClick={isClickProfile}
         renderPosition={clickProfilePosition}
+        onClick={handleClickProfile}
       >
         <ItemStyle onClick={handleGoMyProfile}>내 프로필</ItemStyle>
         <ItemStyle onClick={handleLogout}>로그아웃</ItemStyle>
@@ -181,6 +182,7 @@ const Nav = () => {
         width={264}
         isClick={isClickAlram}
         renderPosition={clickAlramPosition}
+        onClick={handleClickAlram}
       >
         <ItemStyle>00님이 회원님의 플레이를 좋아합니다.</ItemStyle>
       </UnderToggleLayer>

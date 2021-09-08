@@ -408,6 +408,7 @@ const EditProfile = () => {
         renderPosition={chnageColorPosition}
         isClick={isSelectChangeColor}
         isLeft
+        onClick={handleSelectColorChange}
       >
         <ColorWrapper>
           {userCoverColorList.map((data) => {
