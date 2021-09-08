@@ -1,4 +1,5 @@
 import {
+  registerStatusAtom,
   SELECT_LOL_TIER,
   SELECT_OVERWATCH_TIER,
   SELECT_PUBG_TIER,
@@ -8,7 +9,7 @@ import SelectBox from 'common/SelectBox';
 import useAuth from 'hooks/useAuth';
 import { LOL_TIER, OVERWATCH_TIER, PUBG_TIER } from 'model/authModel';
 import React, { useMemo } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { color, typography } from 'styles/theme';
 import { EButtonType } from '../Register';
@@ -28,7 +29,7 @@ const AdditionalInfo = ({ pageHandler }: Props) => {
     SELECT_OVERWATCH_TIER
   );
   const [selectPubg, setSelectPubg] = useRecoilState(SELECT_PUBG_TIER);
-
+  const registerStatus = useRecoilValue(registerStatusAtom);
   const { handleRegister } = useAuth();
 
   const buttonProps = useMemo(
@@ -101,15 +102,18 @@ const AdditionalInfo = ({ pageHandler }: Props) => {
           />
         </div>
       </SelectWrapper>
+      <ErrorStatus>
+        {registerStatus === 403 && '아이디가 중복되었습니다'}
+      </ErrorStatus>
       <ButtonWrapper>
-        <Button
+        {/* <Button
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...buttonProps[EBottomButtonType.SKIP]}
           text="건너뛰기"
           padding=""
           borderRadius={0.5}
           fontStyle={typography.bodyRgBold}
-        />
+        /> */}
         <Button
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...buttonProps[EBottomButtonType.REGISTER]}
@@ -124,6 +128,14 @@ const AdditionalInfo = ({ pageHandler }: Props) => {
 };
 
 export default AdditionalInfo;
+
+const ErrorStatus = styled.div`
+  width: 100%;
+  color: ${({ theme }) => theme.color.red};
+  ${({ theme }) => theme.typography.bodySmBold};
+  text-align: center;
+  margin-top: 10px;
+`;
 
 const TopText = styled.div`
   ${({ theme }) => theme.typography.bodyRgBold};

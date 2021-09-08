@@ -109,9 +109,9 @@ const Login = ({
         </InputWrapper>
       </InputElementWrapper>
       <WarningText>
-        {status === 401 ||
-          (status === 404 &&
-            '⚠︎ ID가 존재하지 않거나 비밀번호가 일치하지 않습니다. 다시 시도해주세요.')}
+        {status === 401 || status === 400 || status === 404
+          ? '⚠︎ ID가 존재하지 않거나 비밀번호가 일치하지 않습니다. 다시 시도해주세요.'
+          : ''}
       </WarningText>
       <ButtonWrapper>
         <Button
@@ -158,6 +158,7 @@ const RegisterJoinText = styled.div`
 `;
 
 const WarningText = styled.div`
+  position: absolute;
   display: flex;
   align-items: center;
   color: ${({ theme }) => theme.color.red};

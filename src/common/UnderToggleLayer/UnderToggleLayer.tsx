@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable react/require-default-props */
-import React, { useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import styled from 'styled-components';
 import { getBoundingRefObj } from 'types/underToggleLayer.types';
 
@@ -9,6 +10,7 @@ type Props = {
   width: number;
   children: React.ReactNode;
   isLeft?: boolean;
+  onClick: () => void;
 };
 
 const UnderToggleLayer = ({
@@ -17,7 +19,21 @@ const UnderToggleLayer = ({
   width,
   children,
   isLeft = false,
+  onClick,
 }: Props) => {
+  const toggleRef = useRef(null);
+
+  const handleOutClick = useCallback(
+    (e): void => {
+      if (!toggleRef.current || toggleRef.current!.contains(e.target)) {
+        return;
+      }
+
+      onClick();
+    },
+    [onClick]
+  );
+
   const bottom = useMemo(() => {
     if (renderPosition !== undefined) {
       return renderPosition.bottom;
@@ -35,10 +51,21 @@ const UnderToggleLayer = ({
     return 0;
   }, [isLeft, renderPosition]);
 
+  useEffect(() => {
+    if (isClick) {
+      window.addEventListener('click', handleOutClick, true);
+    }
+
+    return () => {
+      window.removeEventListener('click', handleOutClick, true);
+    };
+  }, [handleOutClick, isClick]);
+
   return (
     <>
       {isClick && (
         <UnderToggleLayerWrapper
+          ref={toggleRef}
           bottom={bottom}
           center={center}
           width={width}
