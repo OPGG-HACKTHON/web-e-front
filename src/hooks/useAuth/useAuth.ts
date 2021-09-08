@@ -144,7 +144,23 @@ const useAuth = () => {
 
   const handleRegisterModal = useCallback(() => {
     setIsRegisterModal((prev) => !prev);
-  }, [setIsRegisterModal]);
+    setRegisterStatus(0);
+    setRegisterObj(initUserData);
+    setTermsChecked(initTermsData);
+    setAllAgree(false);
+    SET_LOL_TIER_SELECT('UNRANKED');
+    SET_PUBG_TIRE_SELECT('UNRANKED');
+    SET_OVERWATCH_TIER_SELECT('UNRANKED');
+  }, [
+    SET_LOL_TIER_SELECT,
+    SET_OVERWATCH_TIER_SELECT,
+    SET_PUBG_TIRE_SELECT,
+    setAllAgree,
+    setIsRegisterModal,
+    setRegisterObj,
+    setRegisterStatus,
+    setTermsChecked,
+  ]);
 
   const handleGoToLoginModal = useCallback(() => {
     setIsRegisterModal(false);
