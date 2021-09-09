@@ -6,6 +6,7 @@ import useAuth from 'hooks/useAuth';
 import { termsCheckedProps } from 'types/auth';
 import { useRecoilValue } from 'recoil';
 import { allAgreeTerms, termsCheckedAtom } from 'atom/authAtom';
+import { registerText } from 'model/authModel';
 
 import { color, typography } from 'styles/theme';
 import { EButtonType } from '../Register';
@@ -18,6 +19,7 @@ const AgreementTerms = ({ pageHandler }: Props) => {
   const { handleCheckAllAgree, handleCheckedTerms } = useAuth();
   const termsChecked = useRecoilValue(termsCheckedAtom);
   const allAgree = useRecoilValue(allAgreeTerms);
+
   const buttonProps = useMemo(() => {
     if (termsChecked.utilization && termsChecked.personalinformation) {
       return {
@@ -60,7 +62,7 @@ const AgreementTerms = ({ pageHandler }: Props) => {
             />
             <AllAgreeWrapperText>왓플 이용 약관</AllAgreeWrapperText>
           </AgreeWrapper>
-          <TextWrapper>1</TextWrapper>
+          <TextWrapper>{registerText[0]}</TextWrapper>
         </UtilizationWrapper>
         <UtilizationWrapper>
           <AgreeWrapper>
@@ -69,9 +71,11 @@ const AgreementTerms = ({ pageHandler }: Props) => {
               checked={termsChecked.personalinformation}
               color={color.yellow}
             />
-            <AllAgreeWrapperText>왓플 이용 약관</AllAgreeWrapperText>
+            <AllAgreeWrapperText>
+              왓플의 개인정보 수집이용 등에 대한 동의
+            </AllAgreeWrapperText>
           </AgreeWrapper>
-          <TextWrapper>1</TextWrapper>
+          <TextWrapper>{registerText[1]}</TextWrapper>
         </UtilizationWrapper>
         <UtilizationWrapper>
           <AgreeWrapper>
@@ -80,9 +84,13 @@ const AgreementTerms = ({ pageHandler }: Props) => {
               checked={termsChecked.pushEvent}
               color={color.yellow}
             />
-            <AllAgreeWrapperText>왓플 이용 약관</AllAgreeWrapperText>
+            <AllAgreeWrapperText>
+              이벤트 등 프로모션 알림 메일 및 푸시 알림 수신
+              <br />
+              <ChoiceText>(선택)</ChoiceText>
+            </AllAgreeWrapperText>
           </AgreeWrapper>
-          <TextWrapper>1</TextWrapper>
+          <TextWrapper>{registerText[2]}</TextWrapper>
         </UtilizationWrapper>
         <UnderShadow />
       </TermsWrapper>
@@ -101,6 +109,10 @@ const AgreementTerms = ({ pageHandler }: Props) => {
 };
 
 export default memo(AgreementTerms);
+
+const ChoiceText = styled.span`
+  color: ${({ theme }) => theme.color.grayScale[500]};
+`;
 
 const AgreementTermsWrapper = styled.div``;
 
