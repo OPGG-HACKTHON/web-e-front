@@ -19,6 +19,8 @@ import { EGameList } from 'enum/game.enum';
 import { findUser, myProfileAtom } from 'atom/profileAtom';
 import { fetchUserInfoAtom } from 'atom/userAtom';
 import { myFollowingListAtom } from 'atom/followAtom';
+import NotionSvg from 'assets/svg/Notion.svg';
+import InstagramSvg from 'assets/svg/Instagram.svg';
 
 import DefaultProfile40 from 'assets/svg/defaultProfile/profile_40.svg';
 import LolSvg from '../SvgElement/LolSvg';
@@ -231,22 +233,84 @@ const LeftNav = () => {
             </GameName>
           </GameList>
         </GameListWrapper>
-        <HashTagWrapper>
-          <HashTagTitle>인기 해시태그</HashTagTitle>
-          <HashTagItemWrapper>
-            <HashTagItem>
-              <HashTagName>#Tag</HashTagName>
-              <CountPosts>게시물 1,102개</CountPosts>
-            </HashTagItem>
-          </HashTagItemWrapper>
-        </HashTagWrapper>
-        <LastWrapper />
+        <FooterWrapper>
+          <FooterTopWrapper>
+            <FooterText>
+              <FooterLink
+                href="https://bedecked-bun-7a1.notion.site/Watch-your-Play-1fd4348ef20d45fba912c749f4013351"
+                target="_blank"
+                rel="noreferrer"
+              >
+                About WAPL
+              </FooterLink>
+            </FooterText>
+            <IconItemsWrapper>
+              <a
+                href="https://bedecked-bun-7a1.notion.site/Watch-your-Play-1fd4348ef20d45fba912c749f4013351"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img src={NotionSvg} alt="" />
+              </a>
+              <a
+                href="https://www.instagram.com/watpl_official/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img src={InstagramSvg} alt="" />
+              </a>
+            </IconItemsWrapper>
+          </FooterTopWrapper>
+          <CopyRightText>Copyright© 2021 WATPL</CopyRightText>
+        </FooterWrapper>
       </StickyWrapper>
     </LeftNavWrapper>
   );
 };
 
 export default LeftNav;
+
+const CopyRightText = styled.div`
+  color: ${({ theme }) => theme.color.grayScale[500]};
+  ${({ theme }) => theme.typography.bodyRg}
+  font-size: 11px !important;
+  margin-top: 6px;
+`;
+
+const FooterLink = styled.a`
+  color: ${({ theme }) => theme.color.grayScale[500]};
+  text-decoration: none;
+`;
+
+const FooterWrapper = styled.div`
+  margin-top: 19px;
+  padding-top: 20px;
+  border-top: 1px solid ${({ theme }) => theme.color.grayScale[500]};
+  width: 100%;
+  max-width: 290px;
+  padding-bottom: 15px;
+`;
+
+const FooterTopWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const IconItemsWrapper = styled.div`
+  display: flex;
+
+  & > * + * {
+    margin-left: 10px;
+  }
+  & > * {
+    cursor: pointer;
+  }
+`;
+
+const FooterText = styled.div`
+  color: ${({ theme }) => theme.color.grayScale[500]};
+  ${({ theme }) => theme.typography.bodyRg}
+`;
 
 const Line = styled.div`
   width: 290px;
@@ -345,16 +409,6 @@ const GameName = styled.div<{ isSelected: boolean }>`
   margin-left: 3px;
 `;
 
-const HashTagWrapper = styled.div`
-  margin-top: 19px;
-  padding-top: 20px;
-  border-top: 1px solid ${({ theme }) => theme.color.grayScale[500]};
-  width: 100%;
-  max-width: 290px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid ${({ theme }) => theme.color.grayScale[500]};
-`;
-
 const HashTagTitle = styled.div`
   ${({ theme }) => theme.typography.bodySmRegular};
   color: ${({ theme }) => theme.color.grayScale[500]};
@@ -377,12 +431,4 @@ const HashTagName = styled.div`
 const CountPosts = styled.div`
   ${({ theme }) => theme.typography.bodySmRegular};
   color: ${({ theme }) => theme.color.grayScale[500]};
-`;
-
-const LastWrapper = styled.div`
-  margin-top: 10px;
-  background-color: ${({ theme }) => theme.color.grayScale[50]};
-  width: 100%;
-  max-width: 290px;
-  height: 100px;
 `;
