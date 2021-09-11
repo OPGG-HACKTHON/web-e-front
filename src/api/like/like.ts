@@ -9,7 +9,7 @@ export const pressLike = async (dto: likeDto) => {
   return data;
 };
 
-export const cancleLike = async (dto: likeDto) => {
+export const cancelLike = async (dto: likeDto) => {
   const targetUrl = COMMON_URL;
   const wrappedParam = {
     data: dto,

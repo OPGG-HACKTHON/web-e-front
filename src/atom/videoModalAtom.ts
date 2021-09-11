@@ -17,7 +17,7 @@ export const videoModalAtom = atom({
   key: 'videoModalAtom',
   default: {
     src: '',
-    videoId: 0,
+    videoId: -1,
     followNumber: 0,
     likeNumber: 0,
     commentArray: 0,

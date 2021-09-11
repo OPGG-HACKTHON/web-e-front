@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import useProfile from 'hooks/useProfile/useProfile';
-import { pressLike, cancleLike } from 'api/like/like';
+import { pressLike, cancelLike } from 'api/like/like';
 import { likeDto } from 'api/like/like.dto';
 import { useRecoilValue } from 'recoil';
 import { myProfileAtom } from 'atom/profileAtom';
@@ -32,9 +32,9 @@ const useLike = () => {
     }
   };
 
-  const handleCancleLike = async (likeId: string, videoId: number) => {
+  const handleCancelLike = async (likeId: string, videoId: number) => {
     try {
-      const res = await cancleLike({
+      const res = await cancelLike({
         userId: likeObj.userId,
         likeId,
         videoId,
@@ -52,7 +52,7 @@ const useLike = () => {
     likeObj,
     setLikeObj,
     handlePressLike,
-    handleCancleLike,
+    handleCancelLike,
     likeErrorStatus,
   };
 };
