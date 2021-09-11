@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { videoListState } from 'atom/videoListAtom';
 import VideoWrapper from 'styles/mainStyles/videoComponents/videoWrapper';
 import ModalContainer from 'common/ModalContainer';
 import VideoModal from 'components/VideoModal';
@@ -11,6 +13,7 @@ export interface Props {
 
 const Main = ({ videos, isNeedDescription }: Props) => {
   const [isVideoModalOpen, setVideoModalOpen] = useState(false);
+  const refechVideoList = useSetRecoilState(videoListState);
 
   const openVideoModal = (e: React.MouseEvent<HTMLElement>) => {
     if ((e.target as HTMLElement).tagName === 'VIDEO') {
@@ -20,6 +23,7 @@ const Main = ({ videos, isNeedDescription }: Props) => {
 
   const closeVideoModal = (e: React.MouseEvent<HTMLElement>) => {
     setVideoModalOpen(false);
+    refechVideoList(0);
   };
   return (
     <>
