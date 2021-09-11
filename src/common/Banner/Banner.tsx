@@ -43,15 +43,21 @@ const Banner = ({
 
       <GameWrapper>
         <Href
-          href={`https://www.op.gg/summoner/userName=${userLolId}`}
+          href={
+            userLolId !== null &&
+            `https://www.op.gg/summoner/userName=${userLolId}`
+          }
           target="_blank"
         >
           <img src={lolTierImg} alt={lolTierImg} />
         </Href>
         <Href
-          href={`https://pubg.op.gg/user/${
-            (userPubgId !== null || userPubgId === '') && userPubgId.trim()
-          }`}
+          href={
+            userPubgId !== null &&
+            `https://pubg.op.gg/user/${
+              (userPubgId !== null || userPubgId === '') && userPubgId.trim()
+            }`
+          }
           target="_blank"
         >
           <img src={pubgTierImg} alt={pubgTierImg} />
