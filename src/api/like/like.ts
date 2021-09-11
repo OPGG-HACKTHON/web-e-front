@@ -1,5 +1,5 @@
 import customAxios from 'lib/axios';
-import { likeDto } from './like.dto';
+import { fetchNewLikeUserType, likeDto } from './like.dto';
 
 const COMMON_URL = '/videoLike';
 
@@ -19,7 +19,9 @@ export const cancleLike = async (dto: likeDto) => {
 };
 
 export const newLike = async (userId: string) => {
-  const { data } = await customAxios.get(`${COMMON_URL}/${userId}/newList`);
+  const { data } = await customAxios.get<fetchNewLikeUserType>(
+    `${COMMON_URL}/${userId}/newList`
+  );
 
   return data;
 };
