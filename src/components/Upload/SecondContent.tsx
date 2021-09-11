@@ -28,7 +28,6 @@ const SecondContent = () => {
 
   const [text, setText] = useState('');
   const [selectedButton, setSelectedButton] = useState<EGameList>();
-
   const { uploadObj, setUploadObj, handleUpload, uploadErrorStatus } =
     useUpload();
 
@@ -40,12 +39,22 @@ const SecondContent = () => {
     setSelectedButton(value);
   };
   const handleChange = (e: any) => {
+    setText(e.target.value);
     setUploadObj({
       ...uploadObj,
       videoIntro: e.target.value,
     });
-    setText(e.target.value);
   };
+
+  const getHastags = () => {
+    const matches = text.match(/#([가-힣a-zA-Z0-9]+)/g);
+    const tags = matches.join(',');
+    setUploadObj({
+      ...uploadObj,
+      tags,
+    });
+  };
+
   const onClickUpload = () => {
     if (selectedButton) {
       handleUpload();
@@ -159,7 +168,11 @@ const SecondContent = () => {
           </VideoContent>
           <VideoContent>
             <h3>내용</h3>
-            <textarea value={text} onChange={(e) => handleChange(e)} />
+            <textarea
+              value={text}
+              onChange={(e) => handleChange(e)}
+              onBlur={getHastags}
+            />
           </VideoContent>
         </VideoContentWrapper>
       </FlexWrapper>

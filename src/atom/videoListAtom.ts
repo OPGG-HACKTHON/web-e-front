@@ -6,15 +6,19 @@ import { selectorState } from './selectorAtom';
 
 export const getVideoTrigger = atom({
   key: '_getVideoTrigger',
-  default: 0,
+  default: 1,
 });
 
+export const videoList = atom({
+  key: 'videoList',
+  default: [],
+});
 export const videoListState = selector({
   key: 'videoListState',
   get: async ({ get }) => {
     get(getVideoTrigger);
     const response = await getVideos();
-    return response.data;
+    return response;
   },
   set: ({ set }) => {
     set(getVideoTrigger, (v) => v + 1);

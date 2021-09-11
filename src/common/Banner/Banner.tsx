@@ -1,17 +1,68 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
-import unRankLOL from 'assets/svg/Tier/LOL/롤 - 언랭크티어.svg';
-import unRankPUBG from 'assets/svg/Tier/PUBG/배그 - 언랭크티어.svg';
-import unRankWATCH from 'assets/svg/Tier/WATCH/옵치 - 언랭크티어.svg';
 
-const Banner = () => {
+import {
+  lolTierImgConverter,
+  pubgTierImgConverter,
+  watchTierImgConverter,
+} from 'util/tierImgConverter';
+
+type Props = {
+  img: string;
+  lolTier: string;
+  pubgTier: string;
+  watchTier: string;
+  userColor: string;
+  userLolId: string;
+  userPubgId: string;
+};
+
+const Banner = ({
+  img,
+  lolTier,
+  pubgTier,
+  watchTier,
+  userColor,
+  userLolId,
+  userPubgId,
+}: Props) => {
+  const lolTierImg = useMemo(() => lolTierImgConverter(lolTier), [lolTier]);
+  const pubgTierImg = useMemo(() => pubgTierImgConverter(pubgTier), [pubgTier]);
+  const watchTierImg = useMemo(
+    () => watchTierImgConverter(watchTier),
+    [watchTier]
+  );
+
   return (
     <BannerWrapper>
-      <BannerImg />
+      {img === '' || img === null ? (
+        <BannerUserColor backgroundColor={userColor} />
+      ) : (
+        <BannerImg src={img} />
+      )}
+
       <GameWrapper>
-        <img src={unRankLOL} alt="" />
-        <img src={unRankPUBG} alt="" />
-        <img src={unRankWATCH} alt="" />
+        <Href
+          href={
+            userLolId !== null &&
+            `https://www.op.gg/summoner/userName=${userLolId}`
+          }
+          target="_blank"
+        >
+          <img src={lolTierImg} alt={lolTierImg} />
+        </Href>
+        <Href
+          href={
+            userPubgId !== null &&
+            `https://pubg.op.gg/user/${
+              (userPubgId !== null || userPubgId === '') && userPubgId.trim()
+            }`
+          }
+          target="_blank"
+        >
+          <img src={pubgTierImg} alt={pubgTierImg} />
+        </Href>
+        <img src={watchTierImg} alt={watchTierImg} />
       </GameWrapper>
     </BannerWrapper>
   );
@@ -25,10 +76,18 @@ const BannerWrapper = styled.div`
   position: relative;
 `;
 
+const BannerUserColor = styled.div<{ backgroundColor: string }>`
+  width: 100%;
+  height: 100px;
+  background-color: ${({ theme, backgroundColor }) =>
+    backgroundColor === '' || backgroundColor === null
+      ? theme.color.grayScale[500]
+      : backgroundColor};
+`;
+
 const BannerImg = styled.img`
   width: 100%;
   height: 100px;
-  background-color: ${({ theme }) => theme.color.grayScale[500]};
 `;
 
 const GameWrapper = styled.div`
@@ -40,3 +99,5 @@ const GameWrapper = styled.div`
     margin-left: 8px;
   }
 `;
+
+const Href = styled.a``;

@@ -4,4 +4,5 @@ export type uploadDto = {
   category: string;
   videoIntro?: string;
   video: unknown;
+  tags?: string;
 };

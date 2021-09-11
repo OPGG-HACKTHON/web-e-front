@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 import styled from 'styled-components';
-import VideoItem from 'styles/mainStyles/videoComponents/VideoItem';
+import { VideoItem } from 'styles/mainStyles/videoComponents/VideoItem';
 import { IVideoModalAtom } from 'atom/videoModalAtom';
 import Description from './Description';
 
@@ -31,10 +31,8 @@ const LazyItem = ({
   pFollowNum,
   isNeedDescription,
 }: Iprops) => {
-  // const splitedHashtags = hashtag.split(' ');
   return (
     <VideoItem>
-      {/* <Suspense fallback={<div>...loading</div>}> */}
       <LazyVideo
         videoModalState={videoModalState}
         src={src}
@@ -52,7 +50,6 @@ const LazyItem = ({
         <></>
       )}
       <Line />
-      {/* </Suspense> */}
     </VideoItem>
   );
 };

@@ -1,4 +1,7 @@
-import React, { useContext } from 'react';
+import DefaultProfile32 from 'assets/svg/defaultProfile/profile_32.svg';
+import WATPL from 'assets/svg/WAPPLE_LOGO.svg';
+
+import React, { useContext, useEffect, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import useNav from 'hooks/useNav';
 import Button from 'common/Button';
@@ -10,18 +13,22 @@ import UnderToggleLayer from 'common/UnderToggleLayer';
 import { ItemStyle } from 'common/UnderToggleLayer/UnderToggleLayer';
 import { registerStatusAtom } from 'atom/authAtom';
 import Welcome from 'components/Auth/Welcome';
-
+import useProfile from 'hooks/useProfile/useProfile';
+import { fetchUserInfoAtom } from 'atom/userAtom';
 import { color, typography } from 'styles/theme';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { myProfileAtom } from 'atom/profileAtom';
-import WATPL from 'assets/svg/WAPPLE_LOGO.svg';
-import Search from 'assets/svg/Search.svg';
+import { searchAreaAtom } from 'atom/searchAreaAtom';
+import useSearch from 'hooks/useSearch/useSearch';
 import UploadSvg from '../SvgElement/UploadSvg';
 import AlramSvg from '../SvgElement/AlarmSvg';
+import SearchBar from './SearchBar';
 
 const Nav = () => {
   const themeStyle = useContext(ThemeContext);
   const myProfile = useRecoilValue(myProfileAtom);
+  const userInfo = useRecoilValue(fetchUserInfoAtom);
+  const { userPhotoURL } = userInfo;
   const isLogin = myProfile.id !== null;
 
   const {
@@ -33,7 +40,10 @@ const Nav = () => {
     handleClickAlram,
     isClickAlram,
     clickAlramPosition,
+    handleGoMyProfile,
+    handleGoMain,
   } = useNav();
+
   const {
     isLoginModal,
     handleLoginModal,
@@ -51,20 +61,23 @@ const Nav = () => {
     closeWelcomModalGoToLoginModal,
   } = useAuth();
 
-  const registerStatus = useRecoilValue(registerStatusAtom);
+  const { handleMyProfile } = useProfile();
 
-  console.log(clickAlramPosition, clickProfilePosition);
+  const { keywords, handleAddKeyword } = useSearch();
+
+  useEffect(() => {
+    handleMyProfile();
+    localStorage.setItem('keywords', JSON.stringify(keywords));
+    // setRKeword(keywords);
+  }, [handleMyProfile, keywords]);
+
+  const registerStatus = useRecoilValue(registerStatusAtom);
   return (
     <>
       <NavWrapper>
         <NavInnerWrapper>
-          <Logo src={WATPL} alt="WATPL" />
-          <SearchWrapper>
-            <SearchIconWrapper>
-              <SearchIcon src={Search} alt={Search} />
-            </SearchIconWrapper>
-            <SearchInput placeholder="사용자 이름 또는 해시태그 검색" />
-          </SearchWrapper>
+          <Logo src={WATPL} alt="WATPL" onClick={handleGoMain} />
+          <SearchBar />
           <ButtonWrapper>
             {isLogin ? (
               <RightItemWrapper>
@@ -82,7 +95,7 @@ const Nav = () => {
                 </AlramWrapper>
                 <ProfileImg
                   ref={profileRef}
-                  src=""
+                  src={userPhotoURL || DefaultProfile32}
                   alt=""
                   onClick={handleClickProfile}
                 />
@@ -159,8 +172,9 @@ const Nav = () => {
         width={84}
         isClick={isClickProfile}
         renderPosition={clickProfilePosition}
+        onClick={handleClickProfile}
       >
-        <ItemStyle>프로필 설정</ItemStyle>
+        <ItemStyle onClick={handleGoMyProfile}>내 프로필</ItemStyle>
         <ItemStyle onClick={handleLogout}>로그아웃</ItemStyle>
       </UnderToggleLayer>
 
@@ -168,6 +182,7 @@ const Nav = () => {
         width={264}
         isClick={isClickAlram}
         renderPosition={clickAlramPosition}
+        onClick={handleClickAlram}
       >
         <ItemStyle>00님이 회원님의 플레이를 좋아합니다.</ItemStyle>
       </UnderToggleLayer>
@@ -180,7 +195,7 @@ const AlramWrapper = styled.div``;
 const ProfileImg = styled.img`
   width: 32px;
   height: 32px;
-  background-color: ${({ theme }) => theme.color.grayScale[500]};
+  border-radius: 5px;
 `;
 
 const RightItemWrapper = styled.div`
@@ -215,53 +230,18 @@ const NavWrapper = styled.nav`
 const NavInnerWrapper = styled.div`
   width: 100%;
   max-width: 940px;
+  background-color: ${({ theme }) => theme.color.white};
   height: 60px;
   display: flex;
   align-items: center;
   border-bottom: 0.5px solid ${({ theme }) => theme.color.grayScale[500]};
   justify-content: space-between;
+  padding-right: 10px;
 `;
 
 const Logo = styled.img`
   margin-left: 10px;
-`;
-
-const SearchWrapper = styled.div`
-  background-color: #f2f2f2;
-  width: 100%;
-  max-width: 210px;
-  height: 36px;
-  display: flex;
-  border-radius: 5px;
-`;
-
-const SearchIconWrapper = styled.div`
-  width: 100%;
-  max-width: 36px;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const SearchIcon = styled.img`
-  margin-left: 16px;
-  width: 12px;
-  height: 12px;
-`;
-
-const SearchInput = styled.input`
-  width: 100%;
-  border: none;
-  background-color: #f2f2f2;
-  border-radius: 0px 4px 4px 0px;
-  &::placeholder {
-    ${({ theme }) => theme.typography.bodySmRegular}
-  }
-
-  &:focus {
-    outline: none;
-  }
+  cursor: pointer;
 `;
 
 export default Nav;

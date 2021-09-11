@@ -1,7 +1,13 @@
 import Button from 'common/Button';
+import useSearch from 'hooks/useSearch/useSearch';
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
+import {
+  FollowBtnDiv,
+  PosterInfo,
+} from 'styles/mainStyles/videoComponents/VideoItem';
 import { typography } from 'styles/theme';
+import { useHistory } from 'react-router-dom';
 
 type Props = {
   description: string;
@@ -12,20 +18,32 @@ type Props = {
 
 const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
   const themeStyle = useContext(ThemeContext);
+
+  const descArray = description.replace('\n', ' ').split(' ');
+  const regexp = /#([가-힣a-zA-Z0-9]+)/g;
+  const history = useHistory();
+
+  const { goToLink, handleAddKeyword } = useSearch();
+
+  const onClick = (value) => {
+    // 실행할 함수
+    handleAddKeyword(value);
+    const url = goToLink(value);
+    history.push(url);
+  };
+
   return (
     <InfoWrapper>
-      <div className="poster_info">
-        <PosterImgBtn
-          className="poster_img"
-          onClick={() => console.log('posteruserspage')}
-        >
-          <img src={pPic} alt="alt" className="userPicImg" />
+      {/* TODO: className */}
+      <PosterInfo>
+        <PosterImgBtn onClick={() => console.log('posteruserspage')}>
+          <UserPicImg src={pPic} alt="alt" />
         </PosterImgBtn>
         <PosterNameBtn onClick={() => console.log('posteruserspage')}>
-          <div className="poster_name">{pName}</div>
-          <div className="poster_followers">팔로워 {pFollowNum}</div>
+          <div>{pName}</div>
+          <div>팔로워 {pFollowNum}</div>
         </PosterNameBtn>
-        <div className="follow_btn_div">
+        <FollowBtnDiv>
           <Button
             text="팔로우"
             onClick={() => console.log('팔로우')}
@@ -39,32 +57,62 @@ const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
             hoverBkgColor={themeStyle.color.white}
             hoverFontColor={themeStyle.color.yellow}
           />
-        </div>
-      </div>
-      <div className="desc_div">
-        <span className="description_span">{description}</span>
-        {/* {splitedHashtags.map((tag: string) => (
-            <Hashtag
-              onClick={() => console.log('팔로우')}
-              key={splitedHashtags.indexOf(`${tag}`)}
-            >
-              {tag}
-            </Hashtag>
-          ))} */}
-      </div>
+        </FollowBtnDiv>
+      </PosterInfo>
+      <DescriptionWrapper>
+        <DescriptionText>
+          {descArray.map((word: string) =>
+            word.match(regexp) ? (
+              <Hashtag onClick={() => onClick(word)} key={word}>
+                {word}
+              </Hashtag>
+            ) : (
+              <TextContent key={word}>{word}</TextContent>
+            )
+          )}
+        </DescriptionText>
+      </DescriptionWrapper>
     </InfoWrapper>
   );
 };
 
 export default Description;
 
-const Hashtag = styled.span`
+const Hashtag = styled.a`
   cursor: pointer;
   ${({ theme }) => theme.typography.bodySmBold};
+  margin: 0 2px;
 `;
 
-const PosterImgBtn = styled.div``;
+const TextContent = styled.span`
+  ${({ theme }) => theme.typography.bodySmRegular};
+  margin: 0 2px;
+`;
+
+const PosterImgBtn = styled.div`
+  width: 5rem;
+`;
 const PosterNameBtn = styled.div``;
 const InfoWrapper = styled.div`
   margin-top: ${({ theme }) => theme.margins.xs};
+`;
+
+const DescriptionWrapper = styled.div``;
+
+const DescriptionText = styled.p`
+  margin-top: 0.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* 라인수 */
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
+  line-height: 3em;
+  height: 3em;
+`;
+
+const UserPicImg = styled.img`
+  width: 90%;
+  border-radius: 5px;
+  cursor: pointer;
 `;

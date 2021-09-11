@@ -1,14 +1,14 @@
 /* eslint-disable  */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-useless-escape */
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import Input from 'common/Input';
 import useInput from 'hooks/useInput/useInput';
 import Button from 'common/Button';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { registerDto } from 'api/auth/auth.dto';
-import { userInfo } from 'atom/authAtom';
+import { registerStatusAtom, userInfo } from 'atom/authAtom';
 import { color, typography } from 'styles/theme';
 import { EButtonType } from '../Register';
 
@@ -23,9 +23,14 @@ type Props = {
 const UserInfoInput = ({ pageHandler }: Props) => {
   const [inputRegister] = useInput<registerDto>();
   const [registerObj, setRegisterObj] = useRecoilState(userInfo);
+  const setRegisterStatus = useSetRecoilState(registerStatusAtom);
 
   const regName = /[\{\}\[\]\/?.,;:|\)*~`!^\-+<>@\#$%&\\\=\(\'\"]/gi;
   const regPassword = /[\{\}\[\]\/?.,;:|\)*~`!^\-+<>@\#$%&\\\=\(\'\"\_]/gi;
+
+  useEffect(() => {
+    setRegisterStatus(0);
+  }, []);
 
   const commonInputStyle = useMemo(() => {
     return {
