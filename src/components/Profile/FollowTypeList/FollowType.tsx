@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
+import DefaultProfileImg from 'assets/svg/defaultProfile/profile_40.svg';
 import React, { useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import CLOSE_BUTTON from 'assets/svg/X.svg';
@@ -27,7 +28,7 @@ const FollowType = ({ followType, close }: props) => {
   const followerList = useRecoilValue(followerListAtom);
   const followingList = useRecoilValue(followingListAtom);
   const myFollowList = useRecoilValue(myFollowingListAtom);
-  const { fetchUserId, handleMyProfile } = useProfile();
+  const { handleMyProfile } = useProfile();
   const followTypeButton = useMemo(
     () => ({
       fontColor: color.white,
@@ -80,7 +81,7 @@ const FollowType = ({ followType, close }: props) => {
                 return (
                   <UserWrapper key={data.userName}>
                     <UserInfo>
-                      <UserImg src={data.userPhotoURL} />
+                      <UserImg src={data.userPhotoURL || DefaultProfileImg} />
                       <UserName>{data.userName}</UserName>
                     </UserInfo>
 
@@ -182,6 +183,7 @@ const UserWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 20px;
 `;
 
 const UserInfo = styled.div`
