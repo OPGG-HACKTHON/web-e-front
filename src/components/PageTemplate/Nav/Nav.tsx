@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import DefaultProfile32 from 'assets/svg/defaultProfile/profile_32.svg';
 import WATPL from 'assets/svg/WAPPLE_LOGO.svg';
 
@@ -20,6 +21,10 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { myProfileAtom } from 'atom/profileAtom';
 import { searchAreaAtom } from 'atom/searchAreaAtom';
 import useSearch from 'hooks/useSearch/useSearch';
+
+import AlermOn from 'assets/svg/alermOn.svg';
+import AlermOff from 'assets/svg/alermOff.svg';
+
 import UploadSvg from '../SvgElement/UploadSvg';
 import AlramSvg from '../SvgElement/AlarmSvg';
 import SearchBar from './SearchBar';
@@ -42,6 +47,8 @@ const Nav = () => {
     clickAlramPosition,
     handleGoMyProfile,
     handleGoMain,
+    alermList,
+    handleClickAlermItem,
   } = useNav();
 
   const {
@@ -87,11 +94,16 @@ const Nav = () => {
                   color={color.grayScale[500]}
                 />
                 <AlramWrapper ref={alramRef} onClick={handleClickAlram}>
-                  <AlramSvg
+                  {alermList.length <= 0 ? (
+                    <img src={AlermOff} alt="" />
+                  ) : (
+                    <img src={AlermOn} alt="" />
+                  )}
+                  {/* <AlramSvg
                     width={20.21}
                     height={24}
                     color={color.grayScale[500]}
-                  />
+                  /> */}
                 </AlramWrapper>
                 <ProfileImg
                   ref={profileRef}
@@ -184,7 +196,18 @@ const Nav = () => {
         renderPosition={clickAlramPosition}
         onClick={handleClickAlram}
       >
-        <ItemStyle>00님이 회원님의 플레이를 좋아합니다.</ItemStyle>
+        {alermList.length > 0 ? (
+          alermList.map((data) => {
+            const { userId, text } = data;
+            return (
+              <AlermListItem onClick={() => handleClickAlermItem(userId)}>
+                {text}
+              </AlermListItem>
+            );
+          })
+        ) : (
+          <NoneAlermItem>표시된 알람이 없습니다.</NoneAlermItem>
+        )}
       </UnderToggleLayer>
     </>
   );
@@ -242,6 +265,16 @@ const NavInnerWrapper = styled.div`
 const Logo = styled.img`
   margin-left: 10px;
   cursor: pointer;
+`;
+
+const AlermListItem = styled(ItemStyle)`
+  text-align: left;
+  padding: 10px 13px;
+`;
+
+const NoneAlermItem = styled(ItemStyle)`
+  color: ${({ theme }) => theme.color.grayScale[500]};
+  padding: 10px 13px;
 `;
 
 export default Nav;

@@ -10,6 +10,11 @@ import { myProfileAtom } from 'atom/profileAtom';
 import { newLike } from 'api/like/like';
 import { newFollower } from 'api/follow/follow';
 
+type alermListType = {
+  userId: string;
+  text: string;
+};
+
 const useNav = () => {
   const history = useHistory();
   const [keywordsItem, setKeywordItem] = useRecoilState(searchAreaAtom);
@@ -26,6 +31,11 @@ const useNav = () => {
     useState<getBoundingRefObj>();
   const [clickAlramPosition, setClickAlramPosition] =
     useState<getBoundingRefObj>();
+  const [followerAlermList, setFollowerAlermList] = useState<alermListType[]>(
+    []
+  );
+  const [likeAlermList, setLikeAlermList] = useState<alermListType[]>([]);
+  const [alermList, setAlermList] = useState<alermListType[]>([]);
 
   const isKeywordsItemExist = useMemo(
     () => keywordsItem.length > 0,
@@ -73,16 +83,30 @@ const useNav = () => {
     }
 
     const data = await newLike(myProfile.id);
-    console.log(data);
+    for (let i = 0; i < data.newLikeList.length; i += 1) {
+      const temp = {
+        userId: data.newLikeList[i].userId,
+        text: `${data.newLikeList[i].userId}님이 회원님의 동영상을 좋아합니다.`,
+      };
+      setLikeAlermList((prev) => [...prev, temp]);
+    }
   }, [myProfile.id]);
 
   const handleNewFollowerList = useCallback(async () => {
+    setFollowerAlermList([]);
     if (myProfile.id === null) {
       return;
     }
 
     const data = await newFollower(myProfile.id);
-    console.log(data);
+
+    for (let i = 0; i < data.followers.length; i += 1) {
+      const temp = {
+        userId: data.followers[i].userId,
+        text: `${data.followers[i].userId}님이 회원님을 팔로우 합니다.`,
+      };
+      setFollowerAlermList((prev) => [...prev, temp]);
+    }
   }, [myProfile.id]);
 
   const handleGoMyProfile = useCallback(() => {
@@ -93,6 +117,17 @@ const useNav = () => {
     history.push('/');
   }, [history]);
 
+  const handleClickAlermItem = useCallback(
+    (userId: string) => {
+      history.push(`/profile/${userId}`);
+    },
+    [history]
+  );
+
+  const handleAlermList = useCallback(() => {
+    setAlermList([...followerAlermList, ...likeAlermList]);
+  }, [followerAlermList, likeAlermList]);
+
   useEffect(() => {
     return () => {
       setKeywordItem([]);
@@ -102,6 +137,10 @@ const useNav = () => {
   useEffect(() => {
     Promise.all([handleNewLike(), handleNewFollowerList()]);
   }, [handleNewFollowerList, handleNewLike]);
+
+  useEffect(() => {
+    handleAlermList();
+  }, [handleAlermList]);
 
   return {
     handleSelectNavItem,
@@ -117,6 +156,8 @@ const useNav = () => {
     isLocationProfile,
     isKeywordsItemExist,
     handleGoMain,
+    alermList,
+    handleClickAlermItem,
   };
 };
 

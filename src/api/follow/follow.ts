@@ -1,5 +1,5 @@
 import customAxios from 'lib/axios';
-import { followDto } from './follow.dto';
+import { followDto, fetchNewFollowerType } from './follow.dto';
 
 const COMMON_URL = '/follow';
 
@@ -21,7 +21,9 @@ export const unfollow = async (dto: followDto) => {
 };
 
 export const newFollower = async (userId: string) => {
-  const { data } = await customAxios.get(`${COMMON_URL}/${userId}/newFollower`);
+  const { data } = await customAxios.get<fetchNewFollowerType>(
+    `${COMMON_URL}/${userId}/newFollower`
+  );
 
   return data;
 };
