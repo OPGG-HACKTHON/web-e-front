@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState, useMemo } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import { typography } from 'styles/theme';
 import { useRecoilValue } from 'recoil';
@@ -57,21 +57,37 @@ const CommentSection = () => {
   const themeStyle = useContext(ThemeContext);
   const videoModalState = useRecoilValue(videoModalAtom);
   const { handlePressLike, handleCancleLike, likeErrorStatus } = useLike();
+  const [likeNumber, setLikeNumber] = useState<number>(
+    videoModalState.likeNumber
+  );
+  const [isLike, setLikeState] = useState<boolean>(
+    videoModalState.relation.isLike
+  );
 
-  const getLikeButtonFill = (() => {
-    if (videoModalState.relation.isLike) {
+  useEffect(() => {
+    console.log(videoModalState);
+    setLikeNumber(videoModalState.likeNumber);
+    setLikeState(videoModalState.relation.isLike);
+  }, [videoModalState]);
+
+  const getLikeButtonFill = useMemo(() => {
+    if (isLike) {
       return 'red';
     }
     return themeStyle.color.grayScale[500];
-  })();
+  }, [isLike, themeStyle]);
 
   const onClickLikeBtn = () => {
     const { uploaderId, videoId } = videoModalState;
 
-    if (videoModalState.relation.isLike) {
+    if (isLike) {
       handleCancleLike(uploaderId, videoId);
+      setLikeState(false);
+      setLikeNumber((prev) => prev - 1);
     } else {
       handlePressLike(uploaderId, videoId);
+      setLikeState(true);
+      setLikeNumber((prev) => prev + 1);
     }
   };
 
@@ -105,7 +121,7 @@ const CommentSection = () => {
         />
         <LikeText
           gray={themeStyle.color.grayScale[500]}
-        >{`좋아요 ${videoModalState.likeNumber}`}</LikeText>
+        >{`좋아요 ${likeNumber}`}</LikeText>
       </LikeWrapper>
       <CommentScrollSection>
         {dummyComments.map((data) => (
@@ -115,13 +131,6 @@ const CommentSection = () => {
               <CommentAuthor>{data.name}</CommentAuthor>
               <CommentContent>{data.comment}</CommentContent>
             </CommentTextWrapper>
-            <FavoriteRoundedIcon
-              style={{
-                width: 24,
-                height: 24,
-                fill: themeStyle.color.grayScale[500],
-              }}
-            />
           </CommentWrapper>
         ))}
       </CommentScrollSection>

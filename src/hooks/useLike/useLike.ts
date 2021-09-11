@@ -34,7 +34,7 @@ const useLike = () => {
 
   const handleCancleLike = async (likeId: string, videoId: number) => {
     try {
-      const res = await pressLike({
+      const res = await cancleLike({
         userId: likeObj.userId,
         likeId,
         videoId,

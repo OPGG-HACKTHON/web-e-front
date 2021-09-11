@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { videoModalAtom } from 'atom/videoModalAtom';
@@ -9,21 +9,48 @@ import { typography } from 'styles/theme';
 const UploaderSection = () => {
   const themeStyle = useContext(ThemeContext);
   const videoModalState = useRecoilValue(videoModalAtom);
+  const [followNumber, setFollowNumber] = useState<number>(
+    videoModalState.followNumber
+  );
+  const [isFollow, setFollowState] = useState<boolean>(
+    videoModalState.relation.isFollow
+  );
+
+  useEffect(() => {
+    setFollowNumber(videoModalState.followNumber);
+    setFollowState(videoModalState.relation.isFollow);
+  }, [videoModalState]);
 
   const { handleFollow, handleUnFollow, followErrorStatus } = useFollow();
 
   const onClickFollowBtn = () => {
-    if (videoModalState.relation.isFollow) {
+    if (isFollow) {
       handleUnFollow(videoModalState.uploaderId);
-    } else handleFollow(videoModalState.uploaderId);
+      setFollowState(false);
+      setFollowNumber((prev) => prev - 1);
+    } else {
+      handleFollow(videoModalState.uploaderId);
+      setFollowState(true);
+      setFollowNumber((prev) => prev + 1);
+    }
   };
 
   useEffect(() => {
-    if (followErrorStatus === 401) {
-      alert('로그인이 필요한 서비스입니다.');
-    }
-    if (followErrorStatus === 405) {
-      alert('나 자신을 팔로우 할 수 없습니다.');
+    switch (followErrorStatus) {
+      case 401:
+        alert('로그인이 필요한 서비스입니다.');
+        break;
+      case 404:
+        alert('탈퇴한 사용자입니다.');
+        break;
+      case 405:
+        alert('자신을 팔로우 할 수 없습니다.');
+        break;
+      case 409:
+        alert('이미 팔로우한 사용자입니다.');
+        break;
+      default:
+        break;
     }
   }, [followErrorStatus]);
 
@@ -34,11 +61,11 @@ const UploaderSection = () => {
         <ProfileText>
           <ProfileName>{videoModalState.uploaderId}</ProfileName>
           <ProfileFollow gray={themeStyle.color.grayScale[500]}>
-            {`팔로우 ${videoModalState.followNumber}`}
+            {`팔로우 ${followNumber}`}
           </ProfileFollow>
         </ProfileText>
         <Button
-          text={videoModalState.relation.isFollow ? '팔로우 취소' : '팔로우'}
+          text={isFollow ? '팔로우 취소' : '팔로우'}
           onClick={onClickFollowBtn}
           fontColor={themeStyle.color.white}
           bkgColor={themeStyle.color.yellow}
