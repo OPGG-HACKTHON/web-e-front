@@ -1,4 +1,6 @@
 import DefaultProfile80 from 'assets/svg/defaultProfile/profile_80.svg';
+import ProImg from 'assets/svg/pro.svg';
+
 import React, { useEffect } from 'react';
 import Banner from 'common/Banner';
 import styled from 'styled-components';
@@ -41,6 +43,7 @@ const Profile = () => {
     userColor,
     userLolId,
     userPubgId,
+    isPro,
   } = userInfo;
 
   useEffect(() => {
@@ -71,6 +74,7 @@ const Profile = () => {
             <InfoWrapper>
               <UserNameWrapper>
                 <UserName>{userName}</UserName>
+                {isPro && <ProImgWrapper src={ProImg} alt="pro" />}
                 {id === undefined && (
                   <EditProfile onClick={handleEditProfilePage}>
                     프로필 편집
@@ -120,6 +124,10 @@ const Profile = () => {
 };
 
 export default Profile;
+
+const ProImgWrapper = styled.img`
+  margin-left: 5px;
+`;
 
 const EditProfile = styled.div`
   display: flex;
