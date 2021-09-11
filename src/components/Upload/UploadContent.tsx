@@ -7,15 +7,25 @@ import { EUploadStep } from 'enum/uploadStep.enum';
 import SecondContent from './SecondContent';
 import FirstContent from './FirstContent';
 
-interface IActiveStyleProps {
-  active: boolean;
+export interface IUploadContentProps {
+  isUploading: boolean;
+  setUploadingState: (nextState: boolean) => void;
 }
-const UploadContent = () => {
+
+const UploadContent = ({
+  isUploading,
+  setUploadingState,
+}: IUploadContentProps) => {
   const currentStep = useRecoilValue(uploadModalStep);
   return (
     <ContentWrapper>
       {currentStep === EUploadStep.FIRST_STEP && <FirstContent />}
-      {currentStep === EUploadStep.SECOND_STEP && <SecondContent />}
+      {currentStep === EUploadStep.SECOND_STEP && (
+        <SecondContent
+          isUploading={isUploading}
+          setUploadingState={setUploadingState}
+        />
+      )}
     </ContentWrapper>
   );
 };

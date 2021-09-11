@@ -2,23 +2,29 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Back from 'assets/svg/back_icon.svg';
 import Close from 'assets/svg/close_icon.svg';
-import { useSetRecoilState, useRecoilState, useRecoilValue } from 'recoil';
+import { useSetRecoilState, useRecoilState } from 'recoil';
 import { isNext } from 'atom/uploadIsNext';
 import { uploadModalStep } from 'atom/uploadModalStepAtom';
-import UploadContent from './UploadContent';
+import UploadContent, { IUploadContentProps } from './UploadContent';
 import ThirdContent from './ThirdContent';
 
-interface IUploadProps {
+interface IUploadProps extends IUploadContentProps {
   onClickClose: () => void;
 }
 
-const Upload = ({ onClickClose }: IUploadProps) => {
+const Upload = ({
+  onClickClose,
+  isUploading,
+  setUploadingState,
+}: IUploadProps) => {
   const setIsNext = useSetRecoilState(isNext);
   const [currentStep, setModalStep] = useRecoilState(uploadModalStep);
 
   const onClickBack = () => {
-    setIsNext(false);
-    if (currentStep > 0) setModalStep(currentStep - 1);
+    if (!isUploading) {
+      setIsNext(false);
+      if (currentStep > 0) setModalStep(currentStep - 1);
+    }
   };
 
   return (
@@ -28,12 +34,19 @@ const Upload = ({ onClickClose }: IUploadProps) => {
           <UploadHeader>
             <Icon src={Back} alt="alt" onClick={onClickBack} />
             <UploadTitle>동영상 업로드</UploadTitle>
-            <Icon src={Close} alt="alt" onClick={onClickClose} />
+            <Icon
+              src={Close}
+              alt="alt"
+              onClick={!isUploading && onClickClose}
+            />
           </UploadHeader>
-          <UploadContent />
+          <UploadContent
+            isUploading={isUploading}
+            setUploadingState={setUploadingState}
+          />
         </UploadWrapper>
       ) : (
-        <ThirdContent onClickClose={onClickClose} />
+        <ThirdContent onClickClose={!isUploading && onClickClose} />
       )}
     </>
   );
