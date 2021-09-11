@@ -14,12 +14,16 @@ import {
 import { EUploadStep } from 'enum/uploadStep.enum';
 import { EGameList } from 'enum/game.enum';
 import LevelTwo from 'assets/svg/upload_level_2.svg';
+import { IUploadContentProps } from './UploadContent';
 
 interface IActiveStyleProps {
   active: boolean;
 }
 
-const SecondContent = () => {
+const SecondContent = ({
+  isUploading,
+  setUploadingState,
+}: IUploadContentProps) => {
   const themeStyle = useContext(ThemeContext);
 
   const [readableSelectedFile, setSelectedFile] = useState<string>('');
@@ -48,16 +52,18 @@ const SecondContent = () => {
 
   const getHastags = () => {
     const matches = text.match(/#([가-힣a-zA-Z0-9]+)/g);
-    const tags = matches.join(',');
+    const tags = matches?.join(',');
     setUploadObj({
       ...uploadObj,
       tags,
     });
   };
 
-  const onClickUpload = () => {
+  const onClickUpload = async () => {
     if (selectedButton) {
-      handleUpload();
+      setUploadingState(true);
+      await handleUpload();
+      setUploadingState(false);
       setCurrentStep(currentStep + 1);
     }
   };
@@ -182,7 +188,7 @@ const SecondContent = () => {
         </BottomContent>
         <BottomContent>
           <Button
-            text="업로드"
+            text={isUploading ? '업로딩 중' : '업로드'}
             onClick={onClickUpload}
             fontColor={
               getButtonStyleByCondition(selectedButton !== undefined).fontColor
@@ -192,7 +198,7 @@ const SecondContent = () => {
                 .backGroundColor
             }
             padding="0.8rem 0.7rem"
-            width={5.5}
+            width={8}
             height={3.6}
             borderRadius={0.5}
             fontStyle={themeStyle.typography.bodyRgBold}
