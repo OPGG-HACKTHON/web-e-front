@@ -1,62 +1,36 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState, useMemo } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import { typography } from 'styles/theme';
 import { useRecoilValue } from 'recoil';
 import { videoModalAtom } from 'atom/videoModalAtom';
-import { pressLike, cancleLike } from 'api/like/like';
-import { likeDto } from 'api/like/like.dto';
 import useLike from 'hooks/useLike';
+import useComment from 'hooks/useComment/useComment';
+import { useHistory } from 'react-router-dom';
 import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
+import DefaultProfile40 from 'assets/svg/defaultProfile/profile_40.svg';
 
-const dummyComments = [
-  {
-    id: 0,
-    name: '레오나 장인',
-    comment: '굿!',
-  },
-  {
-    id: 1,
-    name: '아칼리장인123',
-    comment: '이건 아칼리가 못했네.',
-  },
-  {
-    id: 2,
-    name: 'edin',
-    comment:
-      '솔라리 성전사 레오나는 천공의 검과 여명의 방패로 타곤 산을 수호한다.',
-  },
-  {
-    id: 3,
-    name: '트위치',
-    comment: 'Good!',
-  },
-  {
-    id: 4,
-    name: '레오나 장인',
-    comment: '굿!',
-  },
-  {
-    id: 5,
-    name: '아칼리장인123',
-    comment: '이건 아칼리가 못했네.',
-  },
-  {
-    id: 6,
-    name: 'edin',
-    comment:
-      '솔라리 성전사 레오나는 천공의 검과 여명의 방패로 타곤 산을 수호한다.',
-  },
-  {
-    id: 7,
-    name: '트위치',
-    comment: 'Good!',
-  },
-];
+export interface IComment {
+  videoId: number;
+  userId: string;
+  userName: string;
+  usePhotoURL: string;
+  content: string;
+}
 
 const CommentSection = () => {
   const themeStyle = useContext(ThemeContext);
   const videoModalState = useRecoilValue(videoModalAtom);
-  const { handlePressLike, handleCancleLike, likeErrorStatus } = useLike();
+  const [commentInput, setCommentInput] = useState<string>('');
+  const history = useHistory();
+  const {
+    handleGetCommentList,
+    commentList,
+    handlePostComment,
+    commentErrorStatus,
+  } = useComment();
+
+  const { handlePressLike, handleCancelLike, likeErrorStatus } = useLike();
   const [likeNumber, setLikeNumber] = useState<number>(
     videoModalState.likeNumber
   );
@@ -65,9 +39,11 @@ const CommentSection = () => {
   );
 
   useEffect(() => {
-    console.log(videoModalState);
-    setLikeNumber(videoModalState.likeNumber);
-    setLikeState(videoModalState.relation.isLike);
+    if (videoModalState.videoId !== -1) {
+      handleGetCommentList(videoModalState.videoId);
+      setLikeNumber(videoModalState.likeNumber);
+      setLikeState(videoModalState.relation.isLike);
+    }
   }, [videoModalState]);
 
   const getLikeButtonFill = useMemo(() => {
@@ -81,7 +57,7 @@ const CommentSection = () => {
     const { uploaderId, videoId } = videoModalState;
 
     if (isLike) {
-      handleCancleLike(uploaderId, videoId);
+      handleCancelLike(uploaderId, videoId);
       setLikeState(false);
       setLikeNumber((prev) => prev - 1);
     } else {
@@ -89,6 +65,17 @@ const CommentSection = () => {
       setLikeState(true);
       setLikeNumber((prev) => prev + 1);
     }
+  };
+
+  const onClickSubitComment = async () => {
+    const { videoId } = videoModalState;
+    await handlePostComment({
+      videoId,
+      userId: 'admin',
+      content: commentInput,
+    });
+    await handleGetCommentList(videoId);
+    setCommentInput('');
   };
 
   useEffect(() => {
@@ -124,19 +111,38 @@ const CommentSection = () => {
         >{`좋아요 ${likeNumber}`}</LikeText>
       </LikeWrapper>
       <CommentScrollSection>
-        {dummyComments.map((data) => (
-          <CommentWrapper key={data.id}>
-            <ProfileImage />
+        {commentList.map((data) => (
+          <CommentWrapper key={data.userId + data.content}>
+            <ProfileImage
+              src={data.usePhotoURL || DefaultProfile40}
+              onClick={() => {
+                history.push(`/profile/${data.userName}`);
+              }}
+            />
             <CommentTextWrapper>
-              <CommentAuthor>{data.name}</CommentAuthor>
-              <CommentContent>{data.comment}</CommentContent>
+              <CommentAuthor>{data.userName}</CommentAuthor>
+              <CommentContent>{data.content}</CommentContent>
             </CommentTextWrapper>
           </CommentWrapper>
         ))}
       </CommentScrollSection>
       <CommentInputWrapper gray={themeStyle.color.grayScale[250]}>
-        <InputField placeholder="댓글 달기 ..." />
-        <SubmitButton>게시</SubmitButton>
+        <InputField
+          placeholder="댓글 달기 ..."
+          value={commentInput}
+          onChange={(e) => setCommentInput(e.target.value)}
+        />
+        <SubmitButton
+          onClick={onClickSubitComment}
+          disabled={!commentInput}
+          color={
+            commentInput
+              ? themeStyle.color.yellow
+              : themeStyle.color.grayScale[100]
+          }
+        >
+          게시
+        </SubmitButton>
       </CommentInputWrapper>
     </ContentWrapper>
   );
@@ -177,11 +183,12 @@ const CommentWrapper = styled.div`
   gap: 1rem;
 `;
 
-const ProfileImage = styled.div`
+const ProfileImage = styled.img`
   height: 40px;
   width: 40px;
   background-color: gray;
   border-radius: 5px;
+  cursor: pointer;
 `;
 
 const CommentTextWrapper = styled.div`
@@ -210,13 +217,21 @@ const CommentInputWrapper = styled.div<{ gray: string }>`
 `;
 
 const InputField = styled.input`
-  width: 240px;
+  width: 80%;
   padding: 1rem;
   border: none;
 `;
 
-const SubmitButton = styled.div`
+const SubmitButton = styled.button<{ color: string }>`
   ${typography.bodyRg};
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  color: ${(props) => props.color};
+  cursor: pointer;
 `;
 
 export default CommentSection;

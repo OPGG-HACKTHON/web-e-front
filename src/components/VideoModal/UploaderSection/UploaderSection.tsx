@@ -3,12 +3,18 @@ import styled, { ThemeContext } from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { videoModalAtom } from 'atom/videoModalAtom';
 import useFollow from 'hooks/useFollow';
+import { fetchProfileInfo } from 'api/profile/profile';
+import { profileType } from 'api/profile/profile.type';
 import Button from 'common/Button';
 import { typography } from 'styles/theme';
+import { useHistory } from 'react-router-dom';
+import DefaultProfile40 from 'assets/svg/defaultProfile/profile_40.svg';
 
 const UploaderSection = () => {
+  const history = useHistory();
   const themeStyle = useContext(ThemeContext);
   const videoModalState = useRecoilValue(videoModalAtom);
+
   const [followNumber, setFollowNumber] = useState<number>(
     videoModalState.followNumber
   );
@@ -17,8 +23,10 @@ const UploaderSection = () => {
   );
 
   useEffect(() => {
-    setFollowNumber(videoModalState.followNumber);
-    setFollowState(videoModalState.relation.isFollow);
+    if (videoModalState.videoId !== -1) {
+      setFollowNumber(videoModalState.followNumber);
+      setFollowState(videoModalState.relation.isFollow);
+    }
   }, [videoModalState]);
 
   const { handleFollow, handleUnFollow, followErrorStatus } = useFollow();
@@ -54,10 +62,28 @@ const UploaderSection = () => {
     }
   }, [followErrorStatus]);
 
+  const [uploaderProfile, setUploaderProfile] = useState<profileType>();
+
+  useEffect(() => {
+    if (videoModalState.videoId !== -1) {
+      (async () => {
+        try {
+          const res = await fetchProfileInfo(videoModalState.uploaderId);
+          setUploaderProfile(res.data);
+        } catch (err) {
+          console.log(err);
+        }
+      })();
+    }
+  }, [videoModalState]);
+
   return (
     <ContentWrapper gray={themeStyle.color.grayScale[250]}>
       <ProfileWrapper>
-        <ProfileImage />
+        <ProfileImage
+          onClick={() => history.push(`/profile/${videoModalState.uploaderId}`)}
+          src={uploaderProfile?.userPhotoURL || DefaultProfile40}
+        />
         <ProfileText>
           <ProfileName>{videoModalState.uploaderId}</ProfileName>
           <ProfileFollow gray={themeStyle.color.grayScale[500]}>
@@ -93,11 +119,12 @@ const ProfileWrapper = styled.div`
   margin-bottom: 1.2rem;
 `;
 
-const ProfileImage = styled.div`
+const ProfileImage = styled.img`
   border-radius: 5px;
   height: 40px;
   width: 40px;
   background: gray;
+  cursor: pointer;
 `;
 
 const ProfileText = styled.div`
