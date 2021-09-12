@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { EUploadStep } from 'enum/uploadStep.enum';
 import ModalContainer from 'common/ModalContainer';
+import InfiniteStream from 'components/InfiniteStream';
 import MainWrapper from 'styles/mainStyles/videoComponents/MainWrapper';
 import Upload from 'components/Upload';
 import { uploadModalStep } from 'atom/uploadModalStepAtom';
@@ -29,6 +30,7 @@ const Main = () => {
 
   return (
     <MainWrapper>
+      <InfiniteStream />
       <ModalContainer
         isPopup={isUploadModalPoped}
         onClickOverlay={closeUploadModal}
