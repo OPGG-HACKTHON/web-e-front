@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { EUploadStep } from 'enum/uploadStep.enum';
 import ModalContainer from 'common/ModalContainer';
+import InfiniteStream from 'components/InfiniteStream';
+import { infiniteStreamState } from 'atom/infiniteStreamAtom';
+import InfiniteStreamIcon from 'assets/svg/wapple_play_icon.svg';
+
 import MainWrapper from 'styles/mainStyles/videoComponents/MainWrapper';
 import Upload from 'components/Upload';
 import { uploadModalStep } from 'atom/uploadModalStepAtom';
@@ -18,6 +23,8 @@ const Main = () => {
   const refechVideoList = useSetRecoilState(videoListState);
   const videos = useRecoilValue(vListbySelectorState);
   const [isUploading, setUploadingState] = useState<boolean>(false);
+  const [isInfiniteOpened, setInfiniteState] =
+    useRecoilState(infiniteStreamState);
 
   const closeUploadModal = () => {
     if (!isUploading) {
@@ -29,6 +36,7 @@ const Main = () => {
 
   return (
     <MainWrapper>
+      {isInfiniteOpened && <InfiniteStream />}
       <ModalContainer
         isPopup={isUploadModalPoped}
         onClickOverlay={closeUploadModal}
@@ -45,8 +53,42 @@ const Main = () => {
       />
       <VideoSelectBar />
       <VideoListMain videos={videos} isNeedDescription />
+      <InfiniteStreamButton onClick={() => setInfiniteState(true)}>
+        <img
+          style={{
+            opacity: 1,
+            position: 'relative',
+            left: 3,
+          }}
+          src={InfiniteStreamIcon}
+          alt="무한스트리밍 플레이 아이콘"
+        />
+      </InfiniteStreamButton>
     </MainWrapper>
   );
 };
 
 export default Main;
+
+const InfiniteStreamButton = styled.div`
+  height: 6rem;
+  width: 6rem;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 5rem;
+  right: 10%;
+  cursor: pointer;
+  background: ${(props) => props.theme.color.yellow};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+  :hover {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 210, 95, 1) 0%,
+      rgba(255, 172, 95, 1) 100%
+    );
+  }
+`;
