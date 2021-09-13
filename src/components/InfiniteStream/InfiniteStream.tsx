@@ -2,7 +2,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
 import { videoListState } from 'atom/videoListAtom';
-import { throttle, debounce } from 'lodash';
+import { debounce } from 'lodash';
 import styled from 'styled-components';
 import Header from './Header';
 import Body from './Body';
@@ -25,7 +25,7 @@ const InfiniteStream = () => {
   const handleScroll = useCallback(
     (e) => {
       const direction = e.deltaY;
-      if (direction > 50) debounceHandler();
+      if (direction > 60) debounceHandler();
     },
     [debounceHandler]
   );
@@ -34,17 +34,17 @@ const InfiniteStream = () => {
     return Math.floor(Math.random() * list.length);
   };
 
-  const randomSrc = useMemo(() => {
-    return videos[randomIndexOfList(videos)].src;
+  const randomVideo = useMemo(() => {
+    return videos[randomIndexOfList(videos)];
   }, [videos, triggerNextVideo]);
 
   return (
     <Container onWheel={handleScroll}>
-      <Header />
+      <Header title={randomVideo.videoIntro} />
       <Body
         isLooping={isLooping}
         isMuted={isMuted}
-        src={randomSrc}
+        src={randomVideo.src}
         onEnded={() => setTriggerState((prev) => !prev)}
       />
       <Footer

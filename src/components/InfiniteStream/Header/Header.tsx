@@ -1,13 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
+import { infiniteStreamState } from 'atom/infiniteStreamAtom';
 
 import BACK_ARROW_WHITE_SVG from 'assets/svg/arrow_back_white.svg';
 
-const Header = () => {
+interface IHeader {
+  title: string;
+}
+
+const Header = ({ title }: IHeader) => {
+  const [isOpened, setOpenState] = useRecoilState(infiniteStreamState);
+
   return (
     <Container>
-      <Icon src={BACK_ARROW_WHITE_SVG} />
-      <Title>레오나로 아칼리 솔킬 #매드무비</Title>
+      <Icon src={BACK_ARROW_WHITE_SVG} onClick={() => setOpenState(false)} />
+      <Title>{title}</Title>
     </Container>
   );
 };
@@ -18,6 +26,7 @@ const Container = styled.div`
   align-items: center;
   gap: 2rem;
   padding: 1.8rem 3rem;
+  z-index: 100;
 `;
 
 const Icon = styled.img`
