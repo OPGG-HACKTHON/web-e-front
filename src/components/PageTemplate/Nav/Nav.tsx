@@ -66,6 +66,7 @@ const Nav = () => {
     handleSuccessRegisterModal,
     isRegisterSuccess,
     closeWelcomModalGoToLoginModal,
+    onkeyUpLogin,
   } = useAuth();
 
   const { handleMyProfile } = useProfile();
@@ -156,6 +157,7 @@ const Nav = () => {
             setValue={setLoginObj}
             login={handleLogin}
             status={loginErrorStatus}
+            onkeyUpLogin={onkeyUpLogin}
             goToRegister={handleGoToRegisterModal}
           />
         }

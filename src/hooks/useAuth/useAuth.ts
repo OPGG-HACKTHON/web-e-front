@@ -70,6 +70,15 @@ const useAuth = () => {
     }
   }, [handleMyProfile, loginObj, setIsLoginModal]);
 
+  const onkeyUpLogin = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (e.code === 'Enter') {
+        handleLogin();
+      }
+    },
+    [handleLogin]
+  );
+
   const FIND_GAME_TOP = useMemo(() => {
     const LOL_INDEX = LOL_TIER.findIndex((i) => i.value === LOL_TIER_SELECT);
     const PUBG_INDEX = PUBG_TIER.findIndex((i) => i.value === PUBG_TIER_SELECT);
@@ -140,6 +149,11 @@ const useAuth = () => {
 
   const handleLoginModal = useCallback(() => {
     setIsLoginModal((prev) => !prev);
+    setLoginObj({
+      userId: '',
+      userPassword: '',
+    });
+    setLoginErrorStatus(0);
   }, [setIsLoginModal]);
 
   const handleRegisterModal = useCallback(() => {
@@ -247,6 +261,7 @@ const useAuth = () => {
     handleSuccessRegisterModal,
     isRegisterSuccess,
     closeWelcomModalGoToLoginModal,
+    onkeyUpLogin,
   };
 };
 

@@ -15,6 +15,7 @@ type Props = {
   login: () => void;
   status: number;
   goToRegister: () => void;
+  onkeyUpLogin: (e: React.KeyboardEvent<HTMLDivElement>) => void;
 };
 
 enum EInputType {
@@ -29,6 +30,7 @@ const Login = ({
   login,
   status,
   goToRegister,
+  onkeyUpLogin,
 }: Props) => {
   const [inputLogin] = useInput<loginDto>();
 
@@ -73,7 +75,7 @@ const Login = ({
   }, [login, value.userId.length, value.userPassword.length]);
 
   return (
-    <LoginWrapper>
+    <LoginWrapper onKeyPress={(e) => onkeyUpLogin(e)}>
       <TopWrapper>
         <TopText>왓플-WATPL에 로그인</TopText>
         <CloseIconWrapper onClick={closeModal}>
