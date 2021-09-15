@@ -72,7 +72,7 @@ const FollowType = ({ followType, close }: props) => {
       <UserListWrapper>
         {followType === EFollow.FOLLOWER ? (
           <>
-            {followerList &&
+            {followerList && followerList.length > 0 ? (
               followerList.map((data) => {
                 const isAlreadyFollowing = myFollowList.some((args) => {
                   return args.userId === data.userId;
@@ -100,11 +100,14 @@ const FollowType = ({ followType, close }: props) => {
                     )}
                   </UserWrapper>
                 );
-              })}
+              })
+            ) : (
+              <EmptyUser>팔로워가 존재하지 않습니다.</EmptyUser>
+            )}
           </>
         ) : (
           <>
-            {followingList &&
+            {followingList && followingList.length > 0 ? (
               followingList.map((data) => {
                 const isAlreadyFollowing = myFollowList.some((args) => {
                   return args.userId === data.userId;
@@ -132,7 +135,10 @@ const FollowType = ({ followType, close }: props) => {
                     )}
                   </UserWrapper>
                 );
-              })}
+              })
+            ) : (
+              <EmptyUser>팔로우가 존재하지 않습니다.</EmptyUser>
+            )}
           </>
         )}
       </UserListWrapper>
@@ -141,6 +147,11 @@ const FollowType = ({ followType, close }: props) => {
 };
 
 export default FollowType;
+
+const EmptyUser = styled.div`
+  color: ${({ theme }) => theme.color.grayScale[500]};
+  ${({ theme }) => theme.typography.bodyRg}
+`;
 
 const Wrapper = styled.div`
   width: 385px;
