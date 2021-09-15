@@ -40,7 +40,7 @@ export const PosterInfo = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: initial;
-  justify-content: end;
+  justify-content: space-between;
   align-content: center;
 `;
 

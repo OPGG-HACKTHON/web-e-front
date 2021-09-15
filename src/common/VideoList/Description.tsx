@@ -8,6 +8,7 @@ import {
 } from 'styles/mainStyles/videoComponents/VideoItem';
 import { typography } from 'styles/theme';
 import { useHistory } from 'react-router-dom';
+import profilePic from 'assets/svg/프로필사진.svg';
 
 type Props = {
   description: string;
@@ -32,17 +33,21 @@ const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
     history.push(url);
   };
 
+  const picture = pPic || profilePic;
+
   return (
     <InfoWrapper>
       {/* TODO: className */}
       <PosterInfo>
-        <PosterImgBtn onClick={() => console.log('posteruserspage')}>
-          <UserPicImg src={pPic} alt="alt" />
-        </PosterImgBtn>
-        <PosterNameBtn onClick={() => console.log('posteruserspage')}>
-          <div>{pName}</div>
-          <div>팔로워 {pFollowNum}</div>
-        </PosterNameBtn>
+        <PosterLeft>
+          <PosterImgBtn onClick={() => console.log('posteruserspage')}>
+            <UserPicImg src={picture} alt="alt" />
+          </PosterImgBtn>
+          <PosterNameBtn onClick={() => console.log('posteruserspage')}>
+            <PosterName>{pName}</PosterName>
+            <div>팔로워 {pFollowNum}</div>
+          </PosterNameBtn>
+        </PosterLeft>
         <FollowBtnDiv>
           <Button
             text="팔로우"
@@ -89,10 +94,17 @@ const TextContent = styled.span`
   margin: 0 2px;
 `;
 
+const PosterLeft = styled.div`
+  display: flex;
+`;
+
 const PosterImgBtn = styled.div`
   width: 5rem;
 `;
 const PosterNameBtn = styled.div``;
+const PosterName = styled.div`
+  ${({ theme }) => theme.typography.bodyRg}
+`;
 const InfoWrapper = styled.div`
   margin-top: ${({ theme }) => theme.margins.xs};
 `;
@@ -115,4 +127,6 @@ const UserPicImg = styled.img`
   width: 90%;
   border-radius: 5px;
   cursor: pointer;
+  width: 4rem;
+  height: 4rem;
 `;
