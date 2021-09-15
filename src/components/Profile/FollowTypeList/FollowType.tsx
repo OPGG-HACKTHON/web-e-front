@@ -55,7 +55,7 @@ const FollowType = ({ followType, close }: props) => {
     []
   );
 
-  const { followObj, handleFollow, handleUnFollow } = useFollow();
+  const { handleFollow, handleUnFollow } = useFollow();
 
   useEffect(() => {
     handleMyProfile();
@@ -113,7 +113,7 @@ const FollowType = ({ followType, close }: props) => {
                 return (
                   <UserWrapper key={data.userName}>
                     <UserInfo>
-                      <UserImg src={data.userPhotoURL} />
+                      <UserImg src={data.userPhotoURL || DefaultProfileImg} />
                       <UserName>{data.userName}</UserName>
                     </UserInfo>
 
