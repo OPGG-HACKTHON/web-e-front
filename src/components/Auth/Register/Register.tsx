@@ -11,6 +11,7 @@ import AdditionalInfo from './RegisterPage/AdditionalInfo';
 
 type Props = {
   goToLogin: () => void;
+  close: () => void;
 };
 
 export enum EButtonType {
@@ -18,7 +19,7 @@ export enum EButtonType {
   PREV,
 }
 
-const Register = ({ goToLogin }: Props) => {
+const Register = ({ goToLogin, close }: Props) => {
   const [pageCount, setPageCount] = useState(0);
   const pageHandler = useCallback(
     (buttonType: EButtonType) => () => {
@@ -65,7 +66,11 @@ const Register = ({ goToLogin }: Props) => {
         )}
 
         <TopText>{pageSpecificText}</TopText>
-        <TopUserClickButton alt="closeButton" src={CLOSE_BUTTON} />
+        <TopUserClickButton
+          alt="closeButton"
+          src={CLOSE_BUTTON}
+          onClick={close}
+        />
       </TopSection>
       <PageSection>
         {pageCount === 0 ? (
@@ -135,6 +140,7 @@ const TopSection = styled.section`
 `;
 
 const TopUserClickButton = styled.img<{ isVisible?: boolean }>`
+  cursor: pointer;
   width: 20px;
   height: 20px;
   visibility: ${({ isVisible }) => (isVisible ? 'hidden' : 'none')};

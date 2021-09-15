@@ -180,7 +180,12 @@ const Nav = () => {
         onClickOverlay={handleRegisterModal}
         width={46}
         borderRadius={0.5}
-        contentComponent={<Register goToLogin={handleGoToLoginModal} />}
+        contentComponent={
+          <Register
+            goToLogin={handleGoToLoginModal}
+            close={handleRegisterModal}
+          />
+        }
       />
       <UnderToggleLayer
         width={84}
