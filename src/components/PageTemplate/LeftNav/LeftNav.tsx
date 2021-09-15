@@ -22,6 +22,8 @@ import { myFollowingListAtom } from 'atom/followAtom';
 import NotionSvg from 'assets/svg/Notion.svg';
 import InstagramSvg from 'assets/svg/Instagram.svg';
 
+import WhiteProImg from 'assets/svg/proWhite.svg';
+import YellowProImg from 'assets/svg/pro.svg';
 import DefaultProfile40 from 'assets/svg/defaultProfile/profile_40.svg';
 import LolSvg from '../SvgElement/LolSvg';
 import PubgSvg from '../SvgElement/PubgSvg';
@@ -37,11 +39,11 @@ const LeftNav = () => {
 
   const { handleMyProfile, fetchUserId } = useProfile();
   const { handleFollow, setFollowObj, handleUnFollow } = useFollow();
-
   const [isUploadModalPoped, setUploadModalPopstate] =
     useRecoilState(uploadModalPopState);
   const userInfo = useRecoilValue(fetchUserInfoAtom);
-  const { userPhotoURL, userName, userId } = userInfo;
+
+  const { userPhotoURL, userName, userId, isPro } = userInfo;
   const { id }: { id: string } = useParams();
   const isSelectedGameArg = useCallback(
     (arg: EGameList) => {
@@ -95,6 +97,11 @@ const LeftNav = () => {
             <UserName>
               {myProfile?.id === null ? '로그인을 해주세요.' : userName}
             </UserName>
+            {isPro && isLocationProfile && myProfile?.id !== null ? (
+              <ProImgWrapper src={WhiteProImg} alt="whitePro" />
+            ) : (
+              <ProImgWrapper src={YellowProImg} alt="yellowPro" />
+            )}
           </UserInfoSection>
 
           {id !== undefined ? (
@@ -269,6 +276,10 @@ const LeftNav = () => {
 };
 
 export default LeftNav;
+
+const ProImgWrapper = styled.img`
+  margin-left: 5px;
+`;
 
 const CopyRightText = styled.div`
   color: ${({ theme }) => theme.color.grayScale[500]};
