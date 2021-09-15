@@ -12,6 +12,7 @@ export const ErrorWrapper = styled.div`
   height: 20rem;
   justify-content: center;
   align-items: center;
+  color: ${({ theme }) => theme.color.grayScale[500]};
 `;
 
 // export default VideoWrapper;
