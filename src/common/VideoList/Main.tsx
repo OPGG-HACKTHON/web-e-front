@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { videoListState } from 'atom/videoListAtom';
-import VideoWrapper from 'styles/mainStyles/videoComponents/videoWrapper';
+import {
+  ErrorWrapper,
+  VideoWrapper,
+} from 'styles/mainStyles/videoComponents/videoWrapper';
 import ModalContainer from 'common/ModalContainer';
 import VideoModal from 'components/VideoModal';
 import VideoList from './VideoList';
@@ -25,21 +28,24 @@ const Main = ({ videos, isNeedDescription }: Props) => {
     setVideoModalOpen(false);
     refechVideoList(0);
   };
-  return (
-    <>
-      <ModalContainer
-        isPopup={isVideoModalOpen}
-        onClickOverlay={closeVideoModal}
-        contentComponent={<VideoModal />}
-        width={77}
-        height={68.2}
-        borderRadius={0.5}
-      />
-      <VideoWrapper onClick={openVideoModal}>
-        <VideoList videos={videos} isNeedDescription={isNeedDescription} />
-      </VideoWrapper>
-    </>
-  );
+  if (videos[0].length) {
+    return (
+      <>
+        <ModalContainer
+          isPopup={isVideoModalOpen}
+          onClickOverlay={closeVideoModal}
+          contentComponent={<VideoModal />}
+          width={77}
+          height={68.2}
+          borderRadius={0.5}
+        />
+        <VideoWrapper onClick={openVideoModal}>
+          <VideoList videos={videos} isNeedDescription={isNeedDescription} />
+        </VideoWrapper>
+      </>
+    );
+  }
+  return <ErrorWrapper>업로드된 플레이가 없습니다.</ErrorWrapper>;
 };
 
 export default Main;

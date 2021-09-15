@@ -30,7 +30,6 @@ export interface IVideoPayload {
 }
 
 const VideoList = ({ videos, isNeedDescription }: Props) => {
-  // const list = useRecoilValue(vListbySelectorState);
   return (
     <>
       <div>
