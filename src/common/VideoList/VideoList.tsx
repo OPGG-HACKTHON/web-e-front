@@ -23,6 +23,7 @@ export interface IVideoPayload {
   src: string;
   category: EGameList;
   videoIntro: string;
+  userId: string;
   likes: number;
   comments: number; // this should be comment type array
   poster: IPoster;
@@ -54,7 +55,7 @@ const VideoList = ({ videos, isNeedDescription }: Props) => {
                 likeNumber: data.likes,
                 commentArray: [], // empty array for now
                 videoIntro: data.videoIntro,
-                uploaderId: data.poster.name,
+                uploaderId: data.userId,
                 relation: data.relation,
               }}
               key={data.id}
@@ -93,7 +94,7 @@ const VideoList = ({ videos, isNeedDescription }: Props) => {
                 likeNumber: data.likes,
                 commentArray: [], // empty array for now
                 videoIntro: data.videoIntro,
-                uploaderId: data.poster.name,
+                uploaderId: data.userId,
                 relation: data.relation,
               }}
               key={data.id}

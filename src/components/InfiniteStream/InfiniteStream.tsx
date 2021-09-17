@@ -3,6 +3,7 @@ import React, { useState, useMemo, useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
 import { videoListState } from 'atom/videoListAtom';
 import { debounce } from 'lodash';
+import { getRecommendVideos } from 'api/recommend/recommend';
 import styled from 'styled-components';
 import Header from './Header';
 import Body from './Body';
