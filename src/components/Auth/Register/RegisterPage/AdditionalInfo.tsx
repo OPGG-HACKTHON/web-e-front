@@ -56,7 +56,7 @@ const AdditionalInfo = ({ pageHandler }: Props) => {
 
   return (
     <AdditionalInfoWrapper>
-      <TopText>회원님의 게임 티어를 선택해주세요. 건너뛸 수 있습니다.</TopText>
+      <TopText>회원님의 게임 티어를 선택해주세요.</TopText>
       <SubText>프로필에 등급 아이콘이 노출됩니다.</SubText>
       <SelectWrapper>
         <div>
