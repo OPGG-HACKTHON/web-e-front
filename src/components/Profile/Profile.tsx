@@ -1,12 +1,21 @@
 import DefaultProfile80 from 'assets/svg/defaultProfile/profile_80.svg';
 import ProImg from 'assets/svg/pro.svg';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Banner from 'common/Banner';
 import styled from 'styled-components';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import useProfile from 'hooks/useProfile/useProfile';
+
 // import { myListbySelectorState } from 'atom/profileVideoAtom';
+import MainWrapper from 'styles/mainStyles/videoComponents/MainWrapper';
+import Upload from 'components/Upload';
+import { uploadModalStep } from 'atom/uploadModalStepAtom';
+import { uploadModalPopState } from 'atom/uploadModalPopStateAtom';
+import { videoListState } from 'atom/videoListAtom';
+import { infiniteStreamState } from 'atom/infiniteStreamAtom';
+import { EUploadStep } from 'enum/uploadStep.enum';
+
 import VideoListMain from 'common/VideoList/Main';
 import { useParams } from 'react-router-dom';
 import { fetchUserInfoAtom } from 'atom/userAtom';
@@ -18,6 +27,23 @@ import FollowType, { EFollow } from './FollowTypeList/FollowType';
 import ProfileVideo from './ProfileVideo';
 
 const Profile = () => {
+  /** 업로드모달 상태 */
+  const [currentUploadModalStep, setUploadModalStep] =
+    useRecoilState(uploadModalStep);
+  const [isUploadModalPoped, setUploadModalPopState] =
+    useRecoilState(uploadModalPopState);
+  const refechVideoList = useSetRecoilState(videoListState);
+  const [isUploading, setUploadingState] = useState<boolean>(false);
+  const [isInfiniteOpened, setInfiniteState] =
+    useRecoilState(infiniteStreamState);
+  const closeUploadModal = () => {
+    if (!isUploading) {
+      refechVideoList(0);
+      setUploadModalPopState(false);
+      setUploadModalStep(EUploadStep.FIRST_STEP);
+    }
+  };
+
   const {
     handleMyProfile,
     handleEditProfilePage,
@@ -58,6 +84,20 @@ const Profile = () => {
 
   return (
     <>
+      <ModalContainer
+        isPopup={isUploadModalPoped}
+        onClickOverlay={closeUploadModal}
+        contentComponent={
+          <Upload
+            onClickClose={closeUploadModal}
+            isUploading={isUploading}
+            setUploadingState={setUploadingState}
+          />
+        }
+        width={currentUploadModalStep === EUploadStep.THIRD_STEP ? 45 : 75}
+        height={currentUploadModalStep === EUploadStep.THIRD_STEP ? 18.6 : 53.6}
+        borderRadius={0.5}
+      />
       <ProfileWrapper>
         <Banner
           userColor={userColor}
