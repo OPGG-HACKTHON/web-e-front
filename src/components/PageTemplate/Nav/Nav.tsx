@@ -1,8 +1,10 @@
 /* eslint-disable indent */
 import DefaultProfile32 from 'assets/svg/defaultProfile/profile_32.svg';
 import WATPL from 'assets/svg/WAPPLE_LOGO.svg';
+import AlermOn from 'assets/svg/alermOn.svg';
+import AlermOff from 'assets/svg/alermOff.svg';
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import useNav from 'hooks/useNav';
 import Button from 'common/Button';
@@ -21,9 +23,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { myProfileAtom } from 'atom/profileAtom';
 import { searchAreaAtom } from 'atom/searchAreaAtom';
 import useSearch from 'hooks/useSearch/useSearch';
-
-import AlermOn from 'assets/svg/alermOn.svg';
-import AlermOff from 'assets/svg/alermOff.svg';
+import { uploadModalStep } from 'atom/uploadModalStepAtom';
 
 import UploadSvg from '../SvgElement/UploadSvg';
 import AlramSvg from '../SvgElement/AlarmSvg';
@@ -50,6 +50,7 @@ const Nav = () => {
     handleClickAlermItem,
     isLocationProfile,
     isOtherUserProfile,
+    handleUploadModal,
   } = useNav();
 
   const {
@@ -95,6 +96,7 @@ const Nav = () => {
                   width={20.25}
                   height={24}
                   color={color.grayScale[500]}
+                  onClick={handleUploadModal}
                 />
                 <AlramWrapper ref={alramRef} onClick={handleClickAlram}>
                   {alermList.length <= 0 ? (
@@ -238,6 +240,8 @@ const RightItemWrapper = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+  align-items: baseline;
+  height: 32px;
   & > * {
     cursor: pointer;
   }

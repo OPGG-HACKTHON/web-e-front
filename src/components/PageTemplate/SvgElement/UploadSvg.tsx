@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { svgElementProps, svgElementWrapperProps } from 'types/nav.types';
 
-const UploadSvg = ({ color, width, height }: svgElementProps) => {
+const UploadSvg = ({ color, width, height, onClick }: svgElementProps) => {
   return (
-    <UploadSvgWrapper width={width} height={height}>
+    <UploadSvgWrapper width={width} height={height} onClick={onClick}>
       <svg
         width="21"
         height="24"
