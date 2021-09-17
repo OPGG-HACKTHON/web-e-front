@@ -10,11 +10,19 @@ interface IHeader {
 }
 
 const Header = ({ title }: IHeader) => {
-  const [isOpened, setOpenState] = useRecoilState(infiniteStreamState);
+  const [infState, setInfState] = useRecoilState(infiniteStreamState);
 
   return (
     <Container>
-      <Icon src={BACK_ARROW_WHITE_SVG} onClick={() => setOpenState(false)} />
+      <Icon
+        src={BACK_ARROW_WHITE_SVG}
+        onClick={() =>
+          setInfState({
+            ...infState,
+            isOpened: false,
+          })
+        }
+      />
       <Title>{title}</Title>
     </Container>
   );

@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState, useMemo } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import { typography } from 'styles/theme';
 import { useRecoilValue } from 'recoil';
+import { findUser, myProfileAtom } from 'atom/profileAtom';
 import { videoModalAtom } from 'atom/videoModalAtom';
 import useLike from 'hooks/useLike';
 import useComment from 'hooks/useComment/useComment';
@@ -14,7 +15,7 @@ export interface IComment {
   videoId: number;
   userId: string;
   userName: string;
-  usePhotoURL: string;
+  userPhotoURL: string;
   content: string;
 }
 
@@ -29,6 +30,7 @@ const CommentSection = () => {
     handlePostComment,
     commentErrorStatus,
   } = useComment();
+  const myProfile = useRecoilValue(myProfileAtom);
 
   const { handlePressLike, handleCancelLike, likeErrorStatus } = useLike();
   const [likeNumber, setLikeNumber] = useState<number>(
@@ -74,10 +76,15 @@ const CommentSection = () => {
   };
 
   const onClickSubitComment = async () => {
-    const { videoId } = videoModalState;
+    if (!myProfile.id) {
+      alert('로그인이 필요한 서비스입니다.');
+      return;
+    }
+
+    const { videoId, uploaderId } = videoModalState;
     await handlePostComment({
       videoId,
-      userId: 'admin',
+      userId: myProfile.id,
       content: commentInput,
     });
     await handleGetCommentList(videoId);
@@ -104,8 +111,9 @@ const CommentSection = () => {
         {commentList.map((data) => (
           <CommentWrapper key={data.userId + data.content}>
             <ProfileImage
-              src={data.usePhotoURL || DefaultProfile40}
+              src={data.userPhotoURL || DefaultProfile40}
               onClick={() => {
+                console.log(data);
                 history.push(`/profile/${data.userName}`);
               }}
             />

@@ -11,6 +11,9 @@ import Button from 'common/Button';
 import useFollow from 'hooks/useFollow';
 import { useParams } from 'react-router-dom';
 
+import { infiniteStreamState } from 'atom/infiniteStreamAtom';
+import InfiniteStreamIcon from 'assets/svg/inf_icon_white.svg';
+
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { leftNavItemState } from 'atom/pageAtom';
 import { uploadModalPopState } from 'atom/uploadModalPopStateAtom';
@@ -36,6 +39,8 @@ const LeftNav = () => {
   const [selectNavName, setSelectName] = useRecoilState(leftNavItemState);
   const myProfile = useRecoilValue(myProfileAtom);
   const myFollowingList = useRecoilValue(myFollowingListAtom);
+
+  const [infState, setInfState] = useRecoilState(infiniteStreamState);
 
   const { handleMyProfile, fetchUserId } = useProfile();
   const { handleFollow, setFollowObj, handleUnFollow } = useFollow();
@@ -163,28 +168,37 @@ const LeftNav = () => {
                 : isSelectedGameArg(EGameList.LOL)
             }
           >
-            <IconWrapper>
-              <LolSvg
-                width={32}
-                height={34.16}
-                color={
+            <IconTextWrapper>
+              <IconWrapper>
+                <LolSvg
+                  width={32}
+                  height={34.16}
+                  color={
+                    isKeywordsItemExist
+                      ? color.grayScale[100]
+                      : selectNavName === EGameList.LOL
+                      ? color.brown
+                      : color.grayScale[100]
+                  }
+                />
+              </IconWrapper>
+              <GameName
+                isSelected={
                   isKeywordsItemExist
-                    ? color.grayScale[100]
-                    : selectNavName === EGameList.LOL
-                    ? color.brown
-                    : color.grayScale[100]
+                    ? isSelectedGameArg(EGameList.NONE)
+                    : isSelectedGameArg(EGameList.LOL)
                 }
-              />
-            </IconWrapper>
-            <GameName
-              isSelected={
-                isKeywordsItemExist
-                  ? isSelectedGameArg(EGameList.NONE)
-                  : isSelectedGameArg(EGameList.LOL)
-              }
-            >
-              리그오브레전드
-            </GameName>
+              >
+                리그오브레전드
+              </GameName>
+            </IconTextWrapper>
+            {selectNavName === 'lol' && (
+              <InfPlayWrapper
+                onClick={() => setInfState({ isOpened: true, category: 'lol' })}
+              >
+                <img src={InfiniteStreamIcon} alt="왓플 플레이 버튼" />
+              </InfPlayWrapper>
+            )}
           </GameList>
           <GameList
             onClick={() => handleSelectNavItem(EGameList.PUBG)}
@@ -194,28 +208,37 @@ const LeftNav = () => {
                 : isSelectedGameArg(EGameList.PUBG)
             }
           >
-            <IconWrapper>
-              <PubgSvg
-                width={43}
-                height={27}
-                color={
+            <IconTextWrapper>
+              <IconWrapper>
+                <PubgSvg
+                  width={43}
+                  height={27}
+                  color={
+                    isKeywordsItemExist
+                      ? color.grayScale[100]
+                      : selectNavName === EGameList.PUBG
+                      ? color.brown
+                      : color.grayScale[100]
+                  }
+                />
+              </IconWrapper>
+              <GameName
+                isSelected={
                   isKeywordsItemExist
-                    ? color.grayScale[100]
-                    : selectNavName === EGameList.PUBG
-                    ? color.brown
-                    : color.grayScale[100]
+                    ? isSelectedGameArg(EGameList.NONE)
+                    : isSelectedGameArg(EGameList.PUBG)
                 }
-              />
-            </IconWrapper>
-            <GameName
-              isSelected={
-                isKeywordsItemExist
-                  ? isSelectedGameArg(EGameList.NONE)
-                  : isSelectedGameArg(EGameList.PUBG)
-              }
-            >
-              배틀그라운드
-            </GameName>
+              >
+                배틀그라운드
+              </GameName>
+            </IconTextWrapper>
+            {selectNavName === 'pubg' && (
+              <InfPlayWrapper
+                onClick={() => setInfState({ isOpened: true, category: 'lol' })}
+              >
+                <img src={InfiniteStreamIcon} alt="왓플 플레이 버튼" />
+              </InfPlayWrapper>
+            )}
           </GameList>
           <GameList
             onClick={() => handleSelectNavItem(EGameList.OVERWATCH)}
@@ -225,28 +248,37 @@ const LeftNav = () => {
                 : isSelectedGameArg(EGameList.OVERWATCH)
             }
           >
-            <IconWrapper>
-              <OverWatchSvg
-                width={32}
-                height={32}
-                color={
+            <IconItemsWrapper>
+              <IconWrapper>
+                <OverWatchSvg
+                  width={32}
+                  height={32}
+                  color={
+                    isKeywordsItemExist
+                      ? color.grayScale[100]
+                      : selectNavName === EGameList.OVERWATCH
+                      ? color.brown
+                      : color.grayScale[100]
+                  }
+                />
+              </IconWrapper>
+              <GameName
+                isSelected={
                   isKeywordsItemExist
-                    ? color.grayScale[100]
-                    : selectNavName === EGameList.OVERWATCH
-                    ? color.brown
-                    : color.grayScale[100]
+                    ? isSelectedGameArg(EGameList.NONE)
+                    : isSelectedGameArg(EGameList.OVERWATCH)
                 }
-              />
-            </IconWrapper>
-            <GameName
-              isSelected={
-                isKeywordsItemExist
-                  ? isSelectedGameArg(EGameList.NONE)
-                  : isSelectedGameArg(EGameList.OVERWATCH)
-              }
-            >
-              오버워치
-            </GameName>
+              >
+                오버워치
+              </GameName>
+            </IconItemsWrapper>
+            {selectNavName === 'overwatch' && (
+              <InfPlayWrapper
+                onClick={() => setInfState({ isOpened: true, category: 'lol' })}
+              >
+                <img src={InfiniteStreamIcon} alt="왓플 플레이 버튼" />
+              </InfPlayWrapper>
+            )}
           </GameList>
         </GameListWrapper>
         <FooterWrapper>
@@ -405,6 +437,7 @@ const GameListWrapper = styled.div<{ isNoneClick: boolean }>`
 const GameList = styled.div<{ isSelected: boolean }>`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 50px;
   padding-left: 10px;
   transition: all 0.2s ease;
@@ -413,6 +446,17 @@ const GameList = styled.div<{ isSelected: boolean }>`
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   color: red;
+`;
+
+const InfPlayWrapper = styled.div`
+  margin-right: 1rem;
+  display: flex;
+  align-items: center;
+`;
+
+const IconTextWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const IconWrapper = styled.div`

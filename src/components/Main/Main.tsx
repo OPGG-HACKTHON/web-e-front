@@ -37,7 +37,7 @@ const Main = () => {
 
   return (
     <MainWrapper>
-      {isInfiniteOpened && <InfiniteStream />}
+      {isInfiniteOpened.isOpened && <InfiniteStream />}
       <ModalContainer
         isPopup={isUploadModalPoped}
         onClickOverlay={closeUploadModal}
@@ -54,7 +54,9 @@ const Main = () => {
       />
       <VideoSelectBar />
       <VideoListMain videos={videos} isNeedDescription />
-      <InfiniteStreamButton onClick={() => setInfiniteState(true)}>
+      <InfiniteStreamButton
+        onClick={() => setInfiniteState({ isOpened: true, category: 'random' })}
+      >
         <img
           style={{
             opacity: 1,
