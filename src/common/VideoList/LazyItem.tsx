@@ -14,6 +14,7 @@ export interface Iprops {
   pName?: string;
   pPic?: string;
   pFollowNum?: number;
+  isFollow?: any;
   isNeedDescription?: boolean;
 }
 
@@ -29,6 +30,7 @@ const LazyItem = ({
   pName,
   pPic,
   pFollowNum,
+  isFollow,
   isNeedDescription,
 }: Iprops) => {
   return (
@@ -45,6 +47,7 @@ const LazyItem = ({
           pName={pName}
           pPic={pPic}
           pFollowNum={pFollowNum}
+          isFollow={isFollow}
         />
       ) : (
         <></>

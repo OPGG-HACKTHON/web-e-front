@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { getUsersList } from 'atom/searchAreaAtom';
 import Button from 'common/Button';
 import React, { useContext, useEffect, useState } from 'react';
@@ -8,6 +9,7 @@ import profilePic from 'assets/svg/프로필사진.svg';
 import { ErrorWrapper } from 'styles/mainStyles/videoComponents/videoWrapper';
 import { videoModalAtom } from 'atom/videoModalAtom';
 import useFollow from 'hooks/useFollow';
+import { myFollowingListAtom } from 'atom/followAtom';
 
 const SearchUser = () => {
   const themeStyle = useContext(ThemeContext);
@@ -55,6 +57,8 @@ const SearchUser = () => {
     }
   };
 
+  const myFollowingList = useRecoilValue(myFollowingListAtom);
+
   if (users.length) {
     return (
       <>
@@ -67,7 +71,35 @@ const SearchUser = () => {
               <UserIdWrapper>{user.userName}</UserIdWrapper>
             </UserContent>
             <FollowBtnWrapper>
-              <Button
+              {myFollowingList &&
+              myFollowingList.some((args) => {
+                return args.userId === user.userId;
+              }) ? (
+                <Button
+                  text="언팔로우"
+                  onClick={() => handleUnFollow(user.userId)}
+                  fontColor={themeStyle.color.white}
+                  bkgColor={themeStyle.color.yellow}
+                  padding="0.8rem 0.7rem"
+                  borderRadius={0.5}
+                  fontStyle={themeStyle.typography.bodyRgBold}
+                  hoverBkgColor={themeStyle.color.white}
+                  hoverFontColor={themeStyle.color.yellow}
+                />
+              ) : (
+                <Button
+                  text="팔로우"
+                  onClick={() => handleFollow(user.userId)}
+                  fontColor={themeStyle.color.white}
+                  bkgColor={themeStyle.color.yellow}
+                  padding="0.8rem 0.7rem"
+                  borderRadius={0.5}
+                  fontStyle={themeStyle.typography.bodyRgBold}
+                  hoverBkgColor={themeStyle.color.white}
+                  hoverFontColor={themeStyle.color.yellow}
+                />
+              )}
+              {/* <Button
                 text={isFollow ? '팔로우 취소' : '팔로우'}
                 onClick={onClickFollowBtn}
                 fontColor={themeStyle.color.white}
@@ -79,7 +111,7 @@ const SearchUser = () => {
                 fontStyle={themeStyle.typography.bodyRgBold}
                 hoverBkgColor={themeStyle.color.white}
                 hoverFontColor={themeStyle.color.yellow}
-              />
+              /> */}
             </FollowBtnWrapper>
           </UserWrapper>
         ))}
