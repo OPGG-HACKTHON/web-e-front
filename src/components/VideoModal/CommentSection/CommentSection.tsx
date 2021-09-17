@@ -57,13 +57,19 @@ const CommentSection = () => {
     const { uploaderId, videoId } = videoModalState;
 
     if (isLike) {
-      handleCancelLike(uploaderId, videoId);
-      setLikeState(false);
-      setLikeNumber((prev) => prev - 1);
+      handleCancelLike(uploaderId, videoId).then((res) => {
+        if (res.status < 300) {
+          setLikeState(false);
+          setLikeNumber((prev) => prev - 1);
+        }
+      });
     } else {
-      handlePressLike(uploaderId, videoId);
-      setLikeState(true);
-      setLikeNumber((prev) => prev + 1);
+      handlePressLike(uploaderId, videoId).then((res) => {
+        if (res.status < 300) {
+          setLikeState(true);
+          setLikeNumber((prev) => prev + 1);
+        }
+      });
     }
   };
 
@@ -77,22 +83,6 @@ const CommentSection = () => {
     await handleGetCommentList(videoId);
     setCommentInput('');
   };
-
-  useEffect(() => {
-    switch (likeErrorStatus) {
-      case 401:
-        alert('로그인이 필요한 서비스입니다');
-        break;
-      case 404:
-        alert('탈퇴한 사용자입니다');
-        break;
-      case 405:
-        alert('자신의 비디오에 좋아요를 하실 수 없습니다');
-        break;
-      default:
-        break;
-    }
-  }, [likeErrorStatus]);
 
   return (
     <ContentWrapper>

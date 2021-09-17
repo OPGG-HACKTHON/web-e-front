@@ -33,34 +33,22 @@ const UploaderSection = () => {
 
   const onClickFollowBtn = () => {
     if (isFollow) {
-      handleUnFollow(videoModalState.uploaderId);
-      setFollowState(false);
-      setFollowNumber((prev) => prev - 1);
+      handleUnFollow(videoModalState.uploaderId).then((res) => {
+        if (res.status < 300) {
+          // 왜 err 나도 catch에서 못잡지???
+          setFollowState(false);
+          setFollowNumber((prev) => prev - 1);
+        }
+      });
     } else {
-      handleFollow(videoModalState.uploaderId);
-      setFollowState(true);
-      setFollowNumber((prev) => prev + 1);
+      handleFollow(videoModalState.uploaderId).then((res) => {
+        if (res.status < 300) {
+          setFollowState(true);
+          setFollowNumber((prev) => prev + 1);
+        }
+      });
     }
   };
-
-  useEffect(() => {
-    switch (followErrorStatus) {
-      case 401:
-        alert('로그인이 필요한 서비스입니다.');
-        break;
-      case 404:
-        alert('탈퇴한 사용자입니다.');
-        break;
-      case 405:
-        alert('자신을 팔로우 할 수 없습니다.');
-        break;
-      case 409:
-        alert('이미 팔로우한 사용자입니다.');
-        break;
-      default:
-        break;
-    }
-  }, [followErrorStatus]);
 
   const [uploaderProfile, setUploaderProfile] = useState<profileType>();
 
@@ -123,7 +111,6 @@ const ProfileImage = styled.img`
   border-radius: 5px;
   height: 40px;
   width: 40px;
-  background: gray;
   cursor: pointer;
 `;
 
