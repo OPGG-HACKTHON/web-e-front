@@ -97,10 +97,14 @@ const LeftNav = () => {
             <UserName>
               {myProfile?.id === null ? '로그인을 해주세요.' : userName}
             </UserName>
-            {isPro && isLocationProfile && myProfile?.id !== null ? (
-              <ProImgWrapper src={WhiteProImg} alt="whitePro" />
+            {isPro && myProfile?.id !== null ? (
+              isPro && isLocationProfile && myProfile?.id !== null ? (
+                <ProImgWrapper src={WhiteProImg} alt="whitePro" />
+              ) : (
+                <ProImgWrapper src={YellowProImg} alt="yellowPro" />
+              )
             ) : (
-              <ProImgWrapper src={YellowProImg} alt="yellowPro" />
+              ''
             )}
           </UserInfoSection>
 
