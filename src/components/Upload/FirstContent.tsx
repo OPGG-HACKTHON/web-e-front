@@ -56,6 +56,7 @@ const FirstContent = () => {
 
       <input
         type="file"
+        accept="video/*"
         id="input_file"
         onChange={(e) => onChange(e)}
         style={{ display: 'none' }}
