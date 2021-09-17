@@ -1,5 +1,6 @@
 /* eslint-disable consistent-return */
 import {
+  fetchOtherUserInfo,
   fetchProfileInfo,
   findFollower,
   findFollowing,
@@ -100,18 +101,30 @@ const useProfile = () => {
 
   const handleMyProfile = useCallback(async () => {
     try {
-      const { data } = await myProfileInfo();
-      setFetchUserId(data.id);
-      setUserId(data.id);
-      setMyProfile(data);
+      if (id === undefined) {
+        const { data } = await myProfileInfo();
+        setFetchUserId(data.id);
+        setUserId(data.id);
+        setMyProfile(data);
+        Promise.all([
+          handleFindFollower(data.id),
+          handleFindFollowing(data.id),
+        ]);
+      }
+      const { data } = await fetchOtherUserInfo(id);
+      setFetchUserId(data.userId);
+      setUserId(data.userId);
+      // setMyProfile(data);
+      Promise.all([
+        handleFindFollower(data.userId),
+        handleFindFollowing(data.userId),
+      ]);
 
-      Promise.all([handleFindFollower(data.id), handleFindFollowing(data.id)]);
-
-      return data;
+      // return data;
     } catch (err) {
       return err;
     }
-  }, [handleFindFollower, handleFindFollowing, setMyProfile, setUserId]);
+  }, [handleFindFollower, handleFindFollowing, id, setMyProfile, setUserId]);
 
   const handleFetchMyProfile = useCallback(async () => {
     try {
@@ -123,7 +136,10 @@ const useProfile = () => {
 
         setFetchUserInfoAtom(data);
       } else {
-        const { data } = await fetchProfileInfo(id);
+        console.log('asdf');
+
+        const { data } = await fetchOtherUserInfo(id);
+
         setUserId(id);
 
         setFetchUserInfoAtom(data);

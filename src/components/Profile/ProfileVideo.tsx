@@ -49,6 +49,7 @@ const SelectorContent = styled.button`
   background: none;
   margin-right: 30px;
   padding-bottom: 10px;
+  cursor: pointer;
 
   &.is-active {
     color: ${({ theme }) => `${theme.color.yellow}`};

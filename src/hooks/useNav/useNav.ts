@@ -9,6 +9,7 @@ import { searchAreaAtom } from 'atom/searchAreaAtom';
 import { myProfileAtom } from 'atom/profileAtom';
 import { newLike } from 'api/like/like';
 import { newFollower } from 'api/follow/follow';
+import { uploadModalPopState } from 'atom/uploadModalPopStateAtom';
 
 type alermListType = {
   userId: string;
@@ -24,7 +25,8 @@ const useNav = () => {
   const [isClickProfile, setIsClickProfile] = useState(false);
   const location = useLocation();
   const { id }: { id: string } = useParams();
-
+  const [isUploadModalPoped, setUploadModalPopstate] =
+    useRecoilState(uploadModalPopState);
   const alramRef = useRef(document.createElement('div'));
   const [isClickAlram, setIsClickAlram] = useState(false);
 
@@ -133,6 +135,10 @@ const useNav = () => {
     setAlermList([...followerAlermList, ...likeAlermList]);
   }, [followerAlermList, likeAlermList]);
 
+  const handleUploadModal = useCallback(() => {
+    setUploadModalPopstate(true);
+  }, [setUploadModalPopstate]);
+
   useEffect(() => {
     return () => {
       setKeywordItem([]);
@@ -165,6 +171,7 @@ const useNav = () => {
     handleClickAlermItem,
     myProfile,
     isOtherUserProfile,
+    handleUploadModal,
   };
 };
 

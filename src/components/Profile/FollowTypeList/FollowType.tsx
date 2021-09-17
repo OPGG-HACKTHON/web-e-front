@@ -185,6 +185,7 @@ const ExitButton = styled.img<{ isVisible?: boolean }>`
 `;
 
 const UserListWrapper = styled.div`
+  height: 520px;
   padding: 20px;
   overflow: auto;
 `;
@@ -205,6 +206,7 @@ const UserInfo = styled.div`
 const UserImg = styled.img`
   width: 40px;
   height: 40px;
+  border-radius: 5px;
 `;
 
 const UserName = styled.div`
