@@ -1,6 +1,6 @@
 import Button from 'common/Button';
 import useSearch from 'hooks/useSearch/useSearch';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import {
   FollowBtnDiv,
@@ -9,6 +9,9 @@ import {
 import { typography } from 'styles/theme';
 import { useHistory } from 'react-router-dom';
 import profilePic from 'assets/svg/프로필사진.svg';
+import { useRecoilValue } from 'recoil';
+import { videoModalAtom } from 'atom/videoModalAtom';
+import useFollow from 'hooks/useFollow';
 
 type Props = {
   description: string;
@@ -33,32 +36,73 @@ const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
     history.push(url);
   };
 
+  const gotoLink = (userId) => {
+    console.log(userId);
+
+    history.push(`profile/${userId}`);
+  };
+
   const picture = pPic || profilePic;
+
+  const videoModalState = useRecoilValue(videoModalAtom);
+
+  const [followNumber, setFollowNumber] = useState<number>(
+    videoModalState.followNumber
+  );
+  const [isFollow, setFollowState] = useState<boolean>(
+    videoModalState.relation.isFollow
+  );
+
+  useEffect(() => {
+    if (videoModalState.videoId !== -1) {
+      setFollowNumber(videoModalState.followNumber);
+      setFollowState(videoModalState.relation.isFollow);
+    }
+  }, [videoModalState]);
+
+  const { handleFollow, handleUnFollow, followErrorStatus } = useFollow();
+
+  const onClickFollowBtn = () => {
+    if (isFollow) {
+      handleUnFollow(videoModalState.uploaderId).then((res) => {
+        if (res.status < 300) {
+          // 왜 err 나도 catch에서 못잡지???
+          setFollowState(false);
+          setFollowNumber((prev) => prev - 1);
+        }
+      });
+    } else {
+      handleFollow(videoModalState.uploaderId).then((res) => {
+        if (res.status < 300) {
+          setFollowState(true);
+          setFollowNumber((prev) => prev + 1);
+        }
+      });
+    }
+  };
 
   return (
     <InfoWrapper>
       {/* TODO: className */}
       <PosterInfo>
         <PosterLeft>
-          <PosterImgBtn onClick={() => console.log('posteruserspage')}>
+          <PosterImgBtn onClick={() => gotoLink(pName)}>
             <UserPicImg src={picture} alt="alt" />
           </PosterImgBtn>
-          <PosterNameBtn onClick={() => console.log('posteruserspage')}>
+          <PosterNameBtn onClick={() => gotoLink(pName)}>
             <PosterName>{pName}</PosterName>
             <div>팔로워 {pFollowNum}</div>
           </PosterNameBtn>
         </PosterLeft>
         <FollowBtnDiv>
           <Button
-            text="팔로우"
-            onClick={() => console.log('팔로우')}
+            text={isFollow ? '팔로우 취소' : '팔로우'}
+            onClick={onClickFollowBtn}
             fontColor={themeStyle.color.white}
             bkgColor={themeStyle.color.yellow}
             padding="0.8rem 0.7rem"
-            width={5.5}
-            height={2.3}
             borderRadius={0.5}
-            fontStyle={typography.bodyRgBold}
+            fontStyle={typography.bodySmRegular}
             hoverBkgColor={themeStyle.color.white}
             hoverFontColor={themeStyle.color.yellow}
           />
