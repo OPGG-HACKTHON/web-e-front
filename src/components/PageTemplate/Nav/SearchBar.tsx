@@ -47,6 +47,9 @@ const SearchWrapper = styled.div`
   height: 36px;
   display: flex;
   border-radius: 5px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 `;
 
 const SearchIconWrapper = styled.div`
