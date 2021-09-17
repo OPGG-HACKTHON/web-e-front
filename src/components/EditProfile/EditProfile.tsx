@@ -178,7 +178,7 @@ const EditProfile = () => {
                       <HiddenInput
                         ref={hiddenProfileInputRef}
                         type="file"
-                        accept="img/*"
+                        accept="image/png, image/gif, image/jpeg"
                         required
                         multiple
                         onChange={handleProfileImgReader}
@@ -217,7 +217,7 @@ const EditProfile = () => {
                       <HiddenInput
                         ref={hiddenCoverInputRef}
                         type="file"
-                        accept="img/*"
+                        accept="image/png, image/gif, image/jpeg"
                         required
                         multiple
                         onChange={handleCoverImgReader}
