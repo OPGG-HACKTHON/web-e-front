@@ -7,7 +7,7 @@ export interface IComment {
   videoId: number;
   userId: string;
   userName: string;
-  usePhotoURL: string;
+  userPhotoURL: string;
   content: string;
 }
 

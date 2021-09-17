@@ -1,7 +1,16 @@
 import { atom } from 'recoil';
 
-// eslint-disable-next-line import/prefer-default-export
-export const infiniteStreamState = atom<boolean>({
+export interface IInfiniteStream {
+  isOpened: boolean;
+  category: string;
+}
+
+const initInfiniteSteam = {
+  isOpened: false,
+  category: 'random',
+};
+
+export const infiniteStreamState = atom<IInfiniteStream>({
   key: 'infiniteStreamState',
-  default: false,
+  default: initInfiniteSteam,
 });
