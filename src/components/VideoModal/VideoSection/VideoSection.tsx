@@ -1,18 +1,35 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import VolumeUpRoundedIcon from '@material-ui/icons/VolumeUpRounded';
+import PauseRoundedIcon from '@material-ui/icons/PauseRounded';
+import VolumeOffIcon from '@material-ui/icons/VolumeOff';
+
 import { useRecoilValue } from 'recoil';
 import { videoModalAtom } from 'atom/videoModalAtom';
 
 const VideoSection = () => {
   const videoModalState = useRecoilValue(videoModalAtom);
+  const [isMuted, setMuteState] = useState<boolean>(true);
+  const [isPlaying, setPlayState] = useState<boolean>(true);
+  const videoRef = useRef(null!);
+
+  const onClickPlayButton = () => {
+    if (isPlaying) {
+      videoRef.current.pause();
+    } else {
+      videoRef.current.play();
+    }
+
+    setPlayState((prev) => !prev);
+  };
 
   return (
     <VideoWrapper>
       <video
+        ref={videoRef}
         loop
-        muted
+        muted={isMuted}
         autoPlay
         playsInline
         style={{
@@ -28,10 +45,29 @@ const VideoSection = () => {
         <track kind="captions" />
       </video>
       <VideoController>
-        <PlayArrowRoundedIcon
-          style={{ width: 30, height: 30, color: '#fff' }}
-        />
-        <VolumeUpRoundedIcon style={{ width: 30, height: 30, color: '#fff' }} />
+        {isPlaying ? (
+          <PauseRoundedIcon
+            onClick={onClickPlayButton}
+            style={{ width: 30, height: 30, color: '#fff' }}
+          />
+        ) : (
+          <PlayArrowRoundedIcon
+            onClick={onClickPlayButton}
+            style={{ width: 30, height: 30, color: '#fff' }}
+          />
+        )}
+
+        {isMuted ? (
+          <VolumeOffIcon
+            onClick={() => setMuteState((prev) => !prev)}
+            style={{ width: 30, height: 30, color: '#fff' }}
+          />
+        ) : (
+          <VolumeUpRoundedIcon
+            onClick={() => setMuteState((prev) => !prev)}
+            style={{ width: 30, height: 30, color: '#fff' }}
+          />
+        )}
       </VideoController>
     </VideoWrapper>
   );
