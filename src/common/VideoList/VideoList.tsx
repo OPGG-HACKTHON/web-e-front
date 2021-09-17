@@ -67,6 +67,7 @@ const VideoList = ({ videos, isNeedDescription }: Props) => {
               pName={data.poster.name}
               pPic={data.poster.picture}
               pFollowNum={data.poster.followNum}
+              isFollow={data.relation.isFollow}
               isNeedDescription={isNeedDescription}
             />
           )
