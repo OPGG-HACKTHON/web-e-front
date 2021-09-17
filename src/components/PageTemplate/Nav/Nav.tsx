@@ -239,7 +239,7 @@ const RightItemWrapper = styled.div`
   align-items: center;
   position: relative;
   align-items: baseline;
-
+  height: 32px;
   & > * {
     cursor: pointer;
   }
