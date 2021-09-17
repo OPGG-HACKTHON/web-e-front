@@ -35,7 +35,6 @@ const Nav = () => {
   const userInfo = useRecoilValue(fetchUserInfoAtom);
   const { userPhotoURL } = userInfo;
   const isLogin = myProfile.id !== null;
-
   const {
     handleClickProfile,
     isClickProfile,
@@ -49,6 +48,8 @@ const Nav = () => {
     handleGoMain,
     alermList,
     handleClickAlermItem,
+    isLocationProfile,
+    isOtherUserProfile,
   } = useNav();
 
   const {
@@ -69,6 +70,8 @@ const Nav = () => {
     onkeyUpLogin,
   } = useAuth();
 
+  const { photo } = myProfile;
+
   const { handleMyProfile } = useProfile();
 
   const { keywords, handleAddKeyword } = useSearch();
@@ -76,7 +79,6 @@ const Nav = () => {
   useEffect(() => {
     handleMyProfile();
     localStorage.setItem('keywords', JSON.stringify(keywords));
-    // setRKeword(keywords);
   }, [handleMyProfile, keywords]);
 
   const registerStatus = useRecoilValue(registerStatusAtom);
@@ -100,18 +102,22 @@ const Nav = () => {
                   ) : (
                     <img src={AlermOn} alt="" />
                   )}
-                  {/* <AlramSvg
-                    width={20.21}
-                    height={24}
-                    color={color.grayScale[500]}
-                  /> */}
                 </AlramWrapper>
-                <ProfileImg
-                  ref={profileRef}
-                  src={userPhotoURL || DefaultProfile32}
-                  alt=""
-                  onClick={handleClickProfile}
-                />
+                {isOtherUserProfile ? (
+                  <ProfileImg
+                    ref={profileRef}
+                    src={userPhotoURL || DefaultProfile32}
+                    alt=""
+                    onClick={handleClickProfile}
+                  />
+                ) : (
+                  <ProfileImg
+                    ref={profileRef}
+                    src={photo || DefaultProfile32}
+                    alt=""
+                    onClick={handleClickProfile}
+                  />
+                )}
               </RightItemWrapper>
             ) : (
               <>

@@ -2,7 +2,7 @@
 import { leftNavItemState } from 'atom/pageAtom';
 import { EGameList } from 'enum/game.enum';
 import { useCallback, useState, useRef, useMemo, useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { getBoundingRefObj } from 'types/underToggleLayer.types';
 import { searchAreaAtom } from 'atom/searchAreaAtom';
@@ -23,6 +23,7 @@ const useNav = () => {
   const profileRef = useRef(document.createElement('img'));
   const [isClickProfile, setIsClickProfile] = useState(false);
   const location = useLocation();
+  const { id }: { id: string } = useParams();
 
   const alramRef = useRef(document.createElement('div'));
   const [isClickAlram, setIsClickAlram] = useState(false);
@@ -47,6 +48,10 @@ const useNav = () => {
       location.pathname === '/profile' || location.pathname.includes('/profile')
     );
   }, [location]);
+
+  const isOtherUserProfile = useMemo(() => {
+    return id === undefined;
+  }, [id]);
 
   const handleSelectNavItem = useCallback(
     (arg: EGameList) => {
@@ -158,6 +163,8 @@ const useNav = () => {
     handleGoMain,
     alermList,
     handleClickAlermItem,
+    myProfile,
+    isOtherUserProfile,
   };
 };
 
