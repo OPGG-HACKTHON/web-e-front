@@ -8,11 +8,18 @@ import styled, { ThemeContext } from 'styled-components';
 interface IFooter {
   isMuted: boolean;
   isLooping: boolean;
+  isLiked: boolean;
   onClickLoop: () => void;
   onClickMute: () => void;
 }
 
-const Footer = ({ isMuted, isLooping, onClickLoop, onClickMute }: IFooter) => {
+const Footer = ({
+  isLiked,
+  isMuted,
+  isLooping,
+  onClickLoop,
+  onClickMute,
+}: IFooter) => {
   const themeStyle = useContext(ThemeContext);
 
   const iconStyle = useMemo(() => {
@@ -22,6 +29,15 @@ const Footer = ({ isMuted, isLooping, onClickLoop, onClickMute }: IFooter) => {
       cursor: 'pointer',
     };
   }, []);
+
+  const iconStyleHeart = useMemo(() => {
+    return {
+      height: '3.6rem',
+      width: '3.6rem',
+      cursor: 'pointer',
+      fill: isLiked ? 'red' : 'none',
+    };
+  }, [isLiked]);
 
   return (
     <Container>
@@ -40,7 +56,7 @@ const Footer = ({ isMuted, isLooping, onClickLoop, onClickMute }: IFooter) => {
         )}
       </IconWrapper>
       <IconWrapper>
-        <FavoriteBorderIcon style={iconStyle} />
+        <FavoriteBorderIcon style={iconStyleHeart} />
       </IconWrapper>
     </Container>
   );

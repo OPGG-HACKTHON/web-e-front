@@ -4,26 +4,30 @@ import { getRecommendVideos } from 'api/recommend/recommend';
 import { IVideoPayload } from 'common/VideoList/VideoList';
 
 const useRecommend = () => {
-  const [recommends, setRecommends] = useState({});
+  const [recommends, setRecommends] = useState<IVideoPayload[]>([]);
   const [lolRecommends, setLol] = useState<IVideoPayload[]>([]);
-  const [overwatchRecommends, setOverWatch] = useState([]);
-  const [pubgRecommends, setPubg] = useState([]);
+  const [overwatchRecommends, setOverWatch] = useState<IVideoPayload[]>([]);
+  const [pubgRecommends, setPubg] = useState<IVideoPayload[]>([]);
 
   const handleRecommend = useCallback(async () => {
     try {
       const res = await getRecommendVideos();
-      const { data } = res.datas;
-
-      setRecommends(data);
-      // console.log(data?.lolRecommand);
-      setLol(data?.lolRecommand);
-      setOverWatch(data?.overwatchRecommand);
-      setPubg(data?.pubgRecommand);
-      return data;
+      const lol = res.lolRecommand;
+      const ow = res.watchRecommand;
+      const pg = res.pubgRecommand;
+      console.log(lol, ow, pg);
+      setLol(lol);
+      setOverWatch(ow);
+      setPubg(pg);
+      return res;
     } catch (err) {
-      console.log(err);
+      return err;
     }
   }, []);
+
+  useEffect(() => {
+    handleRecommend();
+  }, [handleRecommend]);
 
   return {
     recommends,

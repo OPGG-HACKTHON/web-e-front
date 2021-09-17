@@ -18,7 +18,6 @@ const InfiniteStream = () => {
   const [infState, setInfState] = useRecoilState(infiniteStreamState);
   const myProfile = useRecoilValue(myProfileAtom);
   const {
-    recommends,
     handleRecommend,
     lolRecommends,
     overwatchRecommends,
@@ -30,41 +29,6 @@ const InfiniteStream = () => {
   const [triggerNextVideo, setTriggerState] = useState(false);
   const [recommendIndex, setRecommendIndex] = useState(0);
   const [selectNavName, setSelectName] = useRecoilState(leftNavItemState);
-
-  useEffect(() => {
-    handleRecommend();
-    // console.log(lolRecommends);
-  }, []);
-
-  // useEffect(() => {
-  //   const fetchRecommendVideos = async () => {
-  //     try {
-  //       const res = await getRecommendVideos();
-  //       const data = res.datas;
-  //       if (res.statusCode !== 200) {
-  //         throw new Error(
-  //           '네트워크 오류가 발생했습니다. 잠시 후 시도해주세요.'
-  //         );
-  //       }
-  //       console.log(data);
-  //       const isLoggedIn = myProfile?.id !== null;
-  //       // if (isLoggedIn) {
-  //       //   if (selectNavName === 'lol') {
-  //       //     setLolRecommends(data.lolRecommand);
-  //       //   }
-  //       //   if (selectNavName === 'overwatch') {
-  //       //     setOverwatchRecommends(res?.datas?.watchRecommand);
-  //       //   }
-  //       //   if (selectNavName === 'pubg') {
-  //       //     setBgRecommends(res?.datas?.pubgRecommand);
-  //       //   }
-  //       // }
-  //     } catch (err) {
-  //       alert(err);
-  //     }
-  //   };
-  //   fetchRecommendVideos();
-  // }, []);
 
   const videos = useRecoilValue(videoListState);
 
@@ -83,6 +47,10 @@ const InfiniteStream = () => {
     [debounceHandler]
   );
 
+  useEffect(() => {
+    setRecommendIndex(0);
+  }, []);
+
   const randomIndexOfList = (list: Array<any>) => {
     return Math.floor(Math.random() * list.length);
   };
@@ -92,7 +60,9 @@ const InfiniteStream = () => {
   }, [videos, triggerNextVideo]);
 
   const currentVideo = useMemo(() => {
-    return randomVideo;
+    // console.log(handleRecommend());
+
+    // return randomVideo;
 
     if (infState.category === 'random' || !myProfile.id) {
       return randomVideo;
@@ -100,6 +70,8 @@ const InfiniteStream = () => {
     // const lolRecommends = await handleRecommend().then(
     //   (res) => res.lolRecommand
     // );
+
+    // const lolRecommends = handleRecommend().lol;
 
     const index = recommendIndex;
     if (selectNavName === 'lol') {
@@ -122,7 +94,7 @@ const InfiniteStream = () => {
       } else {
         setRecommendIndex((prev) => prev + 1);
       }
-      return overwatchRecommends[recommendIndex];
+      return overwatchRecommends[index];
     }
     if (pubgRecommends?.length < 5) {
       return randomVideo;
@@ -132,14 +104,14 @@ const InfiniteStream = () => {
     } else {
       setRecommendIndex((prev) => prev + 1);
     }
-    return pubgRecommends[recommendIndex];
+    return pubgRecommends[index];
   }, [
     selectNavName,
-    recommendIndex,
+    triggerNextVideo,
     lolRecommends,
     overwatchRecommends,
     pubgRecommends,
-    triggerNextVideo,
+    handleRecommend,
   ]);
 
   return (
@@ -152,6 +124,7 @@ const InfiniteStream = () => {
         onEnded={() => setTriggerState((prev) => !prev)}
       />
       <Footer
+        isLiked={currentVideo.relation.isLike}
         isMuted={isMuted}
         isLooping={isLooping}
         onClickLoop={() => setLoopState((prev) => !prev)}
