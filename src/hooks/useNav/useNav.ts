@@ -100,7 +100,7 @@ const useNav = () => {
 
     const data = await newFollower(myProfile.id);
 
-    for (let i = 0; i < data.followers.length; i += 1) {
+    for (let i = 0; i < data?.followers?.length; i += 1) {
       const temp = {
         userId: data.followers[i].userId,
         text: `${data.followers[i].userId}님이 회원님을 팔로우 합니다.`,

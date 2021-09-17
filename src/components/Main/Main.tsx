@@ -16,12 +16,13 @@ import VideoListMain from 'common/VideoList/Main';
 import VideoSelectBar from './VideoSelectBar';
 
 const Main = () => {
+  const videos = useRecoilValue(vListbySelectorState);
+
   const [currentUploadModalStep, setUploadModalStep] =
     useRecoilState(uploadModalStep);
   const [isUploadModalPoped, setUploadModalPopState] =
     useRecoilState(uploadModalPopState);
   const refechVideoList = useSetRecoilState(videoListState);
-  const videos = useRecoilValue(vListbySelectorState);
   const [isUploading, setUploadingState] = useState<boolean>(false);
   const [isInfiniteOpened, setInfiniteState] =
     useRecoilState(infiniteStreamState);
