@@ -81,8 +81,8 @@ export default Button;
 const ButtonStyle = styled.button<IButtonStyleProps>`
   color: ${({ fontColor }) => fontColor};
   background-color: ${({ bkgColor }) => bkgColor};
-  width: ${({ width }) => `${width}rem`};
-  height: ${({ height }) => `${height}rem`};
+  width: ${({ width }) => (width ? `${width}rem` : ``)};
+  height: ${({ height }) => (height ? `${height}rem` : ``)};
   border-radius: ${({ borderRadius }) => `${borderRadius}rem`};
   padding: ${({ padding }) => padding};
   ${({ fontStyle }) => fontStyle}

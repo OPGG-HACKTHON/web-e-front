@@ -45,10 +45,6 @@ export const PosterInfo = styled.div`
 `;
 
 export const FollowBtnDiv = styled.div`
-  width: 60%;
-  position: relative;
-  display: flex;
-  justify-content: flex-end;
   button {
     line-height: 100%;
   }
