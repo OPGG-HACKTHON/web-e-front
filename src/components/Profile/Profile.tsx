@@ -36,6 +36,7 @@ const Profile = () => {
   const [isUploading, setUploadingState] = useState<boolean>(false);
   const [isInfiniteOpened, setInfiniteState] =
     useRecoilState(infiniteStreamState);
+
   const closeUploadModal = () => {
     if (!isUploading) {
       refechVideoList(0);
