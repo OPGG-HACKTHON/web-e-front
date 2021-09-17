@@ -30,15 +30,6 @@ const Footer = ({
     };
   }, []);
 
-  const iconStyleHeart = useMemo(() => {
-    return {
-      height: '3.6rem',
-      width: '3.6rem',
-      cursor: 'pointer',
-      fill: isLiked ? 'red' : 'none',
-    };
-  }, [isLiked]);
-
   return (
     <Container>
       <IconWrapper>
@@ -56,7 +47,7 @@ const Footer = ({
         )}
       </IconWrapper>
       <IconWrapper>
-        <FavoriteBorderIcon style={iconStyleHeart} />
+        <FavoriteBorderIcon style={iconStyle} />
       </IconWrapper>
     </Container>
   );
