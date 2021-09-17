@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Search from 'assets/svg/Search.svg';
 import useSearch from 'hooks/useSearch/useSearch';
 import { useHistory } from 'react-router-dom';
+import Token from 'lib/token';
 
 const SearchBar = () => {
   const [searchTxt, setSearchTxt] = useState('');
@@ -14,9 +15,13 @@ const SearchBar = () => {
   const { goToLink, handleAddKeyword } = useSearch();
   const history = useHistory();
   const onClick = (value) => {
-    handleAddKeyword(value);
-    const url = goToLink(value);
-    history.push(url);
+    if (Token.getToken('access_token') === undefined) {
+      alert('로그인이 필요한 서비스입니다.');
+    } else {
+      handleAddKeyword(value);
+      const url = goToLink(value);
+      history.push(url);
+    }
   };
 
   const onKeyPress = (e) => {
