@@ -205,6 +205,7 @@ const UserInfo = styled.div`
 const UserImg = styled.img`
   width: 40px;
   height: 40px;
+  border-radius: 5px;
 `;
 
 const UserName = styled.div`
