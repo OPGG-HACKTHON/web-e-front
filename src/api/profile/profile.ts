@@ -35,12 +35,6 @@ export const fetchProfileInfo = async (userId: string) => {
   return data;
 };
 
-export const fetchOtherUserInfo = async (userId: string) => {
-  const { data } = await customAxios.get(`/users/${userId}`);
-
-  return data;
-};
-
 export const modifyProfile = async (
   modiftObj: patchProfileDto,
   userId: string
