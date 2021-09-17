@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import Button from 'common/Button';
 import useSearch from 'hooks/useSearch/useSearch';
 import React, { useContext, useEffect, useState } from 'react';
@@ -12,15 +13,23 @@ import profilePic from 'assets/svg/프로필사진.svg';
 import { useRecoilValue } from 'recoil';
 import { videoModalAtom } from 'atom/videoModalAtom';
 import useFollow from 'hooks/useFollow';
+import { myFollowingListAtom } from 'atom/followAtom';
 
 type Props = {
   description: string;
   pName: string;
   pPic: string;
   pFollowNum: number;
+  isFollow: any;
 };
 
-const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
+const Description = ({
+  description,
+  pName,
+  pPic,
+  pFollowNum,
+  isFollow,
+}: Props) => {
   const themeStyle = useContext(ThemeContext);
 
   const descArray = description.replace('\n', ' ').split(' ');
@@ -44,46 +53,18 @@ const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
 
   const picture = pPic || profilePic;
 
-  const videoModalState = useRecoilValue(videoModalAtom);
-
-  const [followNumber, setFollowNumber] = useState<number>(
-    videoModalState.followNumber
-  );
-  const [isFollow, setFollowState] = useState<boolean>(
-    videoModalState.relation.isFollow
-  );
-
-  useEffect(() => {
-    if (videoModalState.videoId !== -1) {
-      setFollowNumber(videoModalState.followNumber);
-      setFollowState(videoModalState.relation.isFollow);
-    }
-  }, [videoModalState]);
-
   const { handleFollow, handleUnFollow, followErrorStatus } = useFollow();
+  const myFollowingList = useRecoilValue(myFollowingListAtom);
 
-  const onClickFollowBtn = () => {
-    if (isFollow) {
-      handleUnFollow(videoModalState.uploaderId).then((res) => {
-        if (res.status < 300) {
-          // 왜 err 나도 catch에서 못잡지???
-          setFollowState(false);
-          setFollowNumber((prev) => prev - 1);
-        }
-      });
-    } else {
-      handleFollow(videoModalState.uploaderId).then((res) => {
-        if (res.status < 300) {
-          setFollowState(true);
-          setFollowNumber((prev) => prev + 1);
-        }
-      });
-    }
+  const onClickFollowBtn = (followingName) => {
+    console.log(followingName);
+
+    if (!isFollow) handleFollow(followingName);
+    else handleUnFollow(followingName);
   };
 
   return (
     <InfoWrapper>
-      {/* TODO: className */}
       <PosterInfo>
         <PosterLeft>
           <PosterImgBtn onClick={() => gotoLink(pName)}>
@@ -95,17 +76,34 @@ const Description = ({ description, pName, pPic, pFollowNum }: Props) => {
           </PosterNameBtn>
         </PosterLeft>
         <FollowBtnDiv>
-          <Button
-            text={isFollow ? '팔로우 취소' : '팔로우'}
-            onClick={onClickFollowBtn}
-            fontColor={themeStyle.color.white}
-            bkgColor={themeStyle.color.yellow}
-            padding="0.8rem 0.7rem"
-            borderRadius={0.5}
-            fontStyle={typography.bodySmRegular}
-            hoverBkgColor={themeStyle.color.white}
-            hoverFontColor={themeStyle.color.yellow}
-          />
+          {myFollowingList &&
+          myFollowingList.some((args) => {
+            return args.userId === pName;
+          }) ? (
+            <Button
+              text="언팔로우"
+              onClick={() => handleUnFollow(pName)}
+              fontColor={themeStyle.color.white}
+              bkgColor={themeStyle.color.yellow}
+              padding="0.8rem 0.7rem"
+              borderRadius={0.5}
+              fontStyle={typography.bodySmRegular}
+              hoverBkgColor={themeStyle.color.white}
+              hoverFontColor={themeStyle.color.yellow}
+            />
+          ) : (
+            <Button
+              text="팔로우"
+              onClick={() => handleFollow(pName)}
+              fontColor={themeStyle.color.white}
+              bkgColor={themeStyle.color.yellow}
+              padding="0.8rem 0.7rem"
+              borderRadius={0.5}
+              fontStyle={typography.bodySmRegular}
+              hoverBkgColor={themeStyle.color.white}
+              hoverFontColor={themeStyle.color.yellow}
+            />
+          )}
         </FollowBtnDiv>
       </PosterInfo>
       <DescriptionWrapper>
