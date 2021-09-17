@@ -13,7 +13,7 @@ const App = () => {
       <Switch>
         <Route exact path="/" component={GreetingPage} />
         <RestrictRoute exact path="/profile" component={ProfilePage} />
-        <RestrictRoute exact path="/profile/:id" component={ProfilePage} />
+        <Route exact path="/profile/:id" component={ProfilePage} />
         <RestrictRoute exact path="/profileEdit" component={EditProfilePage} />
         <Route exact path="/search" component={SearchPage} />
       </Switch>

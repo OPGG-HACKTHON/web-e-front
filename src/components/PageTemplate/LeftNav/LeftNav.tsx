@@ -93,7 +93,12 @@ const LeftNav = () => {
       <StickyWrapper>
         <UserWrapper isProfile={isLocationProfile && myProfile?.id !== null}>
           <UserInfoSection>
-            <UserProfileImg src={userPhotoURL || DefaultProfile40} />
+            {myProfile?.id === null ? (
+              <UserProfileImg src={DefaultProfile40} />
+            ) : (
+              <UserProfileImg src={userPhotoURL || DefaultProfile40} />
+            )}
+
             <UserName>
               {myProfile?.id === null ? '로그인을 해주세요.' : userName}
             </UserName>
