@@ -27,13 +27,29 @@ const useFollow = () => {
         followingId,
       });
       const { data, status } = res;
+      setFollowErrorStatus(status);
+      console.log(status);
       await handleMyProfile();
       await myFollowList();
 
-      return data;
+      return res;
     } catch (err) {
       const { status } = err.response;
       setFollowErrorStatus(status);
+      switch (status) {
+        case 401:
+          alert('로그인이 필요한 서비스입니다.');
+          break;
+        case 404:
+          alert('탈퇴한 사용자입니다.');
+          break;
+        case 405:
+        case 409:
+          alert('자신을 팔로우 할 수 없습니다.');
+          break;
+        default:
+          break;
+      }
       return err;
     }
   };
@@ -46,12 +62,28 @@ const useFollow = () => {
       });
 
       const { data, status } = res;
+      setFollowErrorStatus(status);
+      console.log(status);
       await handleMyProfile();
       await myFollowList();
-      return data;
+      return res;
     } catch (err) {
       const { status } = err.response;
       setFollowErrorStatus(status);
+      switch (status) {
+        case 401:
+          alert('로그인이 필요한 서비스입니다.');
+          break;
+        case 404:
+          alert('탈퇴한 사용자입니다.');
+          break;
+        case 405:
+        case 409:
+          alert('자신을 팔로우 취소 할 수 없습니다.');
+          break;
+        default:
+          break;
+      }
       return err;
     }
   };
